@@ -2,9 +2,15 @@
 ---
 # Scratch
 
-## ideas
+### ideas
  * 10 second coookie clicker challenge with leaderboard/responsive high score. " How many clicks in 10 seconds?"
  * typing test based on homework reading; wpm, api for textbook.
+## Derived field
+ *  We first make a table receving score name and date
+ * Rank is derived and be used for a new table to be displayed
+ ## HTML requirement
+ * use form, form will name to sumbit with score.
+ * table tag to display leader board/ sorting?
 ## 10s Clicker High Score!
 How many clicks can you can in X amount seconds?!
 
@@ -15,9 +21,6 @@ Include a very brief summary of your project here. Be sure to include the CSS po
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: 
-
-* Question!
-    "Deploy your project to Glitch, and fill in thet apporiate fields in your package.json file.
 
 ---
 

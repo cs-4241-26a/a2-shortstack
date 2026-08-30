@@ -4,7 +4,7 @@
 <head>
   <title>CS4241 Assignment 2</title>
   <meta charset='utf-8' />
-  <script src='js/main.js'></script>
+  <script src='js/main.js' defer></script>
   <link rel='stylesheet' href='css/main.css' />
 
   <!-- get rid of favicon error -->
@@ -16,6 +16,7 @@
   <h2> How many times can you click in 10 seconds?</h2>
 </header>
 <body>
+  <div class="leaderBoard">
   <h2>High Score</h2>
   <table>
     <thead>
@@ -23,6 +24,7 @@
         <th>Rank</th>
         <th>Score</th>
         <th>Name</th>
+        <th>Date </th>
       </tr>
     </thead>
     <tbody>
@@ -47,19 +49,27 @@
         <td></td>
       </tr>      
       <tr>
-        <th>5s</th>
+        <th>5</th>
         <td></td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  </div>
+
+  <div class="clickerGame">
+  <h2 id="timer">TIME: </h2>
+  <p id="scoreBoard">Score:X</p>
 
   <h3> click to start playing!</h3>
-  <button> clikcer</button>
+  <button id="clicker" type="button"> clicker</button>
   <!-- <form>
     <input type='text' id='yourname' value='your name here'>
     <button>submit</button>
   </form> -->
+  </div>
+
+
 </body>
 
 </html>
