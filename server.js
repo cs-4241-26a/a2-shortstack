@@ -7,22 +7,36 @@ const http = require( 'http' ),
       dir  = 'public/',
       port = 3000
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+let appdata = [
+  {id: 1, task: 'test task', creationDate: '2026-08-28', deadline: '2026-09-01', status: 'not started', timeToComplete: 3}
 ]
+
+const timeToComplete = function(creationDate, deadline) {
+  const creation = new Date(creationDate)
+  const due = new Date(deadline)
+  const diffTime = Math.abs(due - creation)
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  return diffDays
+}
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
     handleGet( request, response )    
   }else if( request.method === 'POST' ){
     handlePost( request, response ) 
+  } else if (request.method === 'DELETE') {
+    handleDelete(request, response)
   }
 })
 
-const handleGet = function( request, response ) {
-  const filename = dir + request.url.slice( 1 ) 
+const handleGet = function( request, response ) {  
+  if (request.url === '/data') {
+    response.writeHead(200, { 'Content-Type': 'application/json' })
+    response.end(JSON.stringify(appdata))
+    return
+  }
+  
+  const filename = dir + request.url.slice(1) 
 
   if( request.url === '/' ) {
     sendFile( response, 'public/index.html' )
@@ -32,21 +46,46 @@ const handleGet = function( request, response ) {
 }
 
 const handlePost = function( request, response ) {
-  let dataString = ''
+  if (request.url === '/data' || request.url === '/submit') {
+    let dataString = ''
 
-  request.on( 'data', function( data ) {
-      dataString += data 
-  })
+    request.on( 'data', function( data ) {
+        dataString += data 
+    })
 
-  request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
+    request.on( 'end', function() {
+      try {
+        const data = JSON.parse(dataString)
+        console.log(data)
+        const creationDate = data.creationDate || data['creation-date'] || ''
+        const deadline = data.deadline || ''
+        const task = {
+          id: Date.now(),
+          task: data.task,
+          creationDate,
+          deadline,
+          status: data.status,
+          timeToComplete: timeToComplete(creationDate, deadline)
+        }
+        appdata.push(task)
+        response.writeHead(200, { 'Content-Type': 'application/json' })
+        response.end(JSON.stringify(appdata))
+      } catch (err) {
+        response.writeHead(400, { 'Content-Type': 'application/json' })
+        response.end(JSON.stringify({ error: 'Invalid JSON payload' }))
+      }
+    })
+  } else {
+    response.writeHeader( 404 )
+    response.end( '404 Error: Not Found' )
+  }
+}
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-
-    // change this to incorporate data
-    response.end('test')
-  })
+const handleDelete = function(request, response) {
+  const id = request.url.split('/')[2]
+  appdata = appdata.filter(item => item.id !== parseInt(id))
+  response.writeHead(200, { 'Content-Type': 'application/json' })
+  response.end(JSON.stringify(appdata))
 }
 
 const sendFile = function( response, filename ) {

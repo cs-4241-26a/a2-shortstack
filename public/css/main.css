@@ -2,3 +2,48 @@ body {
   background:black;
   color:white;
 }
+
+
+table {
+  border-collapse: collapse;
+  border: 1px solid white;
+}
+tr, th, td {
+  width: flex;
+  height: 32px;
+  border: 1px solid white;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.button {
+  color: white;
+  cursor: pointer;
+  margin: 0.2em;
+  background-color: black;
+  padding: 10px 10px;
+  font-size: 12px;
+  font-family: Helvetica, Helvetica, sans-serif;
+  border-radius: 8px;
+  border: 1px solid #ccc;;
+}
+
+.button:hover {
+  background-color: darkgray;
+}
+
+form {
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid white;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1em;
+  transform: translateX(20%);
+}
+
+#delete-button {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+}
