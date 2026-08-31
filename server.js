@@ -8,7 +8,7 @@ const http = require( 'http' ),
       port = 3000
 
 const appdata = [
-  { name: 'Becca', birth_year: 2006, class: 'Junior', age: 20 }
+  { name: 'Becca', birth_year: 2006, user_class: 'Junior', age: 20 }
 ]
 
 function findAge(user_info){
@@ -49,7 +49,7 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    let this_user = JSON.parse(dataString);
+    const this_user = JSON.parse(dataString);
     findAge(this_user);
     appdata.push(this_user);
     console.log(appdata);
