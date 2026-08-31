@@ -2,3 +2,7 @@ body {
   background:white;
   color:black;
 }
+#sumbitScore{
+ visibility: hidden;
+
+}
