@@ -8,10 +8,13 @@ const http = require( 'http' ),
       port = 3000
 
 const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+  { name: 'Becca', birth_year: 2006, class: 'Junior', age: 20 }
 ]
+
+function findAge(user_info){
+  user_info.age = 2026 - user_info.birth_year;
+  return user_info;
+}
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
@@ -26,8 +29,15 @@ const handleGet = function( request, response ) {
 
   if( request.url === '/' ) {
     sendFile( response, 'public/index.html' )
-  }else{
-    sendFile( response, filename )
+  // had chatgpt help me with this cause i was getting errors
+  } else if (request.url === '/users') {
+    response.writeHead(200, "OK", {
+      'Content-Type': 'application/json'
+    })
+    response.end(JSON.stringify(appdata))
+  } else {
+    const filename = dir + request.url.slice(1)
+    sendFile(response, filename)
   }
 }
 
@@ -39,13 +49,14 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
-
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+    let this_user = JSON.parse(dataString);
+    findAge(this_user);
+    appdata.push(this_user);
+    console.log(appdata);
+    response.writeHead( 200, "OK", {'Content-Type': 'application/json' })
 
     // change this to incorporate data
-    response.end('test')
+    response.end(JSON.stringify(appdata))
   })
 }
 

@@ -7,21 +7,36 @@ const submit = async function( event ) {
   // remains to this day
   event.preventDefault()
   
-  const input = document.querySelector( '#yourname' ),
-        json = { yourname: input.value },
-        body = JSON.stringify( json )
+  // user information
+  const name = document.querySelector( '#name' ).value;
+  const birth_year = document.querySelector( '#birth_year' ).value;
+  const user_class = document.querySelector( '#user_class' ).value;
+
+
+  let user_info = {
+    name: name,
+    birth_year: Number(birth_year),
+    user_class: user_class,
+  };
 
   const response = await fetch( '/submit', {
     method:'POST',
-    body 
-  })
+    body: JSON.stringify(user_info)
+  });
 
-  const text = await response.text()
+  const data = await response.json();
 
-  console.log( 'text:', text )
+  console.log( 'data:', data );
+}
+
+const fetchInfo = async function() {
+  const response = await fetch('/users');
+  const users = await response.json();
+  console.log(users);
 }
 
 window.onload = function() {
-  const button = document.querySelector('button')
-  button.onclick = submit
+  const form = document.querySelector('form');
+  form.onsubmit = submit;
+  fetchInfo();
 }
