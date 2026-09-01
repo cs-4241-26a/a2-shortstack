@@ -3,7 +3,6 @@
   <head>
     <title>CS4241 Assignment 2</title>
     <meta charset='utf-8' />
-    <script src='js/main.js'></script>
     <link rel='stylesheet' href='css/main.css' />
     
     <!-- get rid of favicon error -->
@@ -19,6 +18,7 @@
           <th>Deadline</th>
           <th>Status</th>
           <th>Time to Complete</th>
+          <th>Edit</th>
           <th>Delete</th>
         </tr>
       </thead>
@@ -49,5 +49,29 @@
       </p>
       <button class="button">Submit</button>
     </form>
+
+    <div class="edit" id="editor">
+      <div>
+          <form id="edit-form">
+            <input type="hidden" id="edit-id">
+            <label>Task:</label><br>
+            <input type="text" id="edit-task" required><br><br>
+      
+            <label>Deadline:</label><br>
+            <input type="date" id="edit-deadline" required><br><br>
+      
+            <label>Status:</label><br>
+            <select id="edit-status">
+              <option value="not started">Not Started</option>
+              <option value="in progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select><br><br>
+      
+            <button class="editor-button"  type="submit">Save Changes</button>
+            <button class="editor-button" type="button" id="cancel-edit">Cancel</button>
+          </form>
+        </div>
+      </div>
   </body>
+  <script src='js/main.js'></script>
 </html>

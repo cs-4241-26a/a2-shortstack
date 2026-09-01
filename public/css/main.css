@@ -1,6 +1,14 @@
+@import url('https://googleapis.com');
+
+
 body {
   background:black;
   color:white;
+  font-family: 'Roboto', sans-serif;
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 20px;
+  align-items: start; 
 }
 
 
@@ -39,11 +47,40 @@ form {
   max-width: 400px;
   margin: 0 auto;
   padding: 1em;
-  transform: translateX(20%);
 }
 
 #delete-button {
   background-color: black;
   color: white;
   border: 1px solid white;
+}
+
+#delete-button:hover {
+  background-color: darkgray;
+}
+
+#edit-button {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+}
+#edit-button:hover {
+  background-color: lightgrey;
+}
+.edit {
+  display: none;
+  max-width: 400px;
+  padding: 1em;
+  text-align: center;
+}
+
+.editor-button {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+  margin-top: 10px;
+}
+
+.editor-button:hover {
+  background-color: lightgrey;
 }

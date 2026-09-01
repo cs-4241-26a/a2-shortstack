@@ -26,6 +26,8 @@ const server = http.createServer( function( request,response ) {
     handlePost( request, response ) 
   } else if (request.method === 'DELETE') {
     handleDelete(request, response)
+  } else if (request.method === 'PUT') {
+    handleEdit(request, response)
   }
 })
 
@@ -52,11 +54,9 @@ const handlePost = function( request, response ) {
     request.on( 'data', function( data ) {
         dataString += data 
     })
-
     request.on( 'end', function() {
       try {
         const data = JSON.parse(dataString)
-        console.log(data)
         const creationDate = data.creationDate || data['creation-date'] || ''
         const deadline = data.deadline || ''
         const task = {
@@ -73,7 +73,7 @@ const handlePost = function( request, response ) {
       } catch (err) {
         response.writeHead(400, { 'Content-Type': 'application/json' })
         response.end(JSON.stringify({ error: 'Invalid JSON payload' }))
-      }
+      } 
     })
   } else {
     response.writeHeader( 404 )
@@ -87,6 +87,44 @@ const handleDelete = function(request, response) {
   response.writeHead(200, { 'Content-Type': 'application/json' })
   response.end(JSON.stringify(appdata))
 }
+
+const handleEdit = function(request, response) {
+
+  const id = parseInt(request.url.split('/')[2])
+  let dataString = ''
+
+  request.on('data', function(data) {
+    dataString += data
+  })
+
+  request.on('end', function() {
+    try {
+      const data = JSON.parse(dataString)
+      
+      appdata = appdata.map(item => {
+        if (item.id === id) {
+          const newTimeToComplete = timeToComplete(item.creationDate, data.deadline)
+          
+          return {
+            ...item,
+            task: data.task,
+            deadline: data.deadline,
+            status: data.status,
+            timeToComplete: newTimeToComplete
+          }
+        }
+        return item
+      })
+
+      response.writeHead(200, { 'Content-Type': 'application/json' })
+      response.end(JSON.stringify(appdata))
+    } catch (err) {
+      response.writeHead(400, { 'Content-Type': 'application/json' })
+      response.end(JSON.stringify({ error: 'Invalid JSON payload' }))
+    }
+  })
+}
+
 
 const sendFile = function( response, filename ) {
    const type = mime.getType( filename ) 
