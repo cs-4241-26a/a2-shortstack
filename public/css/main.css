@@ -84,16 +84,17 @@ textarea {
   height: 5em;
 }
 
-.button {
-  /* Align buttons with the text fields */
-  padding-left: 90px; /* same size as the label elements */
+button {
+  background-color: #dcbae4;
+  border:#A374AF;
+  color: #A374AF;
+  font-size: 20px;
+  font-family: "Radio Canada", sans-serif;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
 }
 
-button {
-  /* This extra margin represent roughly the same space as the space
-     between the labels and their text fields */
-  margin-left: 0.5em;
-}
 
 table, td, th {
   border: 1px solid #A374AF;
