@@ -8,7 +8,7 @@ const submit = async function( event ) {
   event.preventDefault()
   
   // user information
-  const name = document.querySelector( '#name' ).value;
+  const name = document.querySelector( '#user_name' ).value;
   const birth_year = document.querySelector( '#birth_year' ).value;
   const user_class = document.querySelector( '#user_class' ).value;
 
@@ -25,7 +25,6 @@ const submit = async function( event ) {
   });
 
   const data = await response.json();
-
   console.log( 'data:', data );
 }
 
