@@ -1,5 +1,6 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
+// the async keyword is for things that will take an unclear amount of time...
 const submit = async function( event ) {
   // stop form submission from trying to load
   // a new .html page for displaying results...
@@ -11,6 +12,7 @@ const submit = async function( event ) {
         json = { yourname: input.value },
         body = JSON.stringify( json )
 
+  // and then we can await async stuff !
   const response = await fetch( '/submit', {
     method:'POST',
     body 
