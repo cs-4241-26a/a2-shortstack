@@ -1,17 +1,15 @@
 const http = require( 'http' ),
       fs   = require( 'fs' ),
-      // IMPORTANT: you must run `npm install` in the directory for this assignment
-      // to install the mime library if you're testing this on your local machine.
-      // On Render, make sure `npm install` is your build command.
       mime = require( 'mime' ),
       dir  = 'public/',
       port = 3000
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+let appdata = [
+  { id: 1, model: 'Pixel 8a', year: 2024, storage: "256GB", age: 2, price: 349.99 },
+  { id: 2, model: 'Pixel 8 XL', year: 2024, storage: "512GB", age: 2, price: 549.99 },
+  { id: 3, model: 'Pixel 4', year: 2019, storage: "256GB", age: 7, price: 120.00 } 
 ]
+let nextId = 4
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
@@ -26,7 +24,10 @@ const handleGet = function( request, response ) {
 
   if( request.url === '/' ) {
     sendFile( response, 'public/index.html' )
-  }else{
+  } else if ( request.url === '/data' ) {
+    response.writeHead( 200, { 'Content-Type': 'application/json' })
+    response.end( JSON.stringify( appdata ) )
+  } else {
     sendFile( response, filename )
   }
 }
@@ -39,13 +40,26 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
+    const reqData = JSON.parse( dataString )
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+    if (reqData.action === 'add') {
+      reqData.data.id = nextId++
+      reqData.data.age = 2026 - parseInt(reqData.data.year)
+      appdata.push(reqData.data)
+    } else if (reqData.action === 'delete') {
+      appdata = appdata.filter(item => item.id !== parseInt(reqData.id))
+    } else if (reqData.action === 'modify') {
+      const index = appdata.findIndex(item => item.id === parseInt(reqData.data.id))
+      if (index !== -1) {
+        reqData.data.age = 2026 - parseInt(reqData.data.year)
+        appdata[index] = reqData.data
+      }
+    }
+
+    response.writeHead( 200, "OK", {'Content-Type': 'application/json' })
 
     // change this to incorporate data
-    response.end('test')
+    response.end( JSON.stringify( appdata ) )
   })
 }
 
@@ -58,17 +72,18 @@ const sendFile = function( response, filename ) {
      if( err === null ) {
 
        // status code: https://httpstatuses.com
-       response.writeHeader( 200, { 'Content-Type': type })
+       response.writeHead( 200, { 'Content-Type': type })
        response.end( content )
 
      }else{
 
        // file not found, error code 404
-       response.writeHeader( 404 )
+       response.writeHead( 404 )
        response.end( '404 Error: File Not Found' )
 
      }
    })
 }
 
+// eslint-disable-next-line no-undef
 server.listen( process.env.PORT || port )

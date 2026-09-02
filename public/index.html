@@ -2,17 +2,52 @@
 <html lang='en'>
   <head>
     <title>CS4241 Assignment 2</title>
-    <meta charset='utf-8' />
+    <meta charset='utf-8'>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src='js/main.js'></script>
-    <link rel='stylesheet' href='css/main.css' />
+    <link rel='stylesheet' href='css/main.css'>
     
     <!-- get rid of favicon error -->
-    <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
+    <link rel='icon' href='data:;base64,iVBORw0KGgo='>
   </head>
   <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
+    <div class="container">
+      <div id="form-container">
+        <form id="phone-form">
+          <input type='hidden' id='phone-id' value=''>
+          <!-- Model -->
+          <label for="model">Model</label>
+          <input type='text' id='model' required>
+          <!-- Year -->
+          <label for="year">Year</label>
+          <input type='number' id='year' required>
+          <!-- Storage -->
+          <label for="storage">Storage Capacity</label>
+          <input type='text' id='storage' required>
+          <!-- Price -->
+          <label for="price">Price</label>
+          <input type='number' step='0.01' id='price' required>
+          <!-- Buttons at the bottom -->
+          <button id="submit-btn">Submit</button>
+          <button type="button" id="clear-btn">Clear</button>
+        </form>
+      </div>
+      <div id="table-container">
+        <table id="phone-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Year</th>
+              <th>Storage</th>
+              <th>Price</th>
+              <th>Age (Derived)</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="phone-body">
+          </tbody>
+        </table>
+      </div>
+    </div>
   </body>
 </html>
