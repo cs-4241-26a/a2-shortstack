@@ -31,6 +31,7 @@ const handleGet = function( request, response ) {
     sendFile( response, 'public/index.html' )
   // had chatgpt help me with this cause i was getting errors
   } else if (request.url === '/users') {
+    console.log("hi");
     response.writeHead(200, "OK", {
       'Content-Type': 'application/json'
     })

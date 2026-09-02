@@ -34,8 +34,8 @@ const fetchInfo = async function() {
   console.log(users);
 }
 
-window.onload = function() {
+window.onload = async function() {
   const form = document.querySelector('form');
   form.onsubmit = submit;
-  fetchInfo();
+  await fetchInfo();
 }
