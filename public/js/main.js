@@ -2,7 +2,6 @@
 
 const submit = async function( event ) {
   event.preventDefault()
-  console.log("hiii");
   
   const idInput = document.querySelector( '#phone-id' )
   const modelInput = document.querySelector( '#model' )
