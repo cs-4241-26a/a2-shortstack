@@ -10,6 +10,12 @@
     "mime": "^2.4.4"
   },
   "engines": {
-     "node":"24.x"
+    "node": "24.x"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.4.1",
+    "eslint": "^10.9.1",
+    "globals": "^17.12.0"
   }
 }
