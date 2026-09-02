@@ -7,11 +7,7 @@ const http = require( 'http' ),
       dir  = 'public/',
       port = 3000
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
-]
+const appData = []
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
@@ -39,13 +35,32 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
+    switch (request.url) {
+      case '/submit':
+        data = JSON.parse(dataString)
+        setResult(data)
+        appData.push(data)
+        break;
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+      case '/delete':
+        index = parseInt(dataString)
+        appData.splice(index, 1)
+        break;
 
-    // change this to incorporate data
-    response.end('test')
+      case '/modify':
+        data = JSON.parse(dataString)
+        setResult(data)
+
+        //pull out the index to modify and prevent it from getting saved
+        index = data.modifying
+        delete data.modifying
+
+        appData.splice(index, 1, data)
+        break;
+    }
+
+    response.writeHead( 200, 'OK', {'Content-Type': 'text/plain' })
+    response.end(JSON.stringify(appData))
   })
 }
 
@@ -69,6 +84,12 @@ const sendFile = function( response, filename ) {
 
      }
    })
+}
+
+const setResult = function(data) {
+  if(data.userScore > data.oppScore) { data.result = "Win" }
+  else if(data.userScore < data.oppScore) { data.result = "Loss" }
+  else { data.result = "Tie" }
 }
 
 server.listen( process.env.PORT || port )
