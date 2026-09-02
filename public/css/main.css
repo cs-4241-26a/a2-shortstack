@@ -95,6 +95,11 @@ button {
   cursor: pointer;
 }
 
+.sort_button{
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
 
 table, td, th {
   border: 1px solid #A374AF;

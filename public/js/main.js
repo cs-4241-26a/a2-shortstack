@@ -12,7 +12,6 @@ const submit = async function( event ) {
   const birth_year = document.querySelector( '#birth_year' ).value;
   const user_class = document.querySelector( '#user_class' ).value;
 
-
   let user_info = {
     name: name,
     birth_year: Number(birth_year),
@@ -38,6 +37,19 @@ const deleteUser = async function(name) {
   console.log(data);
 }
 
+const ageSort_oldest = function(users) {
+  users.sort(function(user_a, user_b){
+    return user_b.age - user_a.age;
+  });
+}
+
+const ageSort_youngest = function(users) {
+  users.sort(function(user_a, user_b){
+    return user_a.age - user_b.age;
+  });
+}
+
+let sort_order = 'oldest';
 const fetchInfo = async function() {
   const response = await fetch('/users');
   const users = await response.json();
@@ -46,6 +58,16 @@ const fetchInfo = async function() {
   // add users to table yayyy
   const age_table_body = document.querySelector('#age_table_body');
   age_table_body.innerHTML = '';
+
+  //sort
+  if (sort_order === 'oldest'){
+    ageSort_oldest(users);
+  }else if (sort_order === 'youngest'){
+    ageSort_youngest(users);
+  }
+
+
+  //back to table
   users.forEach(function(user) {
     const row = document.createElement('tr');
     const name_cell = document.createElement('td');
@@ -77,5 +99,14 @@ const fetchInfo = async function() {
 window.onload = async function() {
   const form = document.querySelector('form');
   form.onsubmit = submit;
+  //order stuff
+  document.querySelector('#young_button').onclick = async function() {
+    sort_order = 'youngest';
+    await fetchInfo();
+  };
+  document.querySelector('#old_button').onclick = async function() {
+    sort_order = 'oldest';
+    await fetchInfo();
+  };
   await fetchInfo();
 }
