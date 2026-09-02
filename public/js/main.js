@@ -1,27 +1,67 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
-const submit = async function( event ) {
-  // stop form submission from trying to load
-  // a new .html page for displaying results...
-  // this was the original browser behavior and still
-  // remains to this day
-  event.preventDefault()
-  
-  const input = document.querySelector( '#yourname' ),
-        json = { yourname: input.value },
-        body = JSON.stringify( json )
+const loadExpenses = async function() {
+  const response = await fetch( '/expenses' )
+  const expenses = await response.json()
+  renderTable( expenses )
+}
 
-  const response = await fetch( '/submit', {
-    method:'POST',
-    body 
+const renderTable = function( expenses ) {
+  const tbody = document.querySelector( '#results-body' )
+  tbody.innerHTML = ''
+
+  expenses.forEach( function( expense ) {
+    const row = document.createElement( 'tr' )
+    row.innerHTML = `
+      <td>${expense.description}</td>
+      <td>${expense.category}</td>
+      <td>$${expense.amount.toFixed(2)}</td>
+      <td>${expense.spendLevel}</td>
+      <td><button class="delete-btn" data-id="${expense.id}">Delete</button></td>
+    `
+    tbody.appendChild( row )
   })
 
-  const text = await response.text()
+  document.querySelectorAll( '.delete-btn' ).forEach( function( btn ) {
+    btn.onclick = deleteExpense
+  })
+}
 
-  console.log( 'text:', text )
+const addExpense = async function( event ) {
+  event.preventDefault()
+
+  const description = document.querySelector( '#description' ).value,
+        category = document.querySelector( '#category' ).value,
+        amount = document.querySelector( '#amount' ).value,
+        json = { description, category, amount },
+        body = JSON.stringify( json )
+
+  const response = await fetch( '/add', {
+    method: 'POST',
+    body
+  })
+
+  const expenses = await response.json()
+  renderTable( expenses )
+
+  document.querySelector( '#expense-form' ).reset()
+}
+
+const deleteExpense = async function( event ) {
+  const id = parseInt( event.target.dataset.id ),
+        json = { id },
+        body = JSON.stringify( json )
+
+  const response = await fetch( '/delete', {
+    method: 'POST',
+    body
+  })
+
+  const expenses = await response.json()
+  renderTable( expenses )
 }
 
 window.onload = function() {
-  const button = document.querySelector('button')
-  button.onclick = submit
+  document.querySelector( '#expense-form' ).onsubmit = addExpense
+  loadExpenses()
 }

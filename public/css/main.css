@@ -1,4 +1,67 @@
 body {
-  background:black;
-  color:white;
+  font-family: 'Inter', sans-serif;
+  background-color: #f7f5f2;
+  color: #2b2b2b;
+  margin: 40px;
+}
+
+h1 {
+  color: #33474d;
+}
+
+#expense-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+#expense-form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+#expense-form button {
+  padding: 8px 16px;
+  background-color: #33474d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#expense-form button:hover {
+  background-color: #22303a;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 700px;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #33474d;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #922b21;
 }
