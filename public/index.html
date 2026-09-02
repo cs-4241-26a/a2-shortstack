@@ -1,18 +1,33 @@
 <!doctype html>
 <html lang='en'>
-  <head>
-    <title>CS4241 Assignment 2</title>
-    <meta charset='utf-8' />
-    <script src='js/main.js'></script>
-    <link rel='stylesheet' href='css/main.css' />
-    
-    <!-- get rid of favicon error -->
-    <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
-  </head>
-  <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
-  </body>
+    <head>
+        <title>CS4241 Assignment 2</title>
+        <meta charset='utf-8' />
+        <script src='js/main.js'></script>
+        <link rel='stylesheet' href='css/main.css' />
+
+        <!-- get rid of favicon error -->
+        <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
+    </head>
+
+    <body>
+        <form>
+            <div>
+                <input type='number' id='note1' min="0" max="8" value='0'>
+                <input type='number' id='note2' min="0" max="8" value='0'>
+                <input type='number' id='note3' min="0" max="8" value='0'>
+                <input type='number' id='note4' min="0" max="8" value='0'>
+                <input type='number' id='note5' min="0" max="8" value='0'>
+                <input type='number' id='note6' min="0" max="8" value='0'>
+                <input type='number' id='note7' min="0" max="8" value='0'>
+                <input type='number' id='note8' min="0" max="8" value='0'>
+                <button id="play" onclick="playButton()">Play</button>
+            </div>
+            <div>
+                <label for="title">Song Title:</label><input type="text" id="title">
+                <label for="composer">Your name:</label><input type="text" id="composer">
+                <button id="submit">Submit</button>
+            </div>
+        </form>
+    </body>
 </html>
