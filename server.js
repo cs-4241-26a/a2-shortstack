@@ -71,6 +71,14 @@ const handlePost = function( request, response ) {
       if( index !== -1 ) {
         expenses.splice( index, 1 )
       }
+    }else if( request.url === '/edit' ) {
+      const expense = expenses.find( function( e ) { return e.id === data.id })
+      if( expense ) {
+        expense.description = data.description
+        expense.category = data.category
+        expense.amount = parseFloat( data.amount )
+        addDerivedField( expense )
+      }
     }
 
     response.writeHead( 200, { 'Content-Type': 'application/json' })

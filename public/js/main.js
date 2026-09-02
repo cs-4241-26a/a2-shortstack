@@ -17,7 +17,10 @@ const renderTable = function( expenses ) {
       <td>${expense.category}</td>
       <td>$${expense.amount.toFixed(2)}</td>
       <td>${expense.spendLevel}</td>
-      <td><button class="delete-btn" data-id="${expense.id}">Delete</button></td>
+      <td>
+        <button class="edit-btn" data-id="${expense.id}">Edit</button>
+        <button class="delete-btn" data-id="${expense.id}">Delete</button>
+      </td>
     `
     tbody.appendChild( row )
   })
@@ -25,6 +28,51 @@ const renderTable = function( expenses ) {
   document.querySelectorAll( '.delete-btn' ).forEach( function( btn ) {
     btn.onclick = deleteExpense
   })
+
+  document.querySelectorAll( '.edit-btn' ).forEach( function( btn ) {
+    btn.onclick = startEdit
+  })
+}
+
+const startEdit = function( event ) {
+  const id = parseInt( event.target.dataset.id )
+  const row = event.target.closest( 'tr' )
+  const cells = row.querySelectorAll( 'td' )
+
+  const description = cells[0].textContent
+  const category = cells[1].textContent
+  const amount = cells[2].textContent.replace( '$', '' )
+
+  row.innerHTML = `
+    <td><input type="text" class="edit-description" value="${description}"></td>
+    <td><input type="text" class="edit-category" value="${category}"></td>
+    <td><input type="number" step="0.01" class="edit-amount" value="${amount}"></td>
+    <td colspan="2">
+      <button class="save-btn" data-id="${id}">Save</button>
+    </td>
+  `
+
+  row.querySelector( '.save-btn' ).onclick = saveEdit
+}
+
+const saveEdit = async function( event ) {
+  const id = parseInt( event.target.dataset.id )
+  const row = event.target.closest( 'tr' )
+
+  const description = row.querySelector( '.edit-description' ).value
+  const category = row.querySelector( '.edit-category' ).value
+  const amount = row.querySelector( '.edit-amount' ).value
+
+  const json = { id, description, category, amount },
+        body = JSON.stringify( json )
+
+  const response = await fetch( '/edit', {
+    method: 'POST',
+    body
+  })
+
+  const expenses = await response.json()
+  renderTable( expenses )
 }
 
 const addExpense = async function( event ) {
