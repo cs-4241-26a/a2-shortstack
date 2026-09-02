@@ -14,14 +14,14 @@
   </head>
   <body>
 
-    <div id="box">
+    <div class="box">
       <h1>Welcome to Age Sort</h1>
       <p>
       Insert your Name, Birth Year, and your Class and we will sort by the age you turn in 2026!
       </p>
     </div>
     
-    <div id="box2">
+    <div class="box2">
       <h2>My Information</h2>
 
       <form id="user_form">
@@ -56,24 +56,29 @@
 
 
 
-    <div id="box2">
+    <div class="box2">
       <h2>User Information</h2>
 
       <table id="age_table">
-        <thread>
+        <thead>
           <tr>
             <th>Name</th>
             <th>Class</th>
             <th>Birth Year</th>
             <th>Age</th>
+            <th>Delete</th>
           </tr>
-          <tbody id="age_table_body">
-          </tbody>
-        </thread>
+        </thead>
+        <tbody id="age_table_body">
+        </tbody>
       </table>
 
     </div>
 
+
+    <p class="button">
+      <button type="submit">Delete</button>
+    </p>
 
   </body>
 </html>

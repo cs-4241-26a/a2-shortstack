@@ -21,7 +21,10 @@ const server = http.createServer( function( request,response ) {
     handleGet( request, response )    
   }else if( request.method === 'POST' ){
     handlePost( request, response ) 
+  }else if( request.method === 'DELETE') {
+    handleDelete( request, response );
   }
+  
 })
 
 const handleGet = function( request, response ) {
@@ -31,7 +34,6 @@ const handleGet = function( request, response ) {
     sendFile( response, 'public/index.html' )
   // had chatgpt help me with this cause i was getting errors
   } else if (request.url === '/users') {
-    console.log("hi");
     response.writeHead(200, "OK", {
       'Content-Type': 'application/json'
     })
@@ -59,6 +61,20 @@ const handlePost = function( request, response ) {
     // change this to incorporate data
     response.end(JSON.stringify(appdata))
   })
+}
+
+const handleDelete = function( request, response ){
+  const name = decodeURIComponent(request.url.replace('/users/', ''));
+  const index = appdata.findIndex(function(user) {
+    return user.name === name;
+  });
+  if (index !== -1) {
+    appdata.splice(index, 1);
+  }
+  response.writeHead(200, 'OK', {
+    'Content-Type': 'application/json'
+  });
+  response.end(JSON.stringify(appdata));
 }
 
 const sendFile = function( response, filename ) {

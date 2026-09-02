@@ -9,7 +9,7 @@ body {
   text-align: center;
 }
 
-#box {
+.box {
   display: inline-block;
   /* Form outline */
   padding: 1em;
@@ -19,7 +19,7 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-#box2 {
+.box2 {
   display: block;
   width: 75%;
   padding: 1em;
