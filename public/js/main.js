@@ -41,6 +41,9 @@ const submit = async function(event) {
 }
 
 const deleteGame = async function(i) {
+  //remove currently modifying in case it is the one being deleted - breaks modifying feature otherwise
+  setModifying(modifying)
+
   const response = await fetch('/delete', {
     method: 'POST',
     body: i
@@ -120,4 +123,10 @@ window.onload = function() {
 
   scoreTable = document.createElement('table')
   document.body.append(scoreTable)
+
+  let modifyText = document.createElement('p')
+  modifyText.innerText = "To modify this game, enter the new details into the form and press submit."
+  modifyText.className = "hidden"
+  modifyText.id = "modifyInstructions"
+  document.body.append(modifyText)
 }
