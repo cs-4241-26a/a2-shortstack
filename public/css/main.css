@@ -48,3 +48,7 @@ th {
 td {
   border-style: outset;
 }
+
+li {
+  width: 50%;
+}

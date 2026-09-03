@@ -17,8 +17,8 @@
     <form>
       <input type='text' id='name' placeholder="name">
       <input type="text" id="avg" placeholder="average">
-      <input type="text" id="obp" placeholder="on base percentage">
-      <input type="text" id="slg" placeholder="slugging percentage">
+      <input type="text" id="obp" placeholder="on-base">
+      <input type="text" id="slg" placeholder="slugging">
       <button id="AddPlayer">add</button>
     </form>
     <p class="first-paragraph">This is a table to add your favorite players! In order to add a player, enter their name, batting average, on-base percentage, and slugging percentage, then click the <span id="submit-span">add</span> button.</p>
@@ -28,8 +28,8 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Average</th>
-          <th>On Base Percentage</th>
+          <th>Batting Average</th>
+          <th>On-Base Percentage</th>
           <th>Slugging Percentage</th>
           <th>OPS</th>
         </tr>
@@ -65,5 +65,12 @@
       <input type='text' id='remove' placeholder="name">
       <button id="RemovePlayer">remove</button>
     </form>
+    <h2>Stat Definitions</h2>
+    <ul>
+      <li><strong>Batting Average</strong> - The number of hits divided by the number of at-bats. Must be between 0 and 1.</li>
+      <li><strong>On-Base Percentage</strong> - How frequently a batter reaches base per plate appearance. Must be between 0 and 1.</li>
+      <li><strong>Slugging Percentage</strong> - The total number of bases per at-bat. Must be between 0 and 4.</li>
+      <li><strong>OPS</strong> - On-base plus slugging. This is calculated by adding a player's on-base percentage and slugging percentage together.</li>
+    </ul>
   </body>
 </html>
