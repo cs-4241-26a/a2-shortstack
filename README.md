@@ -14,3 +14,9 @@ My project is Age Sort! In the "User Information" area enter your name, birth ye
 - Issues with this take: none, the task was completed sucsessfully without my intervention.
 - Comments: he recommended that I alter the website to show someone's current age rather than the age someone turns this year, as someone born in 2006 may still be 19.
 - Changes: I would alter the program to calculate someone's current age based on today's date if I had additional time for this assignment.
+
+- **Interface Test with Normand**: 
+- Task: add her and her friend's name, birth year, and class to the website and then sort the information.
+- Issues with this take: none, the task was completed sucsessfully without my intervention.
+- Comments: she recommended that I move the "sort by" buttons up above the data, and add a search bar to search through the data.
+- Changes: I would alter the program to have some sort of "search" options for the data, for instance to search by name, birthyear, grade, or age.
