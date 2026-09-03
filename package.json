@@ -1,7 +1,7 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
+  "name": "snake-game",
+  "version": "1.0.0",
+  "description": "Snake game with server-side leaderboard and comments",
   "author": "",
   "scripts": {
     "start": "node server.js"
@@ -10,6 +10,6 @@
     "mime": "^2.4.4"
   },
   "engines": {
-     "node":"24.x"
+    "node": "24.x"
   }
 }
