@@ -8,25 +8,40 @@ const http = require( 'http' ),
       port = 3000
 
 const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+  {title: 'Dune', type: 'Film', platform: 'HBOMax', dateAdded: '4/20/2024'},
+  {title: 'Better Call Saul', type: 'Show', platform: 'Netflix', dateAdded: '6/7/2026'}
 ]
+
+const addDerivedField = function(item) {
+  item.dateAdded = new Date().toLocaleDateString()
+  return item
+}
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
     handleGet( request, response )    
   }else if( request.method === 'POST' ){
+    if(request.url === '/submit') {
     handlePost( request, response ) 
+    }else if(request.url === '/edit') {
+      handleEdit(request, response)
+    }else if(request.url === '/delete') {
+      handleDelete(request, response)
+    }
   }
 })
 
 const handleGet = function( request, response ) {
-  const filename = dir + request.url.slice( 1 ) 
-
+   
   if( request.url === '/' ) {
     sendFile( response, 'public/index.html' )
+  }else if(request.url === '/data'){
+    response.writeHead(200, {
+      'Content-Type': 'application/json'
+    })
+    response.end(JSON.stringify(appdata))
   }else{
+    const filename = dir + request.url.slice( 1 )
     sendFile( response, filename )
   }
 }
@@ -39,13 +54,49 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
+    const item = JSON.parse(dataString)
+    addDerivedField(item)
+    appdata.push(item)
+    response.writeHead( 200, {'Content-Type': 'application/json'})
+    response.end(JSON.stringify(appdata))
+  })
+}
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+const handleEdit = function(request, response) {
+  let dataString = ''
 
-    // change this to incorporate data
-    response.end('test')
+  request.on('data', function(data) {
+    dataString += data
+  })
+
+  request.on('end', function() {
+    const data = JSON.parse(dataString)
+
+    appdata[data.index].title = data.item.title
+    appdata[data.index].type = data.item.type
+    appdata[data.index].platform = data.item.platform
+
+    response.writeHead(200, {'Content-Type': 'application/json'})
+
+    response.end(JSON.stringify(appdata))
+  })
+}
+
+const handleDelete = function(request, response) {
+  let dataString = ''
+
+  request.on( 'data', function( data ) {
+    dataString += data
+  })
+
+  request.on('end', function() {
+    const data = JSON.parse(dataString)
+
+    appdata.splice(data.index, 1)
+
+    response.writeHead(200, {'Content-Type': 'application/json'})
+
+    response.end(JSON.stringify(appdata))
   })
 }
 

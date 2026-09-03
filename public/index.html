@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang='en'>
+  
   <head>
     <title>CS4241 Assignment 2</title>
     <meta charset='utf-8' />
@@ -9,10 +10,69 @@
     <!-- get rid of favicon error -->
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
+
   <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
+
+    <header>
+      <h1> Watchlist Maker </h1>
+      <p class="description"> Add a movie or show and its streaming platform to your watchlist </p>
+    </header>
+
+    <main>
+
+      <section id="add-title">
+        <h2>Add to watchlist</h2>
+
+        <form id="watchlist-form">
+          <label for="title"> Title </label>
+          <input type="text" id="title" name="title" required>
+
+          <label for="type"> Film or Show</label>
+          <select id="type" name="type" required>
+            <option value=""> Film or Show? </option>
+            <option value="Film"> Film </option>
+            <option value="Show"> Show </option>
+          </select>
+
+          <label for="platform"> Streaming Platform </label>
+          <select id="platform" name="platform" required>
+            <option value=""> What streaming platform? </option>
+            <option value="HBOMax"> HBOMax </option>
+            <option value="Netflix"> Netflix </option>
+            <option value="Hulu"> Hulu </option>
+            <option value="Disney+"> Disney+ </option>
+            <option value="Prime"> Prime </option>
+            <option value="Peacock"> Peacock </option>
+            <option value="Paramount+"> Paramount+ </option>
+            <option value="AppleTV"> AppleTV </option>
+            <option value="YouTube"> YouTube </option>
+            <option value="Other"> Other </option>
+
+          </select>
+
+          <button type="submit"> Submit </button>
+        </form>
+      </section>
+
+      <section id="results">
+        <h2> Results </h2>
+
+        <table id="watchlist">
+          <thead>
+            <tr>
+              <th> Title </th>
+              <th> Type </th>
+              <th> Platform </th>
+              <th> Date Added </th>
+              <th> Edit </th>
+            </tr>
+          </thead>
+
+          <tbody id="watchlist-body">
+          </tbody>
+        </table>
+      </section>
+    </main>
   </body>
+
 </html>

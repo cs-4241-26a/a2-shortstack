@@ -1,4 +1,59 @@
 body {
   background:black;
   color:white;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+header {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+section {
+  background: grey;
+  padding: 25px;
+}
+
+#add-section {
+  border: 1px solid grey;
+}
+
+#watchlist-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#watchlist-form input, #watchlist-form select {
+  padding: 10px;
+  font-size: 15px;
+}
+
+button {
+  padding: 12px;
+  font-size: 15px;
+  background: lightgrey;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid white;
+}
+
+.description {
+  font-size: 20px;
+  color: white;
 }
