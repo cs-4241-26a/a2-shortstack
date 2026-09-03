@@ -10,9 +10,27 @@
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
   <body>
+  <h1>TV Show Progress Tracker</h1>
     <form>
-      <input type='text' id='yourname' value='your name here'>
+      <input type='text' id='showname' value='Name of Show Here'>
+      <input type = 'number' id = 'episodeswatched' value='0'>
+      <input type = 'number' id = 'episodecount' value='0'>
       <button>submit</button>
     </form>
+  <table id = 'showtable'>
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Show</th>
+      <th>Episodes Watched</th>
+      <th>Episode Total</th>
+      <th>Percent Complete</th>
+      <th>Delete</th>
+    </tr>
+
+    </thead>
+    <tbody id = 'showresults'>
+    </tbody>
+  </table>
   </body>
 </html>
