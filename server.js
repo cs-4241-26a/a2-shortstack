@@ -1,3 +1,5 @@
+const { send } = require('process')
+
 const http = require( 'http' ),
       fs   = require( 'fs' ),
       // IMPORTANT: you must run `npm install` in the directory for this assignment
@@ -8,9 +10,9 @@ const http = require( 'http' ),
       port = 3000
 
 const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+  { 'firstName': 'Raghavan', 'lastName': 'Rajkumar', 'age': 21},
+  { 'firstName': 'Andrew', 'lastName': 'Bugbee', 'age': 21 },
+  { 'firstName': 'Sarai', 'lastName': 'Vargas', 'age': 20 } 
 ]
 
 const server = http.createServer( function( request,response ) {
@@ -22,11 +24,13 @@ const server = http.createServer( function( request,response ) {
 })
 
 const handleGet = function( request, response ) {
-  const filename = dir + request.url.slice( 1 ) 
-
-  if( request.url === '/' ) {
+  if  ( request.url === '/' ) {
     sendFile( response, 'public/index.html' )
-  }else{
+  } else if ( request.url === '/data' ) {
+    response.writeHead( 200, { 'Content-Type': 'application/json' })
+    response.end(JSON.stringify(appdata))
+  } else {
+    const filename = dir + request.url.slice( 1 )
     sendFile( response, filename )
   }
 }
@@ -39,13 +43,14 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
+    const data = JSON.parse( dataString )
+    console.log( data )
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+    appdata.push( data )
 
-    // change this to incorporate data
-    response.end('test')
+    response.writeHead( 200, {'Content-Type': 'application/json' })
+
+    response.end(JSON.stringify(appdata))
   })
 }
 

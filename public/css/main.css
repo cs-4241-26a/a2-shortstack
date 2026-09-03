@@ -1,4 +1,20 @@
 body {
-  background:black;
-  color:white;
+  background:olivedrab;
+  color:black;
+}
+
+#yourname {
+  color: black;
+  width: 360px;
+}
+
+table {
+  margin-top: 50px;
+  border: 2px solid black;
+  border-collapse: collapse;
+}
+
+td {
+  border: 2px solid black;
+  padding: 10px;
 }

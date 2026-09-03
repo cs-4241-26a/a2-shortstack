@@ -7,21 +7,56 @@ const submit = async function( event ) {
   // remains to this day
   event.preventDefault()
   
-  const input = document.querySelector( '#yourname' ),
-        json = { yourname: input.value },
-        body = JSON.stringify( json )
+  const firstNameInput = document.querySelector('#firstname')
+  const lastNameInput = document.querySelector('#lastname')
+  const ageInput = document.querySelector('#age')
+
+  const json = {
+    firstName : firstNameInput.value,
+    lastName : lastNameInput.value,
+    age : ageInput.value
+  }
+
+  const body = JSON.stringify( json )
 
   const response = await fetch( '/submit', {
     method:'POST',
-    body 
+    headers : {
+      'Content-Type' : 'application/json'
+    },
+    body: body
   })
 
-  const text = await response.text()
+  const data = await response.json()
 
-  console.log( 'text:', text )
+  console.log( 'data:', data )
+  displayDatabase( data )
+  
+  firstNameInput.value = ''
+  lastNameInput.value = ''
+  ageInput.value = ''
+}
+
+const displayDatabase = function( data ) {
+  const list = document.querySelector('#names')
+
+  list.innerHTML = ''
+
+  data.forEach(function( person ) {
+    const item = document.createElement('li')
+    item.textContent = `${person.firstName} ${person.lastName}, Age: ${person.age}`
+    list.appendChild(item)
+  })
+}
+
+const loadDatabase = async function() {
+  const response = await fetch( '/data' )
+  const data = await response.json()
+  displayDatabase( data )
 }
 
 window.onload = function() {
   const button = document.querySelector('button')
   button.onclick = submit
+  loadDatabase()
 }
