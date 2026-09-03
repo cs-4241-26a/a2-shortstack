@@ -1,17 +1,28 @@
 <!doctype html>
-<html lang='en'>
+<html lang="en">
   <head>
     <title>CS4241 Assignment 2</title>
-    <meta charset='utf-8' />
-    <script src='js/main.js'></script>
-    <link rel='stylesheet' href='css/main.css' />
+    <meta charset="utf-8" />
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css" />
     
     <!-- get rid of favicon error -->
-    <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
   </head>
   <body>
     <form>
-      <input type='text' id='yourname' value='your name here'>
+      <label>
+        Year
+        <input type="text" id="year-input" placeholder="2010">
+      </label>
+      <label>
+        Model
+        <input type="text" id="model-input" placeholder="Subaru">
+      </label>
+      <label>
+        MPG
+        <input type="text" id="mpg-input" placeholder="22">
+      </label>
       <button>submit</button>
     </form>
   </body>
