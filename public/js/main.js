@@ -1,17 +1,19 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
 function loadCarList(carList) {
-  const oldCarListElement = document.getElementById('to-do-list')
-  if (oldCarListElement) document.body.removeChild(oldCarListElement)
+  const vehicleListBlock = document.getElementById('vehicle-list-block')
+  const oldCarListElement = document.getElementById('vehicle-list')
+  if (oldCarListElement) vehicleListBlock.removeChild(oldCarListElement)
   const carListElement = document.createElement('ul')
-  carListElement.id = 'to-do-list'
+  carListElement.id = 'vehicle-list'
   for (const item of carList) {
     const carItemElement = document.createElement('li')
     carItemElement.innerHTML = `<p>${item.year} ${item.model} (${item.mpg} MPG)</p><p>Est. Value: $${item.estVal}</p>`
+    carItemElement.className = 'vehicle-item'
     carListElement.appendChild(carItemElement)
 
     carItemElement.addEventListener('click', async function(event) {
-      const carItemEditElement = document.createElement('form')
+      const carItemEditForm = document.createElement('form')
 
       const editYearLabel = document.createElement('label')
       const editYearInput = document.createElement('input')
@@ -20,7 +22,7 @@ function loadCarList(carList) {
       editYearInput.value = item.year
       editYearLabel.innerText = 'Year'
       editYearLabel.appendChild(editYearInput)
-      carItemEditElement.appendChild(editYearLabel)
+      carItemEditForm.appendChild(editYearLabel)
 
       const editModelLabel = document.createElement('label')
       const editModelInput = document.createElement('input')
@@ -29,7 +31,7 @@ function loadCarList(carList) {
       editModelInput.value = item.model
       editModelLabel.innerText = 'Model'
       editModelLabel.appendChild(editModelInput)
-      carItemEditElement.appendChild(editModelLabel)
+      carItemEditForm.appendChild(editModelLabel)
 
       const editMpgLabel = document.createElement('label')
       const editMpgInput = document.createElement('input')
@@ -38,7 +40,7 @@ function loadCarList(carList) {
       editMpgInput.value = item.mpg
       editMpgLabel.innerText = 'MPG'
       editMpgLabel.appendChild(editMpgInput)
-      carItemEditElement.appendChild(editMpgLabel)
+      carItemEditForm.appendChild(editMpgLabel)
 
       const editSubmitButton = document.createElement('button')
       editSubmitButton.addEventListener('click', async function(event) {
@@ -58,15 +60,18 @@ function loadCarList(carList) {
         console.log(newCarList)
         loadCarList(newCarList)
       })
-      editSubmitButton.innerText = 'submit'
-      carItemEditElement.appendChild(editSubmitButton)
+      editSubmitButton.innerText = 'Submit'
+      carItemEditForm.appendChild(editSubmitButton)
 
+      const carItemEditElement = document.createElement('li')
+      carItemEditElement.className = 'vehicle-item editing'
+      carItemEditElement.appendChild(carItemEditForm)
       carItemElement.replaceWith(carItemEditElement)
     })
 
     const deleteItemButton = document.createElement('button')
     deleteItemButton.type = 'button'
-    deleteItemButton.textContent = 'delete'
+    deleteItemButton.textContent = 'Delete'
     deleteItemButton.addEventListener('click', async function(event) {
       event.preventDefault()
       const deleteBody = JSON.stringify(item)
@@ -80,7 +85,7 @@ function loadCarList(carList) {
     })
     carItemElement.appendChild(deleteItemButton)
   }
-  document.body.appendChild(carListElement)
+  vehicleListBlock.appendChild(carListElement)
 }
 
 const submit = async function( event ) {
