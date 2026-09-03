@@ -12,4 +12,8 @@ Below are some details about the implementation the assignment directions implie
 - **Modify Data**: Vehicle listings can be modified, in addition to being added or deleted. This is done by clicking on the vehicle listing, editing information, and then submitting the form. Vehicles are tracked by a hidden `id` value and are modified on the server-side.
 
 ### Design/Evaluation Achievements
-- **Test User Interface**: TODO complete once tested
+- **Test User Interface**:
+    1. Tran
+    2. The edit behavior is unclear. The user would prefer an explicit edit button which would be more clear than clicking on the row itself. The user would also like to have a cancel button on edits, rather than just a submit button.
+    3. I was surprised that the user did not think the useage description on the site was clear. This should be changed to explicitely describe how each action is performed.
+    4. I would add an explicit edit buttons rather than clicking on the row to trigger an edit. I would also add a cancel button to the edit form. The description should also be changed to more clearly describe how to perform each function. 
