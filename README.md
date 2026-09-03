@@ -9,5 +9,4 @@ I created a website to keep a table of various players and their hitting stats.
 
 - **Modify**: If the user tries to add a player who is already in the table, it will overwrite the original entry with their new stats.
 
-### Design/Evaluation Achievements
-- **Design Achievement 1**: 
+

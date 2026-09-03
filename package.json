@@ -1,8 +1,8 @@
 {
-  "name": "a1-RashiRoselin-cs2",
+  "name": "a1-rashiroselin",
   "version": "1.0.0",
-  "description": "",
-  "author": "",
+  "description": "Baseball Player Stats Table",
+  "author": "Rashi Roselin",
   "scripts": {
     "start": "node server.js"
   },
