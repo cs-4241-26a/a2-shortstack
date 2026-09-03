@@ -53,9 +53,9 @@ function playMelody() {
  * Populates the melody with the form values.
  */
 function makeMelody() {
-    for (let i = 1; i <= 8; i++) {
-        const note = document.getElementById("note" + i).value;
-        melody.push(note)
+    melody.length = 0 // Clear the melody
+    for (let i = 0; i < 8; i++) {
+        melody[i] = document.getElementById("note-input-" + i).value
     }
 }
 
@@ -71,27 +71,49 @@ function playButton(event) {
 /**
  * Called when the submit button is pressed.
  */
-const submit = async function( event ) {
+async function submitButton(event) {
     // stop form submission from trying to load
     // a new .html page for displaying results...
     // this was the original browser behavior and still
     // remains to this day
     event.preventDefault()
 
-    const input = document.querySelector( '#yourname' ),
-        json = { yourname: input.value },
-        body = JSON.stringify( json )
+    makeMelody();
+    const titleInput = document.getElementById("title-input"),
+        composerInput = document.getElementById("composer-input");
+    const json = {
+        title: titleInput.value,
+        composer: composerInput.value,
+        melody: melody
+    }
+    const body = JSON.stringify(json)
+    console.log("Body: " + body)
 
-    const response = await fetch( '/submit', {
+    const response = await fetch('/submit', {
         method:'POST',
-        body
+        body: body
     })
 
     const text = await response.text()
-
-    console.log( 'text:', text )
+    console.log('Response from server:', text)
 }
 
 window.onload = function() {
+    document.getElementById("play").onclick = playButton
+    document.getElementById("submit").onclick = submitButton
 
+    let melodyInput = document.getElementById("melody-input")
+    for (let i = 0; i < 8; i++) {
+        let noteInput = document.createElement("input");
+        noteInput.id = "note-input-" + i;
+        noteInput.className = "note-input"
+        noteInput.type = "number"
+        noteInput.min = "0";
+        noteInput.max = "8";
+        noteInput.value = "0";
+        noteInput.onchange = function() {
+            playNote(noteInput.value)
+        }
+        melodyInput.appendChild(noteInput);
+    }
 }
