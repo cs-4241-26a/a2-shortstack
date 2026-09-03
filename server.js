@@ -12,16 +12,19 @@ function addToDoItem(dataString) {
 }
 
 const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+  { id: 0, 'model': 'toyota', 'year': 1999, 'mpg': 23 },
+  { id: 1, 'model': 'honda', 'year': 2004, 'mpg': 30 },
+  { id: 2, 'model': 'ford', 'year': 1987, 'mpg': 14} 
 ]
+let appdataNextId = appdata.length
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
     handleGet( request, response )    
   } else if ( request.method === 'POST' ) {
     handlePost( request, response ) 
+  } else if ( request.method === 'PUT' ) {
+    handlePut( request, response )
   } else if ( request.method === 'DELETE' ) {
     handleDelete( request, response )
   }
@@ -51,6 +54,7 @@ const handlePost = function( request, response ) {
 
   request.on( 'end', function() {
     const item = JSON.parse( dataString )
+    item.id = appdataNextId++
     console.log( item )
     if (item.year && item.model && item.mpg) {
       appdata.push(item)
@@ -72,8 +76,29 @@ const handleDelete = function( request, response ) {
   request.on( 'end', function() {
     const item = JSON.parse( dataString )
     console.log( item )
-    const deletionIndex = appdata.findIndex(x => x.model == item.model && x.year == item.year && x.mpg == item.mpg)
+    const deletionIndex = appdata.findIndex(x => x.id === item.id)
     if (deletionIndex >= 0) appdata.splice(deletionIndex, 1)
+
+    response.writeHead( 200, 'OK', {'Content-Type': 'text/plain' } )
+
+    response.end(JSON.stringify(appdata))
+  })
+}
+
+const handlePut = function( request, response ) {
+  let dataString = ''
+
+  request.on( 'data', function( data ) {
+    dataString += data
+  })
+
+  request.on( 'end', function() {
+    const item = JSON.parse( dataString )
+    console.log( item )
+    const oldItem = appdata.find(x => x.id === item.id)
+    oldItem.model = item.model
+    oldItem.year = item.year
+    oldItem.mpg = item.mpg
 
     response.writeHead( 200, 'OK', {'Content-Type': 'text/plain' } )
 

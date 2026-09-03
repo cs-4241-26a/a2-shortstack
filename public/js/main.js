@@ -10,10 +10,65 @@ function loadCarList(carList) {
     carItemElement.innerText = `${item.year} ${item.model} (${item.mpg} MPG)`
     carListElement.appendChild(carItemElement)
 
+    carItemElement.addEventListener('click', async function(event) {
+      const carItemEditElement = document.createElement('form')
+
+      const editYearLabel = document.createElement('label')
+      const editYearInput = document.createElement('input')
+      editYearInput.type = 'text'
+      editYearInput.id = 'edit-year-input'
+      editYearInput.value = item.year
+      editYearLabel.innerText = 'Year'
+      editYearLabel.appendChild(editYearInput)
+      carItemEditElement.appendChild(editYearLabel)
+
+      const editModelLabel = document.createElement('label')
+      const editModelInput = document.createElement('input')
+      editModelInput.type = 'text'
+      editModelInput.id = 'edit-model-input'
+      editModelInput.value = item.model
+      editModelLabel.innerText = 'Model'
+      editModelLabel.appendChild(editModelInput)
+      carItemEditElement.appendChild(editModelLabel)
+
+      const editMpgLabel = document.createElement('label')
+      const editMpgInput = document.createElement('input')
+      editMpgInput.type = 'text'
+      editMpgInput.id = 'edit-mpg-input'
+      editMpgInput.value = item.mpg
+      editMpgLabel.innerText = 'MPG'
+      editMpgLabel.appendChild(editMpgInput)
+      carItemEditElement.appendChild(editMpgLabel)
+
+      const editSubmitButton = document.createElement('button')
+      editSubmitButton.addEventListener('click', async function(event) {
+        event.preventDefault()
+        const editJson = {
+          id: item.id,
+          year: editYearInput.value,
+          model: editModelInput.value,
+          mpg: editMpgInput.value
+        }
+        const editBody = JSON.stringify(editJson)
+        const editResponse = await fetch('/submit', {
+          method: 'PUT',
+          body: editBody
+        })
+        const newCarList = JSON.parse(await editResponse.text())
+        console.log(newCarList)
+        loadCarList(newCarList)
+      })
+      editSubmitButton.innerText = 'submit'
+      carItemEditElement.appendChild(editSubmitButton)
+
+      carItemElement.replaceWith(carItemEditElement)
+    })
+
     const deleteItemButton = document.createElement('button')
     deleteItemButton.type = 'button'
     deleteItemButton.textContent = 'delete'
     deleteItemButton.addEventListener('click', async function(event) {
+      event.preventDefault()
       const deleteBody = JSON.stringify(item)
       const deleteResponse = await fetch( '/submit', {
         method: 'DELETE',
