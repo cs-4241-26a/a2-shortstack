@@ -46,6 +46,43 @@ const displayDatabase = function( data ) {
     const item = document.createElement('li')
     item.textContent = `${person.firstName} ${person.lastName}, Age: ${person.age}`
     list.appendChild(item)
+
+    const deleteButton = document.createElement('button')
+
+    deleteButton.textContent = 'Delete'
+
+    deleteButton.onclick = async function() {
+      const response = await fetch( `/delete/${data.indexOf(person)}`, {
+        method: 'DELETE'
+      })
+
+      const updatedData = await response.json()
+      displayDatabase(updatedData)
+    }
+
+    const updateButton = document.createElement('button')
+    updateButton.textContent = 'Update'
+
+    updateButton.onclick = async function() {
+      const newFirstName = prompt('Enter new first name:', person.firstName)
+      const newLastName = prompt('Enter new last name:', person.lastName)
+      const newAge = prompt('Enter new age:', person.age)
+
+      const response = await fetch( `/update/${data.indexOf(person)}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ firstName: newFirstName, lastName: newLastName, age: newAge })
+      })
+
+      const updatedData = await response.json()
+      displayDatabase(updatedData)
+    }
+
+    item.appendChild(deleteButton)
+    item.appendChild(updateButton)
+    list.appendChild(item)
   })
 }
 

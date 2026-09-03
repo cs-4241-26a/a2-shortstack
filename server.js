@@ -20,6 +20,10 @@ const server = http.createServer( function( request,response ) {
     handleGet( request, response )    
   }else if( request.method === 'POST' ){
     handlePost( request, response ) 
+  }else if( request.method === 'DELETE' ){
+    handleDelete( request, response )
+  } else if( request.method === 'PUT' ){
+    handleUpdate( request, response )
   }
 })
 
@@ -52,6 +56,42 @@ const handlePost = function( request, response ) {
 
     response.end(JSON.stringify(appdata))
   })
+}
+
+const handleDelete = function( request, response ) {
+  const index = parseInt( request.url.split('/')[2] )
+
+  if ( !isNaN(index) && index >= 0 && index < appdata.length ) {
+    appdata.splice(index, 1)
+    response.writeHead( 200, {'Content-Type': 'application/json' })
+    response.end(JSON.stringify(appdata))
+  } else {
+    response.writeHead( 400, {'Content-Type': 'text/plain' })
+    response.end('Invalid index for deletion')
+  }
+}
+
+const handleUpdate = function( request, response ) {
+  let dataString = ''
+
+  const index = parseInt( request.url.split('/')[2] )
+
+  if ( !isNaN(index) && index >= 0 && index < appdata.length ) {
+    request.on( 'data', function( data ) {
+      dataString += data 
+    })
+
+    request.on( 'end', function() {
+      const updatedData = JSON.parse( dataString )
+      appdata[index] = updatedData
+
+      response.writeHead( 200, {'Content-Type': 'application/json' })
+      response.end(JSON.stringify(appdata))
+    })
+  } else {
+    response.writeHead( 400, {'Content-Type': 'text/plain' })
+    response.end('Invalid index for update')
+  }
 }
 
 const sendFile = function( response, filename ) {
