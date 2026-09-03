@@ -1,4 +1,192 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
-  background:black;
-  color:white;
+    margin: 0;
+    background: #f4f1e8;
+    color: #211b16;
+    font-family: "Caudex", Georgia, serif;
+}
+
+header {
+    text-align: center;
+    padding: 24px 16px 8px;
+}
+
+h1 {
+    margin: 0;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 50px;
+}
+
+h2 {
+    margin-top: 0;
+    font-family: "Pixelify Sans", sans-serif;
+}
+
+header p {
+    margin: 5px 0 0;
+}
+
+.page-layout {
+    width: min(1200px, 94%);
+    margin: 0 auto 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.card {
+    background: white;
+    border: 3px solid #211b16;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+#game-box {
+    text-align: center;
+}
+
+#game-board {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    margin: 0 auto;
+    border: 12px solid saddlebrown;
+    border-radius: 15px;
+}
+
+#score-text {
+    font-family: "Caudex", sans-serif;
+    font-size: 65px;
+    line-height: 1;
+    margin: 12px 0;
+}
+
+#game-status {
+    min-height: 24px;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    border: 3px solid #211b16;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 10px 16px;
+    font-family: "Pixelify Sans", sans-serif;
+}
+
+#reset-button,
+form button {
+    background: saddlebrown;
+    color: white;
+    font-size: 20px;
+}
+
+#reset-button {
+    font-size: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+form label {
+    font-weight: 700;
+    margin-top: 5px;
+    font-size: 20px;
+}
+
+input,
+textarea {
+    width: 100%;
+    border: 2px solid #211b16;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fffdf7;
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.results-card {
+    grid-column: 1 / -1;
+}
+
+.leaderboard {
+    margin: 0;
+    padding-left: 28px;
+    display: grid;
+    gap: 8px;
+    font-size: 18px;
+}
+
+.small-text {
+    margin-top: -8px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 760px;
+}
+
+th,
+td {
+    border: 1px solid #211b16;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    font-family: "Pixelify Sans", sans-serif;
+}
+
+.actions {
+    white-space: nowrap;
+}
+
+.edit-button,
+.delete-button {
+    padding: 6px 10px;
+    margin-right: 4px;
+}
+
+.edit-button {
+    background: #eee;
+}
+
+.delete-button {
+    background: #f3d2d2;
+}
+
+@media (max-width: 800px) {
+    .page-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .results-card {
+        grid-column: auto;
+    }
+
+    h1 {
+        font-size: 38px;
+    }
 }
