@@ -1,74 +1,160 @@
-const http = require( 'http' ),
-      fs   = require( 'fs' ),
-      // IMPORTANT: you must run `npm install` in the directory for this assignment
-      // to install the mime library if you're testing this on your local machine.
-      // On Render, make sure `npm install` is your build command.
-      mime = require( 'mime' ),
-      dir  = 'public/',
-      port = 3000
+const http = require("http");
+const fs = require("fs");
+const mime = require("mime");
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
-]
+const dir = "public/";
+const port = 3000;
 
-const server = http.createServer( function( request,response ) {
-  if( request.method === 'GET' ) {
-    handleGet( request, response )    
-  }else if( request.method === 'POST' ){
-    handlePost( request, response ) 
-  }
-})
+// Server-side tabular dataset.
+// Each row has 4 original fields plus a derived field (scoreLevel).
+let appdata = [
+    {
+        name: "Demo Player",
+        score: 5,
+        comment: "Example score",
+        submittedAt: "2026-09-02T18:00:00.000Z",
+        scoreLevel: "Beginner"
+    }
+];
 
-const handleGet = function( request, response ) {
-  const filename = dir + request.url.slice( 1 ) 
+const server = http.createServer((request, response) => {
+    if (request.method === "GET") {
+        handleGet(request, response);
+    } else if (request.method === "POST") {
+        handlePost(request, response);
+    } else if (request.method === "PUT") {
+        handlePut(request, response);
+    } else if (request.method === "DELETE") {
+        handleDelete(request, response);
+    } else {
+        response.writeHead(405, { "Content-Type": "application/json" });
+        response.end(JSON.stringify({ error: "Method not allowed" }));
+    }
+});
 
-  if( request.url === '/' ) {
-    sendFile( response, 'public/index.html' )
-  }else{
-    sendFile( response, filename )
-  }
+function sendJSON(response, statusCode, data) {
+    response.writeHead(statusCode, { "Content-Type": "application/json" });
+    response.end(JSON.stringify(data));
 }
 
-const handlePost = function( request, response ) {
-  let dataString = ''
-
-  request.on( 'data', function( data ) {
-      dataString += data 
-  })
-
-  request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
-
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-
-    // change this to incorporate data
-    response.end('test')
-  })
+function readBody(request) {
+    return new Promise((resolve, reject) => {
+        let body = "";
+        request.on("data", chunk => body += chunk);
+        request.on("end", () => resolve(body));
+        request.on("error", reject);
+    });
 }
 
-const sendFile = function( response, filename ) {
-   const type = mime.getType( filename ) 
+// Required server-side derived field.
+// It is computed only from the score already present in the incoming row.
+function addDerivedField(item) {
+    const score = Number(item.score) || 0;
 
-   fs.readFile( filename, function( err, content ) {
+    let scoreLevel = "Beginner";
+    if (score >= 20) {
+        scoreLevel = "Expert";
+    } else if (score >= 10) {
+        scoreLevel = "Advanced";
+    }
 
-     // if the error = null, then we've loaded the file successfully
-     if( err === null ) {
-
-       // status code: https://httpstatuses.com
-       response.writeHeader( 200, { 'Content-Type': type })
-       response.end( content )
-
-     }else{
-
-       // file not found, error code 404
-       response.writeHeader( 404 )
-       response.end( '404 Error: File Not Found' )
-
-     }
-   })
+    return {
+        ...item,
+        score,
+        scoreLevel
+    };
 }
 
-server.listen( process.env.PORT || port )
+function cleanIncomingData(data) {
+    return {
+        name: String(data.name || "").trim().slice(0, 40),
+        score: Number.isFinite(Number(data.score)) ? Math.max(0, Number(data.score)) : 0,
+        comment: String(data.comment || "").trim().slice(0, 300),
+        submittedAt: data.submittedAt || new Date().toISOString()
+    };
+}
+
+async function handlePost(request, response) {
+    try {
+        const raw = await readBody(request);
+        const incoming = JSON.parse(raw || "{}");
+
+        if (!incoming.name) {
+            return sendJSON(response, 400, { error: "Name is required." });
+        }
+
+        if (!incoming.comment && incoming.score === undefined) {
+            return sendJSON(response, 400, { error: "A score or comment is required." });
+        }
+
+        const row = addDerivedField(cleanIncomingData(incoming));
+        appdata.push(row);
+
+        sendJSON(response, 201, appdata);
+    } catch (error) {
+        sendJSON(response, 400, { error: "Invalid JSON data." });
+    }
+}
+
+async function handlePut(request, response) {
+    try {
+        const raw = await readBody(request);
+        const incoming = JSON.parse(raw || "{}");
+        const index = Number(incoming.index);
+
+        if (!Number.isInteger(index) || index < 0 || index >= appdata.length) {
+            return sendJSON(response, 404, { error: "Entry not found." });
+        }
+
+        const updated = addDerivedField(cleanIncomingData(incoming));
+        appdata[index] = updated;
+
+        sendJSON(response, 200, appdata);
+    } catch (error) {
+        sendJSON(response, 400, { error: "Invalid JSON data." });
+    }
+}
+
+async function handleDelete(request, response) {
+    try {
+        const raw = await readBody(request);
+        const incoming = JSON.parse(raw || "{}");
+        const index = Number(incoming.index);
+
+        if (!Number.isInteger(index) || index < 0 || index >= appdata.length) {
+            return sendJSON(response, 404, { error: "Entry not found." });
+        }
+
+        appdata.splice(index, 1);
+        sendJSON(response, 200, appdata);
+    } catch (error) {
+        sendJSON(response, 400, { error: "Invalid JSON data." });
+    }
+}
+
+function handleGet(request, response) {
+    if (request.url === "/api/data") {
+        return sendJSON(response, 200, appdata);
+    }
+
+    const filename = request.url === "/" ? "public/index.html" : dir + request.url.slice(1);
+    sendFile(response, filename);
+}
+
+function sendFile(response, filename) {
+    const type = mime.getType(filename) || "text/plain";
+
+    fs.readFile(filename, (error, content) => {
+        if (error) {
+            response.writeHead(404, { "Content-Type": "text/plain" });
+            response.end("404 Error: File Not Found");
+        } else {
+            response.writeHead(200, { "Content-Type": type });
+            response.end(content);
+        }
+    });
+}
+
+server.listen(process.env.PORT || port, () => {
+    console.log(`Snake game server running on port ${process.env.PORT || port}`);
+});
