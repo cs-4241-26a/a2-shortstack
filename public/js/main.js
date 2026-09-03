@@ -7,7 +7,7 @@ function loadCarList(carList) {
   carListElement.id = 'to-do-list'
   for (const item of carList) {
     const carItemElement = document.createElement('li')
-    carItemElement.innerText = `${item.year} ${item.model} (${item.mpg} MPG)`
+    carItemElement.innerHTML = `<p>${item.year} ${item.model} (${item.mpg} MPG)</p><p>Est. Value: $${item.estVal}</p>`
     carListElement.appendChild(carItemElement)
 
     carItemElement.addEventListener('click', async function(event) {

@@ -7,15 +7,42 @@ const http = require( 'http' ),
       dir  = 'public/',
       port = 3000
 
-function addToDoItem(dataString) {
+const isVehicle = function(item) {
+  const year = item.year,
+        model = item.model,
+        mpg = item.mpg
+  const isNumeric = function(val) {
+    if (typeof val === 'string' && val.trim() === '') return false;
+    return Number.isFinite(Number(val))
+  }
+
+  return year !== null && year !== undefined && isNumeric(year)
+    && model !== null && model !== undefined
+    && mpg !== null && mpg !== undefined && isNumeric(mpg)
+}
+
+const estimateValue = function(item) {
+  const basePrice = 27500
+  const depreciationRate = 0.075
+  const avgMpg = 25
+
+  const age = new Date().getFullYear() - item.year
+  const mpg = item.mpg
   
+  const ageFactor = (1 - depreciationRate) ** age
+  const mpgFactor = Math.sqrt(mpg / avgMpg)
+
+  return Math.round(basePrice * ageFactor * mpgFactor)
 }
 
 const appdata = [
-  { id: 0, 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { id: 1, 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { id: 2, 'model': 'ford', 'year': 1987, 'mpg': 14} 
+  { id: 0, 'model': 'Toyota', 'year': 1999, 'mpg': 23 },
+  { id: 1, 'model': 'Honda', 'year': 2004, 'mpg': 30 },
+  { id: 2, 'model': 'Ford', 'year': 1987, 'mpg': 14 }
 ]
+for (const item of appdata) {
+  item.estVal = estimateValue(item)
+}
 let appdataNextId = appdata.length
 
 const server = http.createServer( function( request,response ) {
@@ -54,15 +81,21 @@ const handlePost = function( request, response ) {
 
   request.on( 'end', function() {
     const item = JSON.parse( dataString )
-    item.id = appdataNextId++
-    console.log( item )
-    if (item.year && item.model && item.mpg) {
-      appdata.push(item)
+    if (isVehicle(item)) {
+      item.id = appdataNextId++
+      item.estVal = estimateValue(item)
+      console.log( item )
+      if (item.year && item.model && item.mpg) {
+        appdata.push(item)
+      }
+
+      response.writeHead( 200, 'OK', {'Content-Type': 'text/plain'} )
+
+      response.end(JSON.stringify(appdata))
+    } else {
+      response.writeHead(400)
+      response.end('Bad Request')
     }
-
-    response.writeHead( 200, 'OK', {'Content-Type': 'text/plain'} )
-
-    response.end(JSON.stringify(appdata))
   })
 }
 
@@ -76,12 +109,17 @@ const handleDelete = function( request, response ) {
   request.on( 'end', function() {
     const item = JSON.parse( dataString )
     console.log( item )
-    const deletionIndex = appdata.findIndex(x => x.id === item.id)
-    if (deletionIndex >= 0) appdata.splice(deletionIndex, 1)
+    if (item.id !== null && item.id !== undefined) {
+      const deletionIndex = appdata.findIndex(x => x.id === item.id)
+      if (deletionIndex >= 0) appdata.splice(deletionIndex, 1)
 
-    response.writeHead( 200, 'OK', {'Content-Type': 'text/plain' } )
+      response.writeHead( 200, 'OK', {'Content-Type': 'text/plain' } )
 
-    response.end(JSON.stringify(appdata))
+      response.end(JSON.stringify(appdata))
+    } else {
+      response.writeHead(400)
+      response.end('Bad Request')
+    }
   })
 }
 
@@ -95,14 +133,20 @@ const handlePut = function( request, response ) {
   request.on( 'end', function() {
     const item = JSON.parse( dataString )
     console.log( item )
-    const oldItem = appdata.find(x => x.id === item.id)
-    oldItem.model = item.model
-    oldItem.year = item.year
-    oldItem.mpg = item.mpg
+    if (isVehicle(item)) {
+      const oldItem = appdata.find(x => x.id === item.id)
+      oldItem.model = item.model
+      oldItem.year = item.year
+      oldItem.mpg = item.mpg
+      oldItem.estVal = estimateValue(item)
 
-    response.writeHead( 200, 'OK', {'Content-Type': 'text/plain' } )
+      response.writeHead( 200, 'OK', {'Content-Type': 'text/plain' } )
 
-    response.end(JSON.stringify(appdata))
+      response.end(JSON.stringify(appdata))
+    } else {
+      response.writeHead(400)
+      response.end('Bad Request')
+    }
   })
 }
 
