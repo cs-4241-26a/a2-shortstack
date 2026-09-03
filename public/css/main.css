@@ -2,12 +2,15 @@ body {
   --primary: #303066;
   --secondary-light: #F8F8FF;
   --secondary-dark: #BBBBFF;
+
   /*
   * Created with https://www.css-gradient.com
   * Gradient link: https://www.css-gradient.com/?colors=f8f8ff@0,bbbbff@100&gt=l&gd=dtl
   */
   background: var(--secondary-light);
   background: linear-gradient(315deg, var(--secondary-light) 0%, var(--secondary-dark) 100%);
+
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   height: 100vh;
 }
 
