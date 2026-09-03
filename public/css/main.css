@@ -1,4 +1,71 @@
+:root {
+  --default-background: #ccd2d0;
+}
+
 body {
-  background:black;
-  color:white;
+  background: var(--default-background);
+  color: #2f2f2f;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: Helvetica, sans-serif;
+}
+
+main {
+  margin: 8px;
+  margin-bottom: 15lvh;
+}
+
+header {
+  border: 3px solid black;
+  background-color: #4b5edd;
+  color: white;
+  text-align: center;
+  text-shadow: -1px 1px 2px black;
+  width: 100%;
+
+  .authorBy {
+    text-shadow: -1px 1px 1px #404040;
+    font-weight: normal;
+    font-size: 0.7rem;
+    text-align: right;
+  }
+}
+
+#reactBtn {
+  width: 33%;
+  height: 30svh;
+}
+
+#yourname {
+  margin-left: 40px;
+}
+
+.nonReactInputs {
+  width: 100%;
+  margin-top: 10lvh;
+  padding-top: 20px;
+  border-top: 3px dotted #050505;
+  padding-right: 11px;
+  padding-left: 8px;
+  margin-left: -8px;
+
+}
+
+.dataList {
+  width: 100%;
+  display: flex;
+
+  ul {
+    width: 50%;
+    list-style-type: none;
+
+    li {
+      border-bottom: 1px dashed grey;
+    }
+  }
+
+  button {
+    border-radius: 15%;
+    border-color: var(--default-background)
+  }
 }
