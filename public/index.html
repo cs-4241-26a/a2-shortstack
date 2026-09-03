@@ -1,18 +1,31 @@
 <!doctype html>
 <html lang='en'>
   <head>
-    <title>CS4241 Assignment 2</title>
-    <meta charset='utf-8' />
-    <script src='js/main.js'></script>
-    <link rel='stylesheet' href='css/main.css' />
+    <title>Page Turner Reading List</title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='css/main.css'>
+    <script src='js/main.js' defer></script>
     
     <!-- get rid of favicon error -->
-    <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
+    <link rel='icon' href='data:;base64,iVBORw0KGgo='>
   </head>
   <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
+    <main>
+      <header><p class='eyebrow'>A small reading tracker</p><h1>Page Turner</h1><p>Keep a simple list of books and see how many days each one will take.</p></header>
+      <section class='panel' aria-labelledby='form-title'>
+        <h2 id='form-title'>Add a book</h2>
+        <form id='book-form'>
+          <input type='hidden' id='book-id'>
+          <label>Title <input id='title' required></label>
+          <label>Author <input id='author' required></label>
+          <label>Pages <input id='pages' type='number' min='1' required></label>
+          <label>Minutes per day <input id='minutesPerDay' type='number' min='1' required></label>
+          <div class='actions'><button type='submit' id='save-button'>Add book</button><button type='button' id='cancel-button' class='secondary' hidden>Cancel</button></div>
+        </form><p id='message' role='status'></p>
+      </section>
+      <section aria-labelledby='results-title'><div class='section-heading'><h2 id='results-title'>Your reading list</h2><span id='book-count'></span></div>
+        <div class='table-wrap'><table><thead><tr><th>Title</th><th>Author</th><th>Pages</th><th>Minutes/day</th><th>Reading time</th><th>Actions</th></tr></thead><tbody id='book-list'></tbody></table></div>
+      </section>
+    </main>
   </body>
 </html>

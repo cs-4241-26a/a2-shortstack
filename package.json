@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "Chris-Card0",
+  "version": "1.0.0",
+  "description": "A two-tier reading list application for CS4241 Assignment 2",
+  "author": "Chris Luigi Cardaropoli",
   "scripts": {
     "start": "node server.js"
   },
