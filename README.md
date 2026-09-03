@@ -4,8 +4,8 @@ Page Turner is a small two-tier reading list application. Add books with their a
 
 ## How to Use
 
-1. Run `npm install`.
-2. Run `npm start`.
+1. Run `npm.cmd install`.
+2. Run `npm.cmd start`.
 3. Open `http://localhost:3000`.
 4. Add a book. Use Edit to change it or Delete to remove it.
 
@@ -20,13 +20,13 @@ Deployed application: https://a2-shortstack.onrender.com
 
 ## Design/Evaluation Achievements
 
--Evaluator 1:
--2.
--3.
--4. 
--Evaluator 2:
--2.
--3.
--4. 
+-Evaluator 1: Eiferman
+-2.that its only days
+-3.noted how there was no hover feature 
+-4. go more into depth which would intail added how fast you read which then would make you have to add in a personal thing
+-Evaluator 2: Normand
+-2.if it lags it adds it a bunch of times
+-3.how it was fairly basic
+-4. if possible run it on a better server which would cost money
 
 The interface uses CSS Grid for the form and Flexbox for action controls. External CSS includes element, class, and ID selectors and uses Georgia and Arial fonts.
