@@ -1,18 +1,68 @@
-<!doctype html>
-<html lang='en'>
-  <head>
-    <title>CS4241 Assignment 2</title>
-    <meta charset='utf-8' />
-    <script src='js/main.js'></script>
-    <link rel='stylesheet' href='css/main.css' />
-    
-    <!-- get rid of favicon error -->
-    <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
-  </head>
-  <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eat the Apple</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caudex:wght@400;700&family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Eat the Apple</h1>
+    </header>
+
+    <main class="page-layout">
+        <section id="game-box" class="card">
+            <canvas id="game-board" width="500" height="500"></canvas>
+            <div id="score-text">0</div>
+            <p id="game-status">Use the arrow keys to move.</p>
+            <button id="reset-button" type="button">Reset Game</button>
+        </section>
+
+        <section class="card">
+            <h2>Submit Your Score</h2>
+            <form id="score-form">
+                <label for="game-name">Name</label>
+                <input type="text" id="game-name" name="name" maxlength="40" placeholder="ex. epicgamer01" required>
+
+                <label for="score-input">Score</label>
+                <input type="number" id="score-input" name="score" min="0" step="1" value="0" required>
+
+                <label for="score-comment">Comment</label>
+                <textarea id="score-comment" name="comment" maxlength="300" placeholder="How did you do? What game should I make next?"></textarea>
+
+                <button type="submit">Add Score</button>
+            </form>
+        </section>
+
+        <section class="card results-card">
+            <h2>High Scores</h2>
+            <ol id="leaderboard" class="leaderboard"></ol>
+        </section>
+
+        <section class="card results-card">
+            <h2>Server Data</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Comment</th>
+                            <th>Submitted</th>
+                            <th>Score Level</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="index.js"></script>
+</body>
 </html>
