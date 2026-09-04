@@ -12,7 +12,7 @@ const submit = async function( event ) {
     alert('Please fill in all fields before submitting.');
     return;
   }
-  if (isNaN(avg.value) || isNaN(obp.value) || isNaN(slg.value) || avg.value < 0 || avg.value > 1 || obp.value < 0 || obp.value > 1 || slg.value < 0 || slg.value > 4 || avg.value < slg.value || (obp.value === 0 && avg.value > 0) || (obp.value === 0 && slg.value > 0)) {
+  if (isNaN(avg.value) || isNaN(obp.value) || isNaN(slg.value) || avg.value < 0 || avg.value > 1 || obp.value < 0 || obp.value > 1 || slg.value < 0 || slg.value > 4 || avg.value < slg.value || (obp.value === 0 && (avg.value > 0 || slg.value > 0))) {
     alert('Please enter valid numbers for AVG, OBP, and SLG.');
     return;
   }
