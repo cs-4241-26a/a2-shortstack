@@ -1,5 +1,8 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
+// id of the row being edited
+let editing = null
+
 const load = async function () {
   const response = await fetch('/api/data')
   const data = await response.json()
@@ -19,6 +22,18 @@ const render = function (data) {
 const cardFor = function (row) {
   const li = document.createElement('li')
   li.className = 'card'
+  
+  
+  const actions = document.createElement('div')
+  actions.className = 'card__actions'
+
+  const edit = document.createElement('button')
+  edit.className = 'card__edit'
+  edit.type = 'button'
+  edit.textContent = 'Edit'
+  edit.onclick = function () {
+    startEdit(row)
+  }
 
   const del = document.createElement('button')
   del.className = 'card__delete'
@@ -26,6 +41,8 @@ const cardFor = function (row) {
   del.textContent = 'X'
   del.dataset.id = row.id
   del.onclick = remove
+
+  actions.append(edit, del)
 
   const title = document.createElement('h2')
   title.className = 'card__title'
@@ -44,7 +61,7 @@ const cardFor = function (row) {
   meter.appendChild(fill)
 
   li.append(
-    del,
+    actions,
     title,
     verdict,
     line(row.conspirators.toLocaleString() + ' conspirators'),
@@ -70,6 +87,16 @@ const formatYears = function (years) {
   if (years < 1000) return years.toFixed(1) + ' years'
 
   return Math.round(years).toLocaleString() + ' years'
+}
+
+const startEdit = function (row) {
+  editing = row.id
+
+  document.querySelector('#theory').value = row.theory
+  document.querySelector('#conspirators').value = row.conspirators
+  document.querySelector('#yearsRunning').value = row.yearsRunning
+  document.querySelector('#submit').value = 'Save Changes'
+  document.querySelector('#entryForm').hidden = false
 }
 
 const remove = async function (event) {
@@ -100,7 +127,9 @@ const submit = async function (event) {
     yearsRunning: Number(yearsRunning.value)
   }
 
-  const response = await fetch('/api/add', {
+  if (editing !== null) json.id = editing
+
+  const response = await fetch(editing === null ? '/api/add' : '/api/edit', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(json)
@@ -109,8 +138,15 @@ const submit = async function (event) {
   const data = await response.json()
   render(data)
 
-  form.reset()
-  form.hidden = true
+  reset()
+}
+
+const reset = function () {
+  editing = null
+
+  document.querySelector('#entryForm').reset()
+  document.querySelector('#submit').value = 'Add Conspiracy'
+  document.querySelector('#entryForm').hidden = true
 }
 
 window.onload = function () {
@@ -119,7 +155,10 @@ window.onload = function () {
     submitBtn = document.querySelector('#submit')
 
   newBtn.onclick = function () {
-    form.hidden = !form.hidden
+    const wasHidden = form.hidden
+
+    reset()
+    form.hidden = !wasHidden
   }
 
   submitBtn.onclick = submit

@@ -107,17 +107,30 @@ input[type="button"]:hover {
 
 .card__title {
   margin: 0 0 0.5rem;
-  padding-right: 2rem;
+  padding-right: 5rem;
   font-size: 1.05rem;
 }
 
-.card__delete {
+.card__actions {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
+  display: flex;
+  gap: 0.35rem;
+}
+
+.card__edit,
+.card__delete {
   padding: 0.1rem 0.45rem;
+  font-size: 0.8rem;
   border-color: var(--line);
   color: var(--muted);
+}
+
+.card__edit:hover {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--bg);
 }
 
 .card__delete:hover {
