@@ -44,12 +44,19 @@ const displayDatabase = function( data ) {
 
   data.forEach(function( person ) {
     const item = document.createElement('li')
-    item.textContent = `${person.firstName} ${person.lastName}, Age: ${person.age}`
+
+    item.classList.add('person')
+
+    item.textContent = `${person.firstName} ${person.lastName}, Age: ${person.age}, Birth Year: ${person.birthYear}`
     list.appendChild(item)
+
+    const buttonContainer = document.createElement('div')
+    buttonContainer.classList.add('person-buttons')
 
     const deleteButton = document.createElement('button')
 
     deleteButton.textContent = 'Delete'
+    deleteButton.classList.add('delete-button')
 
     deleteButton.onclick = async function() {
       const response = await fetch( `/delete/${data.indexOf(person)}`, {
@@ -62,6 +69,8 @@ const displayDatabase = function( data ) {
 
     const updateButton = document.createElement('button')
     updateButton.textContent = 'Update'
+
+    updateButton.classList.add('update-button')
 
     updateButton.onclick = async function() {
       const newFirstName = prompt('Enter new first name:', person.firstName)
@@ -80,8 +89,11 @@ const displayDatabase = function( data ) {
       displayDatabase(updatedData)
     }
 
-    item.appendChild(deleteButton)
-    item.appendChild(updateButton)
+    buttonContainer.appendChild(deleteButton)
+    buttonContainer.appendChild(updateButton)
+
+    item.appendChild(buttonContainer)
+
     list.appendChild(item)
   })
 }

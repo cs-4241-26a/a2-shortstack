@@ -10,9 +10,9 @@ const http = require( 'http' ),
       port = 3000
 
 const appdata = [
-  { 'firstName': 'Raghavan', 'lastName': 'Rajkumar', 'age': 21},
-  { 'firstName': 'Andrew', 'lastName': 'Bugbee', 'age': 21 },
-  { 'firstName': 'Sarai', 'lastName': 'Vargas', 'age': 20 } 
+  { 'firstName': 'Raghavan', 'lastName': 'Rajkumar', 'age': 21, 'birthYear': 2005 },
+  { 'firstName': 'Andrew', 'lastName': 'Bugbee', 'age': 21, 'birthYear': 2005 },
+  { 'firstName': 'Sarai', 'lastName': 'Vargas', 'age': 21, 'birthYear': 2005 } 
 ]
 
 const server = http.createServer( function( request,response ) {
@@ -50,6 +50,9 @@ const handlePost = function( request, response ) {
     const data = JSON.parse( dataString )
     console.log( data )
 
+    const currentYear = new Date().getFullYear()
+    data.birthYear = currentYear - parseInt(data.age)
+
     appdata.push( data )
 
     response.writeHead( 200, {'Content-Type': 'application/json' })
@@ -84,6 +87,9 @@ const handleUpdate = function( request, response ) {
     request.on( 'end', function() {
       const updatedData = JSON.parse( dataString )
       appdata[index] = updatedData
+
+      const currentYear = new Date().getFullYear()
+      appdata[index].birthYear = currentYear - parseInt(updatedData.age)
 
       response.writeHead( 200, {'Content-Type': 'application/json' })
       response.end(JSON.stringify(appdata))
