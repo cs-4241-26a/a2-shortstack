@@ -7,7 +7,8 @@ const http = require('http'),
     dir  = 'public/',
     port = 3000
 
-const dataSet = []
+// Collection of all the melodies that have been submitted
+const collection = []
 
 const server = http.createServer(function(request,response) {
     if (request.method === 'GET') {
@@ -23,6 +24,8 @@ const handleGet = function(request, response) {
 
     if (request.url === '/') {
         sendFile(response, 'public/index.html')
+    } else if (request.url === "/collection") {
+        sendCollection(response)
     } else {
         sendFile(response, filename)
     }
@@ -39,7 +42,7 @@ const handlePost = function(request, response) {
     request.on('end', function() {
         let dataJson = JSON.parse(dataString)
 
-        // Calculates the "vibes" of the melody (the sum of all the note numbers) on a scale of sleepy (0) to flamin' (64)
+        // Calculates the "vibes" of the melody (the sum of all the note numbers) on a scale of sleepy (0) to flamin' hot (64)
         let vibes = 0
         dataJson.melody.forEach((note) => {
             vibes += parseInt(note)
@@ -47,7 +50,7 @@ const handlePost = function(request, response) {
         dataJson.vibes = vibes
 
         console.log(dataJson)
-        dataSet.push(dataJson)
+        collection.push(dataJson)
 
         response.writeHead(200, "OK", {'Content-Type': 'text/plain' })
         response.end("Received melody \"" + dataJson.title + "\" by " + dataJson.composer)
@@ -70,10 +73,17 @@ const sendFile = function(response, filename) {
 
             // file not found, error code 404
             response.writeHeader(404)
-            response.end( '404 Error: File Not Found' )
+            response.end('404 Error: File Not Found')
 
         }
     })
+}
+
+const sendCollection = function (response) {
+    let content = JSON.stringify(collection)
+
+    response.writeHead(200, "OK", { "Content-Type": "text/plain"})
+    response.end(content)
 }
 
 server.listen(process.env.PORT || port)

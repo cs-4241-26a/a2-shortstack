@@ -99,12 +99,72 @@ async function submitButton(event) {
 
     const text = await response.text()
     console.log('Response from server:', text)
+
+    makeCollection()
+}
+
+/**
+ * Returns the corresponding adjective for a given vibes value, on a scale of sleepy to flamin' hot.
+ */
+function getVibesAdjective(vibes) {
+    // |0| sleepy |4| chill |16| fresh |36| groovy |56| flamin' hot |64|
+    if (vibes <= 4) {
+        return "sleepy"
+    } else if (vibes <= 16) {
+        return "chill"
+    } else if (vibes <= 36) {
+        return "fresh"
+    } else if (vibes <= 56) {
+        return "groovy"
+    } else {
+        return "flamin' hot"
+    }
+}
+
+/**
+ * Retrieves the collection from the server and fills in the webpage with collection items.
+ */
+async function makeCollection() {
+    const response = await fetch('/collection', {
+        method: "GET"
+    })
+    const collection = JSON.parse(await response.text())
+
+    if (collection.length > 0) {
+        const collectionDiv = document.getElementById("collection")
+        collectionDiv.innerHTML = "" // Clear the div before repopulating it to avoid duplicates
+        collection.reverse().forEach((collItem) => {
+            // Calculate fields as strings
+            let title = collItem.title
+            let composer = collItem.composer
+            let melody = ""
+            collItem.melody.forEach((note) => {
+                melody += (note + " ")
+            })
+            let vibes = collItem.vibes
+            let vibesAdjective = getVibesAdjective(vibes)
+
+            // Generate HTML element and add it to the page
+            let collItemDiv = document.createElement("div")
+            collItemDiv.className = "coll-item"
+            collItemDiv.innerHTML =
+                `<div class="coll-item-info">
+                <p class="coll-item-description">${title} - by ${composer}</p>
+                <p class="coll-item-melody">${melody}</p>
+                <p class="coll-item-vibes">vibes: ${vibesAdjective} (${vibes})</p>
+            </div>
+            <button class="coll-item-load">load</button>`
+            collectionDiv.appendChild(collItemDiv)
+        })
+    }
 }
 
 window.onload = function() {
+    // Set button actions
     document.getElementById("play").onclick = playButton
     document.getElementById("submit").onclick = submitButton
 
+    // Generate the melody input fields
     let melodyInput = document.getElementById("melody")
     for (let i = 0; i < 8; i++) {
         let noteInput = document.createElement("input");
@@ -119,4 +179,6 @@ window.onload = function() {
         }
         melodyInput.appendChild(noteInput);
     }
+
+    makeCollection()
 }
