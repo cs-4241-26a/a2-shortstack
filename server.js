@@ -7,11 +7,7 @@ const http = require( 'http' ),
       dir  = 'public/',
       port = 3000
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
-]
+const appdata = [ ]
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
@@ -39,13 +35,22 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
+    const data = JSON.parse( dataString )
+    if (request.url == '/delete'){
+      appdata.splice(data.index, 1)
+    }else{
+    const calories_burned_per_rep = 1
+     
     // ... do something with the data here!!!
-
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-
+    data.total_reps = data.sets * data.reps
+    data.calories_burned = calories_burned_per_rep * data.total_reps
+    
     // change this to incorporate data
-    response.end('test')
+    appdata.push(data)
+    
+    }
+    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+    response.end(JSON.stringify(appdata))
   })
 }
 
