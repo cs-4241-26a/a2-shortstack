@@ -12,7 +12,7 @@ const submit = async function( event ) {
     alert('Please fill in all fields before submitting.');
     return;
   }
-  if (isNaN(avg.value) || isNaN(obp.value) || isNaN(slg.value) || avg.value < 0 || avg.value > 1 || obp.value < 0 || obp.value > 1 || slg.value < 0 || slg.value > 4 || avg.value > slg.value || (obp.value === 0 && (avg.value > 0 || slg.value > 0))) {
+  if (isNaN(avg.value) || isNaN(obp.value) || isNaN(slg.value) || avg.value < 0 || avg.value > 1 || obp.value < 0 || obp.value > 1 || slg.value < 0 || slg.value > 4 || avg.value > slg.value || (obp.value == 0 && (avg.value > 0 || slg.value > 0))) {
     alert('Please enter valid numbers for AVG, OBP, and SLG.');
     return;
   }
@@ -43,11 +43,11 @@ async function populateTable() {
     method:'POST',
     body
   })
-  console.log('body:', body);
-  console.log('response:', json);
+  //console.log('body:', body);
+  //console.log('response:', json);
   const arr = await response.json()
-  console.log('arr after meeting server:', arr);
-  console.log('player name: ', namePlayer.value);
+  //console.log('arr after meeting server:', arr);
+  //console.log('player name: ', namePlayer.value);
   for (let i = 0; i < arr.length - 1; i++) {
     if (arr[i].name === namePlayer.value) {
       alert('Player already exists in the table! The player will be updated with the new stats.');
@@ -55,7 +55,7 @@ async function populateTable() {
       return;
     }
   }
-  console.log('arr:', arr);
+  //console.log('arr:', arr);
   //newRow.innerHTML = '';
   let item = arr[arr.length - 1];
   //for (let item of arr) {
@@ -95,10 +95,10 @@ async function populateTable2() {
     method:'POST',
     body
   })
-  console.log('body:', body);
-  console.log('response:', json);
+  //console.log('body:', body);
+  //console.log('response:', json);
   const arr = await response.json()
-  console.log('arr:', arr);
+  //console.log('arr:', arr);
   //newRow.innerHTML = '';
   //let item = arr[arr.length - 1];
   for (let item of arr) {
@@ -136,10 +136,10 @@ const remove = async function( event ) {
     return;
   }
   
-  console.log('player name to remove: ', playerName);
-  console.log('globalArr before removal:', globalArr);
+  //console.log('player name to remove: ', playerName);
+  //console.log('globalArr before removal:', globalArr);
   let found = false;
-  console.log('found before loop:', found);
+  //console.log('found before loop:', found);
   for (let item of globalArr) {
     if (item.name === playerName) {
       globalArr.splice(globalArr.indexOf(item), 1);
@@ -147,7 +147,7 @@ const remove = async function( event ) {
       break;
     }
   }
-  console.log('found after loop:', found);
+  //console.log('found after loop:', found);
   if (!found) {
     alert('Player not found in the table.');
     return;
