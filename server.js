@@ -50,19 +50,7 @@ const handlePost = function (request, response) {
 		// console.log(data)
 		if (data.name != "") {
 			appdata.times.push(data);
-			appdata.averages = {};
-			for (let i = 0; i < appdata.times.length; i++) {
-				const item = appdata.times[i];
-				let usrname = item.name;
-				if (!(usrname in appdata.averages)) {
-					appdata.averages[usrname] = { name: usrname, n: 0, tot: 0, avg: 0 };
-				}
-				avgData = appdata.averages[usrname];
-				avgData.n++;
-				avgData.tot += item.ms;
-				avgData.avg = avgData.tot / avgData.n;
-				// console.log("avg:" + JSON.stringify(avgData))
-			}
+			setAverages();
 		}
 		response.writeHead(200, "OK", { "Content-Type": "text/plain" });
 
@@ -70,6 +58,23 @@ const handlePost = function (request, response) {
 		response.end(JSON.stringify(appdata));
 	});
 };
+
+const setAverages = function () {
+	appdata.averages = {};
+	console.log(appdata);
+	for (const item of appdata.times) {
+		let usrname = item.name;
+		if (!(usrname in appdata.averages)) {
+			appdata.averages[usrname] = { name: usrname, n: 0, tot: 0, avg: 0 };
+		}
+		avgData = appdata.averages[usrname];
+		avgData.n++;
+		avgData.tot += item.ms;
+		avgData.avg = avgData.tot / avgData.n;
+		// console.log("avg:" + JSON.stringify(avgData))
+	}
+	console.log(appdata.averages)
+}
 
 // structure 
 // {
@@ -89,13 +94,13 @@ const handleDelete = function (request, response) {
 		// console.log(data)
 
 		if (data.type === "all") {
-			console.log("Deleting All of " + data.name);
+			// console.log("Deleting All of " + data.name);
 			delete appdata.averages[data.name];
 			appdata.times = appdata.times.filter((time) => {
 				return time.name != data.name;
 			});
 		} else if (data.type === "single") {
-			console.log("Deleting " + data.name + " with timestamp " + data.timestamp);
+			// console.log("Deleting " + data.name + " with timestamp " + data.timestamp);
 			appdata.times = appdata.times.filter((time) => {
 				return time.time != data.timestamp;
 			});
@@ -107,6 +112,7 @@ const handleDelete = function (request, response) {
 	});
 };
 
+// { ms: ms, name: name, timestamp: timestamp }
 const handlePut = function (request, response) {
 	let dataString = "";
 
@@ -117,14 +123,16 @@ const handlePut = function (request, response) {
 	request.on("end", function () {
 		let data = JSON.parse(dataString);
 		// console.log(data)
-		console.log("Replacing " + data.timestamp);
+		// console.log(`Replacing ${data.name} timestamp ${data.timestamp} with ${data.ms} ms`);
 
-		for (let item in appdata.times) {
-			if (item.timestamp === data.timestamp) {
+		for (const item of appdata.times) {
+			if (item.time === Number(data.timestamp)) {
+				// console.log(`${data.ms} found, replacing ${item.ms}ms`)
 				item.ms = data.ms;
 				break;
 			}
 		}
+		setAverages();
 		response.writeHead(200, "OK", { "Content-Type": "text/plain" });
 
 		response.end(JSON.stringify(appdata));

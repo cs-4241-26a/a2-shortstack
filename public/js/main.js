@@ -45,7 +45,7 @@ const submit = async function (event) {
 function stateWait() {
   clearTimeout(reactTimeoutID);
   // reactStateStartTime = Date.now()
-  reactTimeoutID = setTimeout(statePress, Math.floor(Math.random() * 5150) + 3000);
+  reactTimeoutID = setTimeout(statePress, Math.floor(Math.random() * 5000) + 2500);
   reactState = reactStateList["wait"];
   reactBtn.className = "wait"
   reactBtn.textContent = "wait...";
@@ -104,7 +104,9 @@ async function updateLists(name, ms, time) {
     li.dataset.timestamp = item.time;
     li.innerHTML = `<button type="button" class="listBtn editBtn">✏️</button>
                   <button type="button" class="listBtn deleteBtn">🗑️</button>
-                   ${item.name}: <input type="text" name=reactMS value=${item.ms} disabled></input>ms`;
+                  ${item.name}: 
+                  <input class="reactMS" type="text" name=reactMS value=${item.ms} disabled></input>
+                  ms`;
     li.querySelector('input').style.width = `${0.6 * Math.floor(Math.log10(item.ms) + 1)}em`
     timeList.appendChild(li);
   }
@@ -123,7 +125,18 @@ async function updateLists(name, ms, time) {
     const timestamp = button.parentNode.dataset.timestamp;
     switch (button.className.split(' ')[1]) {
       case "editBtn":
-        buttonFunc = putData(ms, name, timestamp)
+        const reactMS = button.parentNode.querySelector(".reactMS");
+        buttonFunc = function () {
+          reactMS.removeAttribute("disabled");
+          reactMS.focus();
+          reactMS.type = "number"
+          reactMS.style.width = "4em";
+        }
+        reactMS.addEventListener("focusout", () => {
+          reactMS.type = "text"
+          reactMS.setAttribute("disabled", "disabled");
+          putData(Number(reactMS.value), name, timestamp);
+        })
         break;
       case "deleteBtn":
         buttonFunc = deleteData("single", name, timestamp);
@@ -153,19 +166,18 @@ function deleteData(type, name, timestamp) {
   }
 }
 
-function putData(ms, name, timestamp) {
-  return async function () {
-    json = { ms: ms, name: name, timestamp: timestamp }, body = JSON.stringify(json);
+async function putData(ms, name, timestamp) {
+  json = { ms: ms, name: name, timestamp: timestamp }, body = JSON.stringify(json);
 
-    const response = await fetch("/submit", {
-      method: "PUT",
-      body,
-    });
-    const arr = await response.json();
-    // console.log(`edit: ${type} ${name} ${timestamp}`)
-    updateLists("", 0, 0)
-  }
+  const response = await fetch("/submit", {
+    method: "PUT",
+    body,
+  });
+  const arr = await response.json();
+  // console.log(`edit: ${type} ${name} ${timestamp}`)
+  await updateLists("", 0, 0);
 }
+
 
 window.onload = function () {
   reactBtn = document.querySelector("#reactBtn");

@@ -111,5 +111,5 @@ I made a simple reaction speed test where, upon entering your name, you simply p
             - Found a bug where the average showed full decimal points (it should have been the floor of the value)
             - Naturally found the fact that pressing the button early will return to the non-active state
             - Recommended a "leaderboard" type button where the reaction times and averages can be sorted by lowest
-        - Overall, there were no particularly glaring issues and the comments were useful, though I will likely not implement the sorting button despite the undoubtable usefulness out of time concerns
+        - Overall, there were no particularly glaring issues and the comments were sparse but useful. I was surprised about the recommendation to label the columns, since it was quite an obvious one but something that hadn't even come to mind as I was developing the webpage.
     - James Ostermiller
