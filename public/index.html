@@ -10,9 +10,43 @@
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
   <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
+    <main>
+  		<header style="grid-area: header">
+        <h1>ATAssist</h1>
+        <p>Automated Time & Attendance (ATA) helper</p>
+      </header>
+  		<section style="grid-area: userForm">
+      	<h2>User Input Form</h2>
+    		<form>
+          <input type='text' id='usernameInput' value='username'>
+          <button id="usernameSubmit">submit</button>
+        </form>
+      </section>
+      <section style="grid-area: userSummary">
+        <h2>User Time Summary Here</h2>
+      </section>
+      <section style="grid-area: timeForm">
+      	<h2>Time Input Form</h2>
+    		<form>
+          <div class="timeFormContainer" style="display: flex; justify-content: center; align-items: center;">
+            <div class="inputDiv">
+              <h4>Date (mm/dd/yyyy)</h4>
+              <input type='text' id='dateInput' value='Date'>
+            </div>
+            <div class="inputDiv">
+              <h4>Time (hh:mm)</h4>
+              <input type='text' id='timeInput' value='Time'>
+            </div>
+            <div>
+              <button id="clockInSubmit">Clock In</button>
+              <button id="clockOutSubmit">Clock Out</button>
+            </div>
+          </div>
+        </form>
+      </section>
+      <section style="grid-area: table">
+        <h2>Results Table Here</h2>
+      </section>
+		</main>
   </body>
 </html>

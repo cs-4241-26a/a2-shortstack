@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "ATAssist",
+  "version": "0.1.0",
+  "description": "Log your time on the clock!",
+  "author": "Noah Freeman",
   "scripts": {
     "start": "node server.js"
   },

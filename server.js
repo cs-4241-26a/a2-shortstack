@@ -8,16 +8,19 @@ const http = require( 'http' ),
       port = 3000
 
 const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+  { 'user': 'Noah', 'clockIn': true, 'date': '9/1/2026', 'time': '8:08 AM' },
+  { 'user': 'Noah', 'clockIn': false, 'date': '9/1/2026', 'time': '4:02 PM' },
+  { 'user': 'Noah', 'clockIn': true, 'date': '9/2/2026', 'time': '8:01 AM' },
+  { 'user': 'Jackson', 'clockIn': true, 'date': '9/2/2026', 'time': '10:14 AM' },
+  { 'user': 'Noah', 'clockIn': false, 'date': '9/2/2026', 'time': '4:07 PM' },
+  { 'user': 'Jackson', 'clockIn': false, 'date': '9/2/2026', 'time': '6:24 PM' }
 ]
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
     handleGet( request, response )    
   }else if( request.method === 'POST' ){
-    handlePost( request, response ) 
+    handlePost( request, response )
   }
 })
 
@@ -41,12 +44,34 @@ const handlePost = function( request, response ) {
   request.on( 'end', function() {
     console.log( JSON.parse( dataString ) )
     // ... do something with the data here!!!
+    if (request.url === '/submit') {
+      handleTimeSubmit(dataString, response);
+    } else if (request.url === '/login') {
+      handleUserLogin(dataString, response);
+    } else if (request.url === '/logout') {
+      handleUserLogout(dataString, response);
+    } else {
+      response.writeHeader( 404 )
+      response.end( '404 Error: File Not Found' )
+    }
 
     response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
 
     // change this to incorporate data
     response.end('test')
   })
+}
+
+const handleUserLogin = function( dataString, response ) {
+
+}
+
+const handleUserLogout = function( dataString, response ) {
+
+}
+
+const handleTimeSubmit = function( dataString, response ) {
+
 }
 
 const sendFile = function( response, filename ) {

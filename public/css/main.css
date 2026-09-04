@@ -1,4 +1,79 @@
 body {
-  background:black;
-  color:white;
+  min-height: 100vh;
+  background: linear-gradient(to bottom,
+      /* Equivalent to #30A3FF from the palette*/
+      rgba(48, 163, 255, 1),
+      rgba(48, 163, 255, 0));
+}
+
+p,
+li {
+  padding: 0px 10px;
+  font-family: "Short Stack", cursive;
+}
+
+h1,
+h2,
+h4 {
+  font-family: "Michroma", sans-serif;
+}
+
+ul {
+  width: fit-content;
+  margin: 0 auto;
+  text-align: left;
+}
+
+main {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "userForm userSummary"
+    "timeForm timeForm"
+    "table table";
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0vh 10vw;
+}
+
+header,
+section {
+  text-align: center;
+  background-color: #CDECF4;
+  border: 4px solid #292948;
+  border-radius: 10px;
+  text-align: center;
+}
+
+header {
+  margin: 0px 0px 40px 0px
+}
+
+button {
+  font-family: "Michroma", sans-serif;
+  background-color: #30A3FF;
+  border-radius: 15px;
+  color: black;
+  padding: 10px 22px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  margin: 10px 20px;
+}
+
+button:hover {
+  background-color: #ACF2B8;
+  color: black;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.6)
+}
+
+.inputDiv {
+  margin: 20px 10px
+}
+
+.inputDiv h4 {
+  margin: 5px 0px;
 }
