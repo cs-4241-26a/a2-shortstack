@@ -11,7 +11,8 @@ const submit = async function( event ) {
   
   const json = { name: document.querySelector('#itemname').value,  
     price: document.querySelector('#itemprice').value, 
-    tasty: document.querySelector('#itemgood').value}
+    tasty: document.querySelector('#itemgood').value, 
+    delete: document.querySelector('#delete').value}
   const body = JSON.stringify( json )
 
   const response = await fetch( '/submit', {
@@ -34,5 +35,5 @@ window.onload = function() {
   const button = document.querySelector('button')
   button.onclick = submit
   ul = document.createElement('ul')
-  document.body.appendChild(ul)
+  document.getElementById("forma").appendChild(ul)
 }

@@ -39,7 +39,10 @@ const handlePost = function( request, response ) {
   request.on( 'end', function() {
     dataString = modify(dataString)
     console.log( JSON.parse( dataString ) )
-
+    console.log(JSON.parse( dataString ).delete)
+    if (JSON.parse( dataString ).delete == "delete") {
+      appdata = []
+    }
     appdata.push(JSON.parse( dataString ))
     // ... do something with the data here!!!
 
