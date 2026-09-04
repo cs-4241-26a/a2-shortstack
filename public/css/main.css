@@ -1,7 +1,7 @@
 body {
   background: white;
   color: black;
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 h1 {
@@ -41,7 +41,7 @@ main {
 
 .note-input {
   font-size: 40px;
-  font-family: monospace;
+  font-family: "Courier New", monospace;
   padding: 0 10px 0 10px
 }
 
@@ -90,7 +90,7 @@ label {
 
 .coll-item-melody {
   font-size: 30px;
-  font-family: monospace;
+  font-family: "Courier New", monospace;
   margin: 0;
 }
 

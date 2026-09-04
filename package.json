@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "mini_melodies",
+  "version": "0.1",
+  "description": "Write, submit, and browse short melodies",
+  "author": "Lex Johnson",
   "scripts": {
     "start": "node server.js"
   },
