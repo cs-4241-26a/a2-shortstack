@@ -1,27 +1,119 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
-const submit = async function( event ) {
-  // stop form submission from trying to load
-  // a new .html page for displaying results...
-  // this was the original browser behavior and still
-  // remains to this day
-  event.preventDefault()
-  
-  const input = document.querySelector( '#yourname' ),
-        json = { yourname: input.value },
-        body = JSON.stringify( json )
+let notes = [];
+let editIndex = null; // Track which note is being edited
 
-  const response = await fetch( '/submit', {
-    method:'POST',
-    body 
-  })
+// 1. INITIALIZE DOM VARIABLES FIRST
+const modal = document.getElementById('noteModal');
+const openModalBtn = document.getElementById('addNote');
+const cancelBtn = document.getElementById('cancelNote');
+const form = document.getElementById('noteForm');
 
-  const text = await response.text()
+// 2. ATTACH EVENT LISTENERS
+// Opening modal for a NEW note
+openModalBtn.addEventListener('click', () => {
+  editIndex = null;
+  form.reset();
+  document.getElementById('saveNote').innerText = "Save Note";
+  modal.style.display = 'flex';
+});
 
-  console.log( 'text:', text )
+// Hide the overlay
+cancelBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+  form.reset();
+});
+
+// Handle the form submission (Add or Edit)
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const noteData = {
+    title: document.getElementById('noteTitle').value,
+    content: document.getElementById('noteContent').value,
+    type: document.getElementById('noteUrgency').value
+  };
+
+  if (editIndex !== null) {
+    // We are EDITING
+    noteData.index = editIndex;
+    const response = await fetch('/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(noteData)
+    });
+    notes = await response.json();
+  } else {
+    // We are ADDING
+    const response = await fetch('/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(noteData)
+    });
+    notes = await response.json();
+  }
+
+  modal.style.display = 'none';
+  form.reset();
+  renderNotes();
+});
+
+// 3. DEFINE FUNCTIONS
+// Open modal for an EXISTING note
+window.editNote = function(index) {
+  editIndex = index;
+  const note = notes[index];
+
+  // Pre-fill the form with existing data
+  document.getElementById('noteTitle').value = note.title;
+  document.getElementById('noteContent').value = note.content;
+  document.getElementById('noteUrgency').value = note.urgency;
+
+  document.getElementById('saveNote').innerText = "Update Note";
+  modal.style.display = 'flex';
+};
+
+async function deleteNote(index) {
+  const response = await fetch('/delete', {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ index })
+  });
+
+  notes = await response.json();
+  renderNotes();
 }
 
-window.onload = function() {
-  const button = document.querySelector('button')
-  button.onclick = submit
+// Fetch notes from server
+async function fetchNotes() {
+  const response = await fetch('/notes');
+  notes = await response.json();
+  renderNotes();
 }
+
+// Render the HTML
+function renderNotes() {
+  const container = document.getElementById('notesContainer');
+  container.innerHTML = '';
+
+  notes.forEach((note, index) => {
+    const noteDiv = document.createElement('div');
+    noteDiv.classList.add('note');
+
+    noteDiv.innerHTML = `
+        <h3 style="color: #333; margin-bottom: 5px; font-family: 'Montserrat', sans-serif;">${note.title}</h3>
+        <p style="color: #666; font-size: 12px; margin-bottom: 10px; text-transform: capitalize; font-family: 'Montserrat', sans-serif;">
+            Type: ${note.urgency} | Due: <strong>${note.deadline}</strong>
+        </p>
+        <textarea readonly>${note.content}</textarea>
+        <div style="position: absolute; top: 5px; right: 5px; display: flex; gap: 5px;">
+          <button style="background: var(--button-color); color: white; border: none; padding: 5px; cursor: pointer; border-radius: 4px;" onclick="editNote(${index})">Edit</button>
+          <button style="background: #DA4167; color: white; border: none; padding: 5px; cursor: pointer; border-radius: 4px;" onclick="deleteNote(${index})">X</button>
+        </div>
+    `;
+    container.appendChild(noteDiv);
+  });
+}
+
+// 4. INITIALIZE APP ON LOAD
+window.onload = fetchNotes;
