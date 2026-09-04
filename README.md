@@ -3,7 +3,7 @@
 
 ## Baseball Player Stats Table
 I created a website to keep a table of various players and their hitting stats.
-
+https://a2-rashiroselin.onrender.com/
 ## Technical Achievements
 - **Single-Page App**: Created a single-page app for the website. The data populates the table on start and updates when a player is added (usually)
 
