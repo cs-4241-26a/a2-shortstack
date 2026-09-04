@@ -1,4 +1,52 @@
 body {
   background: white;
   color: black;
+  font-family: sans-serif;
+}
+
+main {
+  border: 1px solid black;
+  height: 50vh;
+  width: 98vw;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#melody {
+  margin-bottom: 10px
+}
+
+#play {
+  font-size: 40px;
+  padding: 0 5px 0 5px;
+  vertical-align: center;
+}
+
+.note-input {
+  font-size: 40px;
+  font-family: monospace;
+  padding: 0 10px 0 10px
+}
+
+#instructions {
+  font-size: 12px;
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+p {
+  text-align: center;
+  margin: 4px;
+}
+
+label {
+  margin-left: 20px;
+}
+
+#submit {
+  font-size: 16px;
+  margin-left: 20px
 }

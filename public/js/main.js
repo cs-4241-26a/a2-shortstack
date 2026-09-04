@@ -44,8 +44,11 @@ function playNote(note, callback) {
  */
 function playMelody() {
     if (melody.length > 0) {
+        document.getElementById("play").disabled = true
         let note = melody.shift()
         playNote(note, playMelody)
+    } else {
+        document.getElementById("play").disabled = false
     }
 }
 
@@ -102,7 +105,7 @@ window.onload = function() {
     document.getElementById("play").onclick = playButton
     document.getElementById("submit").onclick = submitButton
 
-    let melodyInput = document.getElementById("melody-input")
+    let melodyInput = document.getElementById("melody")
     for (let i = 0; i < 8; i++) {
         let noteInput = document.createElement("input");
         noteInput.id = "note-input-" + i;

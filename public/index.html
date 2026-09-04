@@ -11,14 +11,23 @@
     </head>
 
     <body>
-        <form id="melody-input">
-            <button id="play">Play</button>
-            <!-- Note inputs are generated here in code -->
-        </form>
-        <form id="details">
-            <label for="title-input">Song Title:</label><input type="text" id="title-input">
-            <label for="composer-input">Your name:</label><input type="text" id="composer-input">
-            <button id="submit">Submit</button>
-        </form>
+        <header>
+            <h1>mini melodies</h1>
+        </header>
+        <main>
+            <div id="melody">
+                <button id="play">▶</button>
+                <!-- Note inputs are generated here in code -->
+            </div>
+            <div id="instructions">
+                <p>1-8 are the notes of the major scale, 0 is silence.</p>
+                <p>write your melody, give it a title, and submit it to the collection.</p>
+            </div>
+            <div id="details">
+                <label for="title-input">melody title:</label> <input type="text" id="title-input">
+                <label for="composer-input">your name:</label> <input type="text" id="composer-input">
+                <button id="submit">submit</button>
+            </div>
+        </main>
     </body>
 </html>
