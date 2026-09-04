@@ -1,18 +1,65 @@
 <!doctype html>
 <html lang='en'>
   <head>
-    <title>CS4241 Assignment 2</title>
     <meta charset='utf-8' />
-    <script src='js/main.js'></script>
+    <title>Task Tracker &mdash; CS4241 Assignment 2</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+
+    <link rel='preconnect' href='https://fonts.googleapis.com' />
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+    <link href='https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap' rel='stylesheet' />
+
     <link rel='stylesheet' href='css/main.css' />
-    
-    <!-- get rid of favicon error -->
+    <script src='js/main.js' defer></script>
+
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
   <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
+    <header id='page-header'>
+      <h1>Task Tracker</h1>
+      <p class='subtitle'>Add a task, set its priority, and a deadline is calculated for you automatically.</p>
+    </header>
+
+    <main id='app'>
+      <section id='form-section' class='panel'>
+        <h2>Add a Task</h2>
+        <form id='task-form'>
+          <label for='task-input'>Task</label>
+          <input type='text' id='task-input' name='task' placeholder='e.g. Finish the reading' required />
+
+          <label for='priority-input'>Priority</label>
+          <select id='priority-input' name='priority'>
+            <option value='low'>Low (7 day deadline)</option>
+            <option value='medium' selected>Medium (3 day deadline)</option>
+            <option value='high'>High (1 day deadline)</option>
+          </select>
+
+          <button type='submit' id='add-button' class='primary-btn'>Add Task</button>
+        </form>
+        <p id='form-error' class='error' hidden></p>
+      </section>
+
+      <section id='results-section' class='panel'>
+        <h2>Current Tasks</h2>
+        <table id='task-table'>
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Priority</th>
+              <th>Created</th>
+              <th>Deadline</th>
+              <th class='actions-col'>Actions</th>
+            </tr>
+          </thead>
+          <tbody id='task-table-body'>
+          </tbody>
+        </table>
+        <p id='empty-message' hidden>No tasks yet &mdash; add one above!</p>
+      </section>
+    </main>
+
+    <footer id='page-footer'>
+      <p>CS 4241 &middot; Assignment 2 &middot; Christian Dellanno</p>
+    </footer>
   </body>
 </html>
