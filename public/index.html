@@ -1,18 +1,66 @@
 <!doctype html>
 <html lang='en'>
-  <head>
-    <title>CS4241 Assignment 2</title>
-    <meta charset='utf-8' />
-    <script src='js/main.js'></script>
-    <link rel='stylesheet' href='css/main.css' />
-    
-    <!-- get rid of favicon error -->
-    <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
-  </head>
-  <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
-  </body>
+
+<head>
+  <title>CS4241 Assignment 2 - Lift Tracker</title>
+  <meta charset='utf-8' />
+  <script src='js/main.js'></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Learned from the reading, had to add this to make the page responsive -->
+  <link rel='stylesheet' href='css/main.css' />
+
+  <!-- Font from Google Fonts: https://fonts.google.com/specimen/Lato?preview.script=Latn -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- get rid of favicon error -->
+  <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
+</head>
+
+<body>
+  <div class="tracker-wrapper">
+
+    <!-- HEADER -->
+    <header class="tracker-header">
+      <h1>Lift Tracker</h1>
+    </header>
+
+    <!-- MAIN -->
+    <main class="tracker-main">
+
+      <!-- SECTION 1: Add a Lift -->
+      <section class="tracker-card">
+        <h2>Add a Lift</h2>
+        <form id="lift-form">
+          <input type="text" id="exercise" placeholder="Exercise" required>
+          <input type="number" id="weight" placeholder="Weight (lbs)" required>
+          <input type="number" id="reps" placeholder="Reps" required>
+          <button type="submit" class="btn">Add Lift</button>
+        </form>
+      </section>
+
+      <!-- SECTION 2: Your Lifts -->
+      <section class="tracker-card">
+        <h2>Your Lifts</h2>
+        <table id="lifts-table">
+          <thead>
+            <tr> <!-- Header Row -->
+              <th>Exercise</th>
+              <th>Weight</th>
+              <th>Reps</th>
+              <th>ORM</th>
+              <th></th> <!-- Empty column for delete button -->
+            </tr>
+          </thead>
+          <tbody id="lifts-body"></tbody> <!-- Table Body; will be replacing every add/delete event. This is where the current state of the server will be displayed always. -->
+        </table>
+      </section>
+
+    </main>
+
+  </div>
+</body>
+
 </html>

@@ -1,4 +1,135 @@
+/* CSS "Variables" */
+
+:root {
+  --card-bg: #1a1d24;
+  --bg: #262a34;
+  --border: #3a3f4b;
+  --text: #e7e9ee;
+  --text-muted: #9aa1af;
+  --blue: #64abed;
+  --blue-dark: #4d7fad;
+  --blue-transparent: rgba(100, 171, 237, 0.1);
+  --delete: #edb964;
+  --font: 'Lato', system-ui, sans-serif;
+}
+
+/* Element Selectors */
+
 body {
-  background:black;
-  color:white;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  margin: 0;
+}
+
+h1, h2 {
+  font-weight: 600;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse; /* So border columns dont show */
+}
+
+th, td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+input {
+  background: var(--blue-transparent);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font); /* Not sure why the body font-family is not being inherited */
+  padding: 0.75rem;
+}
+
+input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ID Selectors */
+
+#lift-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center; /* Makes the button not stretched */
+}
+
+#lifts-table tr:nth-child(even) { /* Learned this from the reading */
+  background: var(--blue-transparent);
+}
+
+/* Class Selectors */
+
+.tracker-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.tracker-header {
+  margin-bottom: 1.5rem;
+}
+
+.tracker-main {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.tracker-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+}
+
+.btn {
+  font-family: var(--font); /* Not sure why the body font-family is not being inherited */
+  cursor: pointer; /* This means the mouse will change to a pointer when hovering */
+  border: none;
+  background: var(--blue);
+  color: white;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+}
+
+.btn:hover {
+  background: var(--blue-dark);
+}
+
+.btn-delete {
+  background: transparent;
+  color: var(--delete);
+  border: 1px solid var(--delete);
+  padding: 0.3rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.btn-delete:hover {
+  background: var(--delete);
+  color: var(--card-bg);
+}
+
+/* Learned from reading -- Want to initially build for narrow veiwports, and then adjust for wider screens */
+@media (min-width: 500px) {
+  .tracker-main {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0 auto;
+  }
 }
