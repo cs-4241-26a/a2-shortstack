@@ -7,7 +7,7 @@ const http = require( 'http' ),
       dir  = 'public/',
       port = 3000
 
-let notesData = []; // Array to store notes in server memory
+let notesData = []; // array to store notes
 
 const server = http.createServer(function(request, response) {
   if (request.method === 'GET') {
@@ -50,7 +50,7 @@ const handlePost = function(request, response) {
 
       let date = new Date();
       date.setDate(date.getDate() + days);
-      newNote.deadline = date.toLocaleDateString(); // Attach derived field
+      newNote.deadline = date.toLocaleDateString();
 
       notesData.push(newNote);
 
@@ -69,7 +69,7 @@ const handlePost = function(request, response) {
 
       let date = new Date();
       date.setDate(date.getDate() + days);
-      updatedNote.deadline = date.toLocaleDateString(); // Attach derived field
+      updatedNote.deadline = date.toLocaleDateString();
 
       // Update the specific note in server memory
       notesData[updatedNote.index] = {
@@ -92,7 +92,7 @@ const handleDelete = function(request, response) {
   request.on('end', function() {
     if (request.url === '/delete') {
       const data = JSON.parse(dataString);
-      notesData.splice(data.index, 1); // Remove the note at the specified index
+      notesData.splice(data.index, 1); // remove specified note
 
       // Send the updated array back
       response.writeHead(200, "OK", { 'Content-Type': 'application/json' });

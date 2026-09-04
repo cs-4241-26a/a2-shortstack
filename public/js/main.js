@@ -3,14 +3,14 @@
 let notes = [];
 let editIndex = null; // Track which note is being edited
 
-// 1. INITIALIZE DOM VARIABLES FIRST
+// INITIALIZE DOM VARIABLES
 const modal = document.getElementById('noteModal');
 const openModalBtn = document.getElementById('addNote');
 const cancelBtn = document.getElementById('cancelNote');
 const form = document.getElementById('noteForm');
 
-// 2. ATTACH EVENT LISTENERS
-// Opening modal for a NEW note
+
+// NEW note
 openModalBtn.addEventListener('click', () => {
   editIndex = null;
   form.reset();
@@ -24,18 +24,18 @@ cancelBtn.addEventListener('click', () => {
   form.reset();
 });
 
-// Handle the form submission (Add or Edit)
+// form submission
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   const noteData = {
     title: document.getElementById('noteTitle').value,
     content: document.getElementById('noteContent').value,
-    type: document.getElementById('noteUrgency').value
+    urgency: document.getElementById('noteUrgency').value
   };
 
   if (editIndex !== null) {
-    // We are EDITING
+    // EDITING Note
     noteData.index = editIndex;
     const response = await fetch('/update', {
       method: 'POST',
@@ -44,7 +44,7 @@ form.addEventListener('submit', async (event) => {
     });
     notes = await response.json();
   } else {
-    // We are ADDING
+    // ADDING new note
     const response = await fetch('/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -58,13 +58,12 @@ form.addEventListener('submit', async (event) => {
   renderNotes();
 });
 
-// 3. DEFINE FUNCTIONS
-// Open modal for an EXISTING note
+// EXISTING note
 window.editNote = function(index) {
   editIndex = index;
   const note = notes[index];
 
-  // Pre-fill the form with existing data
+  // Pre-fill the form
   document.getElementById('noteTitle').value = note.title;
   document.getElementById('noteContent').value = note.content;
   document.getElementById('noteUrgency').value = note.urgency;
@@ -84,14 +83,14 @@ async function deleteNote(index) {
   renderNotes();
 }
 
-// Fetch notes from server
+// fetch notes from server
 async function fetchNotes() {
   const response = await fetch('/notes');
   notes = await response.json();
   renderNotes();
 }
 
-// Render the HTML
+// render HTML
 function renderNotes() {
   const container = document.getElementById('notesContainer');
   container.innerHTML = '';
@@ -103,7 +102,7 @@ function renderNotes() {
     noteDiv.innerHTML = `
         <h3 style="color: #333; margin-bottom: 5px; font-family: 'Montserrat', sans-serif;">${note.title}</h3>
         <p style="color: #666; font-size: 12px; margin-bottom: 10px; text-transform: capitalize; font-family: 'Montserrat', sans-serif;">
-            Type: ${note.urgency} | Due: <strong>${note.deadline}</strong>
+          Urgency: ${note.urgency} | Due: <strong>${note.deadline}</strong>
         </p>
         <textarea readonly>${note.content}</textarea>
         <div style="position: absolute; top: 5px; right: 5px; display: flex; gap: 5px;">
@@ -115,5 +114,5 @@ function renderNotes() {
   });
 }
 
-// 4. INITIALIZE APP ON LOAD
+// INITIALIZE APP ON LOAD
 window.onload = fetchNotes;
