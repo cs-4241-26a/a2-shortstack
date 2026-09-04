@@ -1,6 +1,6 @@
 # Task Tracker
 
-[Live app on Render](https://a2-christiandellanno.onrender.com) &middot; _(replace with your actual Render URL once deployed)_
+[Live app on Render](https://a2-christiandellanno.onrender.com/) &middot;
 
 A single-page task tracker. Add a task and pick a priority (low / medium / high); the server automatically computes a **deadline** by adding an offset (7 / 3 / 1 days) to the task's creation date. Tasks can be edited or deleted, and the table on the page updates instantly from the server's response &mdash; no page reloads.
 
