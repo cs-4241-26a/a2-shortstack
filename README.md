@@ -3,7 +3,7 @@
 Page Turner is a small two-tier reading list application. Add books with their author, page count, and planned minutes per day. The server keeps the list in memory and calculates estimated reading time for every book.
 
 ## How to Use
-
+it wont update
 1. Run `npm.cmd install`.
 2. Run `npm.cmd start`.
 3. Open `http://localhost:3000`.
