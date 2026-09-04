@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang='en'>
   <head>
-    <title>CS4241 Assignment 2</title>
     <meta charset='utf-8' />
+    <title>CS4241 Assignment 2 : People Database</title>
     <script src='js/main.js'></script>
     <link rel='stylesheet' href='css/main.css' />
     
@@ -10,9 +10,19 @@
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
   <body>
+    <h1>CS4241 Assignment 2 : People Database</h1>
     <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
+      <label for='firstname'>First Name:</label>
+      <input type='text' id='firstname' placeholder='Please Insert Your First Name Here' required/>
+      <label for='lastname'>Last Name:</label>
+      <input type='text' id='lastname' placeholder='Please Insert Your Last Name Here' required/>
+      <label for='age'>Age:</label>
+      <input type='number' id='age' placeholder='Please Insert Your Age Here' required/>
+      <button>Submit</button>
     </form>
+
+    <h2>Database</h2>
+
+    <ul id="names"></ul>
   </body>
 </html>
