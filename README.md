@@ -2,6 +2,8 @@ Assignment 2 - Short Stack: Basic Two-tier Web Application using HTML/CSS/JS and
 
 Ryan Ginn
 
+Site: https://a2-rizerdev.onrender.com/
+
 ## Research Group To-do List
 To-do list for my IQP research group. Helps the group with organization, and effeciency. Allowing users to add a task with an asignee option as well as a calender to set a tasks due date.
 
