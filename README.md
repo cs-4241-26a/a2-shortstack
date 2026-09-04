@@ -13,7 +13,7 @@ This project is a database of games people have played. It allows users to input
 ## Technical Achievements
 - **Tech Achievement 1**: Created a single-page app. Users can submit to the form, and all data (both user-inputted and derived) is displayed and updated live in the library.
 
-- **Tech Achievement 1**: Gave the user the ability to delete and edit entries in the library. (Note: do not press the edit button then refresh the page. The row will remain empty and must be deleted).
+- **Tech Achievement 2**: Gave the user the ability to delete and edit entries in the library. (Note: do not press the edit button then refresh the page. The row will remain empty and must be deleted).
 
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: I used a color pallette ☛☚ not an achievement, I know :(  
+- **Totally Real Design Achievement 1**: I used a color pallette ☛☚ not an achievement, I know :(  
