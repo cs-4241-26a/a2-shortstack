@@ -4,13 +4,14 @@ const http = require( 'http' ),
       // to install the mime library if you're testing this on your local machine.
       // On Render, make sure `npm install` is your build command.
       mime = require( 'mime' ),
+      path = require( 'path' ),
       dir  = 'public/',
       port = 3000
 
 const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+  { 'model': 'Toyota', 'year': 1999, 'color': 'red', 'mpg': 23, 'price': 9500 },
+  { 'model': 'Honda', 'year': 2004, 'color': 'blue', 'mpg': 30, 'price': 24000 },
+  { 'model': 'Ford', 'year': 1987, 'color': 'grey', 'mpg': 14, 'price': 5000 } 
 ]
 
 const server = http.createServer( function( request,response ) {
@@ -18,16 +19,55 @@ const server = http.createServer( function( request,response ) {
     handleGet( request, response )    
   }else if( request.method === 'POST' ){
     handlePost( request, response ) 
-  }
-})
+  }else if( request.method === 'DELETE' ){
+    handleDelete( request, response ) }
+  })
 
 const handleGet = function( request, response ) {
   const filename = dir + request.url.slice( 1 ) 
 
-  if( request.url === '/' ) {
+  if( request.url === '/' || request.url === '/index.html' ) {
     sendFile( response, 'public/index.html' )
-  }else{
+  }
+  else if ( request.url === '/data' ){
+    response.writeHead( 200, { 'Content-Type': 'application/json' })
+    response.end( JSON.stringify( appdata ) )
+  }
+  else{
     sendFile( response, filename )
+  }
+}
+
+const calculateStats = function( userData ) {
+  const year = parseInt(userData.year)
+
+  let max_mpg, min_mpg = 0
+
+  if (year <= 2000) {
+    max_mpg = 25
+    min_mpg = 10
+  }
+  else if (year <= 2010) {
+    max_mpg = 30
+    min_mpg = 15
+  }
+  else {
+    max_mpg = 35
+    min_mpg = 20
+  }
+
+  const userMPG = Math.floor(Math.random() * (max_mpg - min_mpg)) + min_mpg
+
+  const price = userMPG * (1000) - ( (2026 - year) * 500 )
+
+  if ( price < 5000 ) { price = 5000 }
+
+  return {
+    model: userData.model,
+    year: userData.year,
+    color: userData.color,
+    mpg: userMPG,
+    price: price,
   }
 }
 
@@ -39,13 +79,33 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
+    const userData = JSON.parse( dataString )
+    
+    const newCar = calculateStats( userData )
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+    appdata.push( newCar )
 
-    // change this to incorporate data
-    response.end('test')
+    response.writeHead( 200, "OK", {'Content-Type': 'application/json' })
+    response.end( JSON.stringify( appdata ) )
+  })
+}
+
+const handleDelete = function ( request, response) {
+  let dataString = ''
+
+  request.on( 'data', function( data ) {
+    dataString += data 
+  })
+
+  request.on( 'end', function() {
+    const input = JSON.parse(dataString)
+    const index = input.index
+    if (index >=0 && index < appdata.length) {
+      appdata.splice( index, 1 )
+    }
+
+    response.writeHead( 200, "OK", {'Content-Type': 'application/json' })
+    response.end( JSON.stringify( appdata ) )
   })
 }
 
