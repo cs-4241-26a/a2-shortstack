@@ -63,6 +63,25 @@ function makeMelody() {
 }
 
 /**
+ * Gets the specified melody from the server and loads it into the input fields.
+ */
+async function loadMelody(title) {
+    const response = await fetch(`/collection/${title}`, {
+        method: "GET"
+    })
+    const collItem = JSON.parse(await response.text())
+
+    document.getElementById("title-input").value = collItem.title
+    document.getElementById("composer-input").value = collItem.composer
+    for (let i = 0; i < 8; i++) {
+        document.getElementById("note-input-" + i).value = collItem.melody[i]
+    }
+
+    makeMelody()
+    playMelody()
+}
+
+/**
  * Called when the play button is pressed.
  */
 function playButton(event) {
@@ -153,7 +172,7 @@ async function makeCollection() {
                 <p class="coll-item-melody">${melody}</p>
                 <p class="coll-item-vibes">vibes: ${vibesAdjective} (${vibes})</p>
             </div>
-            <button class="coll-item-load">load</button>`
+            <button class="coll-item-load" onclick="loadMelody('${title}')">load</button>`
             collectionDiv.appendChild(collItemDiv)
         })
     }

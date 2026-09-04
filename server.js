@@ -19,15 +19,20 @@ const server = http.createServer(function(request,response) {
 })
 
 const handleGet = function(request, response) {
-    console.log("Received GET request: " + request.url)
-    const filename = dir + request.url.slice(1)
+    console.log("Received GET request: " + request.url);
 
     if (request.url === '/') {
-        sendFile(response, 'public/index.html')
-    } else if (request.url === "/collection") {
-        sendCollection(response)
+        sendFile(response, 'public/index.html');
+    } else if (request.url.startsWith('/collection')) {
+        const collItemTitle = request.url.slice(12); // Cuts "/collection/" off the front
+        if (collItemTitle.length > 0) {
+            sendCollectionItem(response, collItemTitle);
+        } else {
+            sendFullCollection(response);
+        }
     } else {
-        sendFile(response, filename)
+        const filename = dir + request.url.slice(1);
+        sendFile(response, filename);
     }
 }
 
@@ -49,7 +54,13 @@ const handlePost = function(request, response) {
         })
         dataJson.vibes = vibes
 
-        console.log(dataJson)
+        // Check for any items with duplicate names and get rid of them
+        let duplicate = collection.findIndex((item) => item.title === dataJson.title)
+        if (duplicate !== -1) {
+            collection.splice(duplicate, 1)
+        }
+
+        // Add the new item
         collection.push(dataJson)
 
         response.writeHead(200, "OK", {'Content-Type': 'text/plain' })
@@ -79,7 +90,26 @@ const sendFile = function(response, filename) {
     })
 }
 
-const sendCollection = function (response) {
+/**
+ * Stringifies and sends the specified item from the collection to the client.
+ */
+const sendCollectionItem = function (response, title) {
+    let item = collection.find((item) => item.title === title)
+
+    if (item) {
+        let content = JSON.stringify(item)
+        response.writeHead(200, "OK", {"Content-Type": "text/plain"})
+        response.end(content)
+    } else {
+        response.writeHead(404, "Not Found")
+        response.end('Item Not Found')
+    }
+}
+
+/**
+ * Stringifies and sends the full collection to the client.
+ */
+const sendFullCollection = function (response) {
     let content = JSON.stringify(collection)
 
     response.writeHead(200, "OK", { "Content-Type": "text/plain"})
