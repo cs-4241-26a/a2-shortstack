@@ -1,6 +1,6 @@
 # 10s Clicker Challenge
 This a mini game challenge to see how many clicks you can make in 10 seconds. I used css flexbox. 
-* Refresh to restart the game *
+- **Refresh to restart the game**
 https://a2-josuehernandez2.onrender.com
 
 ## Technical Achievements
