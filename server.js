@@ -16,11 +16,17 @@ const appdata = [
   { 'user': 'Jackson', 'clockIn': false, 'date': '9/2/2026', 'time': '6:24 PM' }
 ]
 
+// No user is logged in when the server starts.
+let currentUser = null
+
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
     handleGet( request, response )    
   }else if( request.method === 'POST' ){
     handlePost( request, response )
+  }else {
+    response.writeHead(405, { 'Content-Type': 'text/plain' })
+    response.end('405 Method Not Allowed')
   }
 })
 
@@ -29,6 +35,8 @@ const handleGet = function( request, response ) {
 
   if( request.url === '/' ) {
     sendFile( response, 'public/index.html' )
+  }else if (request.url === '/data') {
+    sendJSON(response, appdata)
   }else{
     sendFile( response, filename )
   }
@@ -42,37 +50,104 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
-    if (request.url === '/submit') {
-      handleTimeSubmit(dataString, response);
-    } else if (request.url === '/login') {
-      handleUserLogin(dataString, response);
-    } else if (request.url === '/logout') {
-      handleUserLogout(dataString, response);
-    } else {
-      response.writeHeader( 404 )
-      response.end( '404 Error: File Not Found' )
+    let data 
+
+    // Convert the incoming JSON string into an object.
+    try { 
+      data = JSON.parse(dataString) 
+    } catch (error) { 
+      sendJSON(response, { success: false, error: 'Invalid JSON' }, 400) 
+      return 
     }
+    
+    console.log('POST', request.url, data) 
+    
+    if (request.url === '/submit') { 
+      handleTimeSubmit(data, response) 
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+    } else if (request.url === '/login') { 
+      handleUserLogin(data, response) 
 
-    // change this to incorporate data
-    response.end('test')
+    } else if (request.url === '/logout') { 
+      handleUserLogout(data, response) 
+
+    } else { 
+      response.writeHead(404, { 'Content-Type': 'text/plain' }) 
+      response.end('404 Error: File Not Found') 
+    }
   })
 }
 
-const handleUserLogin = function( dataString, response ) {
-
+//Sets the current user. Returns only entries belonging to that user
+const handleUserLogin = function( data, response ) {
+  if (!data.user || data.user.trim() === '') { 
+    sendJSON(response, { success: false, error: 'Username is required' }, 400) 
+    return 
+  } 
+  
+  currentUser = data.user.trim() 
+  const userEntries = appdata.filter(function(entry) { 
+    return entry.user === currentUser 
+  }) 
+  
+  console.log('User logged in:', currentUser) 
+  
+  sendJSON(response, { success: true, user: currentUser, entries: userEntries })
 }
 
-const handleUserLogout = function( dataString, response ) {
+//Removes the currently logged in user. Returns all entries
+const handleUserLogout = function( data, response ) {
+  console.log('User logged out:', currentUser) 
 
+  currentUser = null 
+
+  sendJSON(response, { success: true, user: null, entries: appdata })
 }
 
-const handleTimeSubmit = function( dataString, response ) {
+//Adds a clock in or clock out entry. A user must be logged in.
+// {
+//   "date": "9/4/2026",
+//   "time": "8:00 AM", 
+//   "clockIn": true
+// }
+//the server adds the currentUser to the entry
+const handleTimeSubmit = function( data, response ) {
+  if (currentUser === null) { 
+    sendJSON(response, { success: false, error: 'No user is logged in' }, 401) 
+    return 
+  }
 
+  // Validation 
+  if (!data.date || !data.time || data.clockIn === undefined) { 
+    sendJSON(response, { success: false, error: 'Date, time, and clock-in status are required' }, 400) 
+    return 
+  }
+
+  const newEntry = { 
+    user: currentUser, 
+    clockIn: Boolean(data.clockIn), 
+    date: data.date, 
+    time: data.time 
+  } 
+  
+  // Save the entry. 
+  appdata.push(newEntry) 
+  
+  console.log('New entry:', newEntry)
+
+  const userEntries = appdata.filter(function(entry) { 
+    return entry.user === currentUser 
+  }) 
+  
+  sendJSON(response, { success: true, user: currentUser, entries: userEntries })
 }
+
+
+const sendJSON = function(response, data, statusCode = 200) { 
+  response.writeHead(statusCode, { 'Content-Type': 'application/json' }) 
+  response.end(JSON.stringify(data)) 
+}
+
 
 const sendFile = function( response, filename ) {
    const type = mime.getType( filename ) 
