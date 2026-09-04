@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "a2-christiandellanno",
+  "version": "1.0.0",
+  "description": "A single-page task tracker built for CS4241 Assignment 2. Add tasks with a priority; the server derives a deadline from the priority and creation date.",
+  "author": "Christian Dellanno",
   "scripts": {
     "start": "node server.js"
   },
