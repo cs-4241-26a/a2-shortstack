@@ -12,10 +12,17 @@
   <body>
   <h1>TV Show Progress Tracker</h1>
     <form>
+      <label for ="showname">Show</label>
       <input type='text' id='showname' value='Name of Show Here'>
+      <label for ="episodeswatched">Episodes Watched</label>
       <input type = 'number' id = 'episodeswatched' value='0'>
+      <label for ="episodecount">Total Episodes</label>
       <input type = 'number' id = 'episodecount' value='0'>
-      <button>submit</button>
+      <button id = "submitbutton">Submit</button>
+      <span>OR</span>
+      <button type="button" id ="modifybutton">Modify</button>
+      <select id = 'index'>
+      </select>
     </form>
   <table id = 'showtable'>
     <thead>

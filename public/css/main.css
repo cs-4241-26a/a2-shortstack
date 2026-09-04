@@ -2,3 +2,12 @@ body {
   background:black;
   color:white;
 }
+
+label {
+  display:block;
+}
+
+table, th, td {
+  border: 2px solid white;
+  border-collapse: collapse;
+}

@@ -9,6 +9,8 @@ const http = require( 'http' ),
 
 const appdata = [
   { 'show': 'Silo', 'watched': 20, 'total': 25 },
+  { 'show': 'Slow Horses', 'watched': 30, 'total': 30 },
+  { 'show': 'Severance', 'watched': 19, 'total': 20 },
 ]
 
 const server = http.createServer( function( request,response ) {
@@ -57,6 +59,19 @@ const handlePost = function( request, response ) {
       appdata.splice(item.index, 1)
       response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
       response.end(JSON.stringify(appdata))
+      //edit show
+    } else if (request.url === '/modify'){
+      const item = JSON.parse (dataString)
+      const modified = {
+        show: item.show,
+        watched: item.watched,
+        total: item.total
+      }
+      calculatePercent (modified )
+      appdata[item.index] = modified
+      response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+      response.end(JSON.stringify(appdata))
+
     }
     // change this to incorporate data
   })

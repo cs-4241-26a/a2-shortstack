@@ -32,8 +32,11 @@ const submit = async function( event ) {
 }
 
 window.onload = async function() {
-  const button = document.querySelector('button')
-  button.onclick = submit
+    const submitButton = document.querySelector('#submitbutton')
+    const modifyButton = document.querySelector('#modifybutton')
+    submitButton.onclick = submit
+    modifyButton.onclick = modifyShow
+
     //get table
   table = document.querySelector('#showresults')
   const response = await fetch( '/results', {
@@ -59,9 +62,36 @@ const deleteShow = async function( index ) {
     const arr = await response.json()
     displayTable(arr)
 }
+//edit show function
+const modifyShow = async function(){
+    //same as submit but use selector index
+    const input = document.querySelector( '#showname' ),
+        episodeswatched = document.querySelector( '#episodeswatched' ),
+        total = document.querySelector( '#episodecount' ),
+        modifySelector = document.querySelector('#index '),
+
+        json = {
+            index: Number(modifySelector.value),
+            show: input.value,
+            watched: Number(episodeswatched.value),
+            total: Number(total.value),
+        },
+        body = JSON.stringify( json )
+
+    const response = await fetch( '/modify', {
+        method:'POST',
+        body
+    })
+    const arr = await response.json()
+    displayTable(arr)
+}
+
+
 //used to dispaly the table through the program
 const displayTable = function (arr) {
     table.innerHTML = ''
+    const modifySelector = document.querySelector('#index')
+    modifySelector.innerHTML = ''
     for (let i = 0; i < arr.length; i++) {
         const show = arr[i]
         const tr = document.createElement('tr')
@@ -72,7 +102,14 @@ const displayTable = function (arr) {
             <td>${show.watched}</td>
             <td>${show.total}</td>
             <td>${show.percent}</td>
+
         `
+        //create dropdown for modify selector
+        const option = document.createElement('option');
+        option.value = i
+        option.innerText = i + 1
+        modifySelector.appendChild(option)
+
         //delete button per row
         const deleteButton = document.createElement('button')
         const deleteCell = document.createElement('td')
