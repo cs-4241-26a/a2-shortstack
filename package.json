@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "Clicker Challenge",
+  "version": "1",
+  "description": "Mini Game",
+  "author": "Josue Hernandez",
   "scripts": {
     "start": "node server.js"
   },

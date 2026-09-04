@@ -1,8 +1,8 @@
 body {
   background:white;
   color:black;
-  min-height: 800x; 
-  border: 5px ridge black;
+  min-height: 800px; 
+  border: 15px ridge black;
   
 }
 header{
@@ -20,7 +20,6 @@ main{
   flex-wrap: no-wrap;
   justify-content: center;
   align-items: center;
-  border: 5px ridge red;
   font-family: "Roboto Mono", monospace;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -30,7 +29,6 @@ main{
 #scoreForm{
  display: none;
  padding: 1em;
- border: 2px solid purple;
 }
 #instructions{
   visibility: visible;
@@ -42,23 +40,30 @@ main{
   flex-direction: column;
   align-items: center;
   flex-grow: 0;
-  border: 1px solid pink;
+  border: 10px ridge lightblue;
 }
-.leaderBoard{
+#leaderBoard{
   visibility: visible;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 4px solid ger;
+}
+#leaderBoard table{
+  border-collapse: collapse;
+  min-width: 460px;
+  font-size: 1rem;
+}
+#leaderBoard th, #leaderBoard td {
+  border: 1px solid black;
+  padding: 0.6rem 1rem;
+  text-align: left;
+}
+#leaderBoard thead th {
+  background: #eee;
 }
 #clicker{
   display: block;
-  border: 3px solid blue;
   height: 200px;
   width: 200px;
-}
-table,th{
-
-  border: 1px solid black;
 }
 
