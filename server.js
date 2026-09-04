@@ -7,10 +7,8 @@ const http = require( 'http' ),
       dir  = 'public/',
       port = 3000
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+let appdata = [
+  
 ]
 
 const server = http.createServer( function( request,response ) {
@@ -39,14 +37,26 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
+    dataString = modify(dataString)
     console.log( JSON.parse( dataString ) )
+
+    appdata.push(JSON.parse( dataString ))
     // ... do something with the data here!!!
 
     response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
 
     // change this to incorporate data
-    response.end('test')
+    response.end(JSON.stringify(appdata))
   })
+}
+
+function modify(dataString) {
+  if (JSON.parse( dataString ).tasty != "nah" || parseFloat(JSON.parse( dataString ).price) < 5) {
+    dataString = dataString.slice(0, -1) + ",\"worth\":\"yeah\"}"
+  } else {
+    dataString = dataString.slice(0, -1) + ",\"worth\":\"nah\"}"
+  }
+  return dataString
 }
 
 const sendFile = function( response, filename ) {
