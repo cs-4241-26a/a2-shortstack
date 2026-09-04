@@ -1,18 +1,57 @@
 <!doctype html>
 <html lang='en'>
   <head>
-    <title>CS4241 Assignment 2</title>
+    <title>Griffin's To-Do List</title>
     <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
     <script src='js/main.js'></script>
     <link rel='stylesheet' href='css/main.css' />
-    
-    <!-- get rid of favicon error -->
+    <link rel='preconnect' href='https://fonts.googleapis.com' />
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap' />
+
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
   <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
+    <header>
+      <h1>Griffin's To-Do List</h1>
+      <p>Add a task, drag it along by clicking the buttons, and check it off when it is done!</p>
+    </header>
+
+    <!-- Where user adds new task -->
+    <form id='addForm'>
+      <label for='task'>Task</label>
+      <input type='text' id='task' name='task' placeholder='What do you need to do?' required />
+
+      <label for='priority'>Priority</label>
+      <select id='priority' name='priority'>
+        <option value='high'>High</option>
+        <option value='medium'>Medium</option>
+        <option value='low'>Low</option>
+      </select>
+
+      <button type='submit'>Add Task</button>
     </form>
+
+    <!-- Shows the only 3 items warning -->
+    <p id='message'></p>
+
+    <!-- list constructions -->
+    <main class='board'>
+      <section class='box'>
+        <h2>Open</h2>
+        <ul id='open' class='list'></ul>
+      </section>
+
+      <section class='box'>
+        <h2>In Progress <span class='hint'>(max 3)</span></h2>
+        <ul id='closed' class='list'></ul>
+      </section>
+
+      <section class='box'>
+        <h2>Done</h2>
+        <ul id='done' class='list'></ul>
+      </section>
+    </main>
   </body>
 </html>

@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "a2-griffinmunhall",
+  "version": "1.0.0",
+  "description": "A simple to-do list that separates tasks into three cases.",
+  "author": "Griffin Munhall",
   "scripts": {
     "start": "node server.js"
   },
