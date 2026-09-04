@@ -5,9 +5,13 @@ Myer Cheng — CS4241 Assignment 2
 A single-page app for entering one class name and numerical grade at a time. The Node.js server stores all records in
 memory and calculates a letter grade for each record. The page shows the entire dataset in a table.
 
-The app uses plain HTML, CSS, JavaScript, and Node.js with Express 5 for routing, JSON request parsing, and static-file
-serving. The external stylesheet uses flexbox to lay out and wrap the form, element/ID/class selectors, and the web-safe
-Arial font.
+The app uses plain HTML, CSS, JavaScript, and Node.js's built-in HTTP and filesystem modules for routing, JSON request
+parsing, and static-file serving. The external stylesheet uses flexbox to lay out and wrap the form, element/ID/class
+selectors, and the web-safe Arial font.
+
+Note: my submission is late because I needed to swap out my server version with the one I wrote without Express. There
+was a question in the help channel about node_modules which led me to mistakenly believe that node modules were allowed.
+I asked Charlie about this in class today and he said swapping out was fine and to leave a note about it in my README.
 
 ## How to use
 
