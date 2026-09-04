@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "a2-shubhamkumar",
+  "version": "1.0.0",
+  "description": "Workout Tracker for CS 4241 Assignment 2",
+  "author": "Shubham Kumar",
   "scripts": {
     "start": "node server.js"
   },

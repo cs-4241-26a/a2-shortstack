@@ -7,11 +7,11 @@ const http = require( 'http' ),
       dir  = 'public/',
       port = 3000
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
-]
+const calculateVolume = function( sets, reps, weight ) {
+  return sets * reps * weight
+}
+
+const appdata = []
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
@@ -26,6 +26,9 @@ const handleGet = function( request, response ) {
 
   if( request.url === '/' ) {
     sendFile( response, 'public/index.html' )
+  }else if( request.url === '/data' ){
+    response.writeHead( 200, "OK", {'Content-Type': 'application/json'} )
+    response.end( JSON.stringify( appdata ) )
   }else{
     sendFile( response, filename )
   }
@@ -39,13 +42,45 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
+    const incoming = JSON.parse( dataString )
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+    if( request.url === '/submit' ) {
+      const workout = {
+        'id': appdata.length === 0 ? 1 : appdata[ appdata.length - 1 ].id + 1,
+        'exercise': incoming.exercise,
+        'sets': Number( incoming.sets ),
+        'reps': Number( incoming.reps ),
+        'weight': Number( incoming.weight )
+      }
 
-    // change this to incorporate data
-    response.end('test')
+      workout.volume = calculateVolume( workout.sets, workout.reps, workout.weight )
+      appdata.push( workout )
+
+    }else if( request.url === '/delete' ){
+      const index = appdata.findIndex( function( workout ) {
+        return workout.id === Number( incoming.id )
+      })
+
+      if( index !== -1 ) {
+        appdata.splice( index, 1 )
+      }
+
+    }else if( request.url === '/update' ){
+      const workout = appdata.find( function( workout ) {
+        return workout.id === Number( incoming.id )
+      })
+
+      if( workout !== undefined ) {
+        workout.exercise = incoming.exercise
+        workout.sets = Number( incoming.sets )
+        workout.reps = Number( incoming.reps )
+        workout.weight = Number( incoming.weight )
+        workout.volume = calculateVolume( workout.sets, workout.reps, workout.weight )
+      }
+    }
+
+    response.writeHead( 200, "OK", {'Content-Type': 'application/json'} )
+    response.end( JSON.stringify( appdata ) )
   })
 }
 
