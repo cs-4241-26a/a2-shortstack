@@ -1,6 +1,6 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 let score = 0;
-var time = 9;
+let time = 9;
 let hasRun = false;
 let intervalId;
 
@@ -8,22 +8,86 @@ const timer = document.getElementById("timer");
 const currentScore = document.getElementById("scoreBoard");
 const button = document.getElementById("clicker");
 const sumbitScore = document.getElementById("sumbitScore");
+const form = document.getElementById("scoreForm");
+const instructions = document.getElementById("instructions");
 
-console.log("found", button.textContent);
+//helper functions
+function showButton(){
+  button.style.display = "block";
+}
+function hideButton(){
+  button.style.display = "none";
+}
+function showForm(){
+  form.style.display = "block";
+}
+function hideForm(){
+  form.style.display = "none";
+}
+function showInstruct(){
+  instructions.style.display = "block";
+}
+function hideInstruct(){
+  instructions.style.display = "none";
+}
 
 function editTimer() {
   timer.textContent = `TME LEFT: ${time}`;
   time--;
   if (time < 0) {
     clearInterval(intervalId);
-    button.style.visibility = "hidden";
-    sumbitScore.style.visibility = "visible";
+    hideButton();
+    showForm();
   }
 }
+
+
 function startCountDown() {
   intervalId = setInterval(editTimer, 1000);
 }
+async function getGameData(event) {
+  try {
+    const response = await fetch("/getData", {
+      method: "GET",
+    });
+    const data = await response.json();
+    renderTable(data)
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+function renderTable(gameData) {
+  let tblBody = document.querySelector("#leaderBoard tbody");
+  tblBody.innerHTML = "";
+ const top = [...gameData].sort((a,b)=> b.score - a.score).slice(0,5);
+
+  for (const entry of top){
+    const row = document.createElement("tr")
+    const th = document.createElement("th")
+
+    th.textContent = entry.score
+    row.appendChild(th)
+    
+
+    for(const key of ["name", "date"]){
+      const cell = document.createElement("td")
+      cell.textContent = entry[key]
+      row.append(cell)
+    }
+
+    tblBody.append(row)
+  }
+}
+function endGame(){
+  score = 0;
+  time = 10;
+  hasRun = false;
+  hideForm();
+  showInstruct();
+}
 button.addEventListener("click", () => {
+  hideInstruct();
   score++;
   currentScore.textContent = `Score: ${score}`;
 
@@ -32,36 +96,39 @@ button.addEventListener("click", () => {
     startCountDown();
   }
 });
-sumbitScore.addEventListener("input", (event)=>{
+sumbitScore.addEventListener("input", (event) => {
   event.preventDefault();
-})
-const submit = async function( event ) {
+});
+
+const submit = async function (event) {
   // stop form submission from trying to load
   // a new .html page for displaying results...
   // this was the original browser behavior and still
   // remains to this day
   event.preventDefault();
 
+  let currentDate = new Date();
+  let gamedate = currentDate.toDateString();
+
   const input = document.getElementById("nameScore"),
-        json = { name: input.value, score: score },
-        body = JSON.stringify( json )
+    json = { score: score, name: input.value, date: gamedate },
+    body = JSON.stringify(json);
 
-  const response = await fetch( '/submit', {
-    method:'POST',
-    body
-  })
+  if (input === "") {
+    console.log("Empty name");
+  } else {
+    const response = await fetch("/submit", {
+      method: "POST",
+      body,
+    });
+    const text = await response.text();
+    console.log("text:", text);
+    endGame();
+    getGameData();
+  }
+};
 
-  const text = await response.text()
-
-  console.log( 'text:', text )
-}
-
-window.onload = function() {
-  sumbitScore.onclick = submit
-}
-// fetch('/sumbit').then(response => response.json()).then(data=>{
-//   let leaderBoard = document.getElementById("leaderBoard")
-//   leaderBoard.
-// }
-
-// )
+window.onload = function () {
+  sumbitScore.onclick = submit;
+  getGameData();
+};

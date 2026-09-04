@@ -21,7 +21,14 @@ Include a very brief summary of your project here. Be sure to include the CSS po
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: 
-
+1. Justin Fletcher 
+2. What problems did the user have with your design?
+    * Unused white space makes interface look unalign. 
+    * The placeholder for values are ambigiuos.
+3. What comments did they make that surprised you?
+    * The app didn't have ability to be able to delete data ( scores from the leader board).
+4. What would you change about the interface based on their feedback?
+    * I would try to make the interface more user friendly and utlize more of the whitespace. 
 ---
 
 Do the following to complete this assignment and achieve a base grade of 85%:

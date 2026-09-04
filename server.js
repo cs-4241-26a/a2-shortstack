@@ -7,10 +7,10 @@ const http = require( 'http' ),
       dir  = 'public/',
       port = 3000
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+const gameData = [
+  { 'score': 17, 'name': "Joe", 'date': "Mon Aug 31 2026" },
+  { 'score': 34, 'name': "Peter", 'date': "Tue Sep 01 2026" },
+  { 'score': 46, 'name': "Evil Chicken", 'date': "Wed Sep 02 2026" } 
 ]
 
 const server = http.createServer( function( request,response ) {
@@ -26,6 +26,10 @@ const handleGet = function( request, response ) {
 
   if( request.url === '/' ) {
     sendFile( response, 'public/index.html' )
+  } else if(request.url ==='/getData'){
+    console.log(gameData)
+    response.writeHead( 200, {'Content-Type': 'application/json' })
+    response.end(JSON.stringify(gameData))
   }else{
     sendFile( response, filename )
   }
@@ -41,12 +45,14 @@ const handlePost = function( request, response ) {
   request.on( 'end', function() {
     let data = JSON.parse( dataString );
     console.log(data)
+    gameData.push(data)
+    // console.log(testdata)
     // ... do something with the data here!!!
 
     response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
 
     // change this to incorporate data
-    response.end('test')
+    response.end(JSON.stringify(gameData))
   })
 }
 
