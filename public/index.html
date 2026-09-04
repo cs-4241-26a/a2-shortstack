@@ -25,21 +25,22 @@
   <!-- Center start button; when pressed, hides header, fills ~80% of width, ~50% of height, changes color to dark; when pressable,  -->
   <main>
     <div class="buttonBox">
-      <button type="button" id="reactBtn">START</button>
+      <button type="button" id="reactBtn" class="noName">Enter your name first!</button>
     </div>
-
     <div class="nonReactInputs">
-      <form>
+      <form onsubmit="event.preventDefault()">
         <input type="text" id="yourname" placeholder="Name (Required)" autocomplete="off">
-        <!-- <button type="button" id="yournameBtn">submit</button> -->
-      </form>
-      <div class="dataList">
+        <br>
+        <br>
+        <div class="dataList">
 
-        <ul id="timeList">
-        </ul>
-        <ul id="avgList">
-        </ul>
-      </div>
+          <ul id="timeList">
+          </ul>
+          <ul id="avgList">
+          </ul>
+        </div>
+      </form>
+
     </div>
 
   </main>

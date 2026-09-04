@@ -1,42 +1,80 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
-let timeList = null
-let avgList = null
-let reactBtn = null
-let nameBtn = null
-let usrname = ""
+let timeList = null;
+let avgList = null;
+let reactBtn = null;
+let nameBtn = null;
+let usrname = "";
 
-const reactStates = {
+const reactStateList = {
   idle: 0,
   wait: 1,
   press: 2,
-}
+};
 
-let reactState = reactStates["idle"]
-let timeInState = 0
+// current state of reaction button
+let reactState = reactStateList["idle"];
+// when the reaction started
+let reactStateStartTime = Date.now();
+// duration that the active state should last
+let reactDuration = 0;
+// timeout ID for when the current state is set to change
+let reactTimeoutID = -1;
 
 const submit = async function (event) {
-  // stop form submission from trying to load
-  // a new .html page for displaying results...
-  // this was the original browser behavior and still
-  // remains to this day
   event.preventDefault()
+  switch (reactState) {
+    case reactStateList["idle"]:
+      usrname = document.querySelector("#yourname").value;
+      if (usrname != "") {
+        stateWait();
+      }
+      break;
+    case reactStateList["wait"]:
+      stateIdle();
+      break;
+    case reactStateList["press"]:
+      const pressTime = Date.now();
+      stateWait();
+      updateLists(usrname, pressTime - reactStateStartTime, pressTime);
+      break;
+  }
+};
 
-  usrname = document.querySelector('#yourname').value
+// sets state and timeout to change to statePress
+function stateWait() {
+  clearTimeout(reactTimeoutID);
+  // reactStateStartTime = Date.now()
+  reactTimeoutID = setTimeout(statePress, Math.floor(Math.random() * 5150) + 3000);
+  reactState = reactStateList["wait"];
+  reactBtn.className = "wait"
+  reactBtn.textContent = "wait...";
+}
 
-  // Temp
-  const time = Math.floor(((Math.random() * 200))) + 200
+// sets state, start time, and sets 5s timeout to return to the main menu
+function statePress() {
+  clearTimeout(reactTimeoutID);
+  reactState = reactStateList["press"];
+  reactStateStartTime = Date.now();
+  reactTimeoutID = setTimeout(stateIdle, 3000);
+  reactBtn.className = "press"
+  reactBtn.textContent = "PRESS";
+}
 
-  json = { name: usrname, ms: time, time: Date.now() },
-    body = JSON.stringify(json)
+// Returns to 0 button pressing state
+function stateIdle() {
+  clearTimeout(reactTimeoutID);
+  reactState = reactStateList["idle"];
+  usrname = document.querySelector("#yourname").value;
+  if (usrname === "") {
+    reactBtn.className = "noName"
+    reactBtn.textContent = "Enter your name first!";
 
-  const response = await fetch('/submit', {
-    method: 'POST',
-    body
-  })
-  const arr = await response.json()
-  updateLists(arr)
-  console.log('arr:', arr)
+  } else {
+    reactBtn.className = "idle"
+    reactBtn.textContent = "Start";
+
+  }
 }
 
 /* Sends and fetches data from server; sending empty name field results in no stored data 
@@ -44,37 +82,104 @@ const submit = async function (event) {
     ms: reaction time
     time: current local time (unique per user)*/
 async function transferData(name, ms, time) {
+  json = { name: name, ms: ms, time: time }, body = JSON.stringify(json);
 
+  const response = await fetch("/submit", {
+    method: "POST",
+    body,
+  });
+  const arr = await response.json();
+  return arr;
 }
 
-// Updates time and average time lists
-function updateLists(arr) {
-  timeList.innerHTML = ''
+// Sends data to server and updates time and average time lists after receiving the appropriate data;
+// empty name field only updates lists
+async function updateLists(name, ms, time) {
+  const arr = await transferData(name, ms, time);
+  timeList.innerHTML = "";
   for (let n = arr.times.length - 1; n >= 0; n--) {
-    const item = arr.times[n]
-    const li = document.createElement('li')
-    li.innerHTML = `<button type="button" class="editBtn" data-timestamp="${item.time}">✏️</button>
-                  <button type="button" class="deleteBtn" data-timestamp="${item.time}">🗑️</button>
-                   ${item.name}: ${item.ms}ms`
-    timeList.appendChild(li)
+    const item = arr.times[n];
+    const li = document.createElement("li");
+    li.dataset.name = item.name;
+    li.dataset.timestamp = item.time;
+    li.innerHTML = `<button type="button" class="listBtn editBtn">✏️</button>
+                  <button type="button" class="listBtn deleteBtn">🗑️</button>
+                   ${item.name}: <input type="text" name=reactMS value=${item.ms} disabled></input>ms`;
+    li.querySelector('input').style.width = `${0.6 * Math.floor(Math.log10(item.ms) + 1)}em`
+    timeList.appendChild(li);
   }
-  avgList.innerHTML = ''
+  avgList.innerHTML = "";
   for (item of Object.values(arr.averages)) {
-    const li = document.createElement('li')
-    li.innerHTML = `<button type="button" class="deleteBtn" data-timestamp="${item.time}">🗑️</button>
-                  ${item.name} Avg: ${item.avg}ms`
-    avgList.appendChild(li)
+    const li = document.createElement("li");
+    li.dataset.name = item.name;
+    li.dataset.timestamp = item.time;
+    li.innerHTML = `<button type="button" class="listBtn deleteAvgBtn">🗑️</button>
+                  ${item.name} Avg: ${Math.floor(item.avg)}ms`;
+    avgList.appendChild(li);
+  }
+  document.querySelectorAll(".listBtn").forEach(button => {
+    let buttonFunc;
+    const name = button.parentNode.dataset.name;
+    const timestamp = button.parentNode.dataset.timestamp;
+    switch (button.className.split(' ')[1]) {
+      case "editBtn":
+        buttonFunc = putData(ms, name, timestamp)
+        break;
+      case "deleteBtn":
+        buttonFunc = deleteData("single", name, timestamp);
+
+        break;
+      case "deleteAvgBtn":
+        buttonFunc = deleteData("all", name, timestamp);
+
+        break;
+    }
+    button.addEventListener("click", buttonFunc)
+  });
+  // c) =>nsole.log('arr:', arr)
+}
+
+function deleteData(type, name, timestamp) {
+  return async function () {
+    json = { type: type, name: name, timestamp: timestamp }, body = JSON.stringify(json);
+
+    const response = await fetch("/submit", {
+      method: "DELETE",
+      body,
+    });
+    const arr = await response.json();
+    // console.log(`Delete: ${type} ${name} ${timestamp}`)
+    updateLists("", 0, 0)
+  }
+}
+
+function putData(ms, name, timestamp) {
+  return async function () {
+    json = { ms: ms, name: name, timestamp: timestamp }, body = JSON.stringify(json);
+
+    const response = await fetch("/submit", {
+      method: "PUT",
+      body,
+    });
+    const arr = await response.json();
+    // console.log(`edit: ${type} ${name} ${timestamp}`)
+    updateLists("", 0, 0)
   }
 }
 
 window.onload = function () {
-  reactBtn = document.querySelector('#reactBtn')
+  reactBtn = document.querySelector("#reactBtn");
   // nameBtn = document.querySelector('#yournameBtn')
-  reactBtn.onclick = submit
+  reactBtn.onclick = submit;
   // nameBtn.onclick = function () {
   //   usrname = document.querySelector('#yourname').value
   // }
-  timeList = document.querySelector('#timeList')
-  avgList = document.querySelector('#avgList')
-  reactBtn.click()
-}
+  timeList = document.querySelector("#timeList");
+  avgList = document.querySelector("#avgList");
+  updateLists("", 0, 0);
+
+  document.querySelector('#yourname').addEventListener("change", () => {
+    stateIdle()
+  })
+
+};
