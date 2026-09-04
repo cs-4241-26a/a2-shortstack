@@ -4,12 +4,13 @@
   "description": "",
   "author": "",
   "scripts": {
+    "build": "npm install mime",
     "start": "node server.js"
   },
   "dependencies": {
-    "mime": "^2.6.0"
+    "mime": "^2.4.4"
   },
   "engines": {
-    "node": "24.x"
+     "node":"24.x"
   }
 }
