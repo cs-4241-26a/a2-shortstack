@@ -9,11 +9,11 @@ const http = require("http"),
 
 const appdata = {
 	times: [
-		{ name: "Sample", ms: 30, time: 0 },
-		{ name: "Sample", ms: 50, time: 1 },
-		{ name: "Sample", ms: 85, time: 2 },
+		{ name: "Sample", ms: 309, time: 0 },
+		{ name: "Sample", ms: 264, time: 1 },
+		{ name: "Sample", ms: 402, time: 2 },
 	],
-	averages: { Sample: { name: "Sample", n: 3, tot: 165, avg: 55 } },
+	averages: { Sample: { name: "Sample", n: 3, tot: 975, avg: 325 } },
 };
 
 const server = http.createServer(function (request, response) {
