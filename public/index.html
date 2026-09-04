@@ -1,18 +1,82 @@
 <!doctype html>
 <html lang='en'>
+
   <head>
-    <title>CS4241 Assignment 2</title>
     <meta charset='utf-8' />
+    <meta name="viewport">
+    <title>Game Tracker</title>
     <script src='js/main.js'></script>
     <link rel='stylesheet' href='css/main.css' />
     
     <!-- get rid of favicon error -->
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
+
   <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
+
+    <header>
+      <h1>Game Tracker</h1>
+      <p>Keep track of the games you've played.</p>
+    </header>
+
+    <main>
+
+      <section id="add-game">
+        <h2>
+          Add a Game
+        </h2>
+
+        <form>
+
+          <section class="form-row">
+            <label for="gamename">Game Name:</label>
+            <input type='text' id='gamename' placeholder='game name here' required>
+          </section>
+
+          <section class="form-row">
+            <label for="genre">Genre:</label>
+            <input type='text' id='genre' placeholder='genre here' required>
+          </section>
+
+          <section class="form-row">
+            <label for="hoursplayed">Hours Played:</label>
+            <input type='number' id='hoursplayed' placeholder='hours played here' required>
+          </section>
+
+          <section class="form-row">
+            <label for="rating">Rating (1-10):</label>
+            <input type='number' id='rating' placeholder='rating here (1-10)' min="1" max="11" required>
+          </section>
+
+          <button>Add Game</button>
+
+        </form>
+
+      </section>
+
+      <section id="game-library">
+
+        <h2>Game Library</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Game</th>
+              <th>Genre</th>
+              <th>Hours Played</th>
+              <th>Rating</th>
+              <th>Recommendation</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="game-table">
+          </tbody>
+        </table>
+      </section>
+
+    </main>
+
   </body>
+
 </html>

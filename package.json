@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "a2-finnregan",
+  "version": "1.0",
+  "description": "CS 4241 Assignment 2",
+  "author": "Finn Regan",
   "scripts": {
     "start": "node server.js"
   },
