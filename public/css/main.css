@@ -63,3 +63,17 @@ header .right, footer .right {
 header p, footer p {
     color: white;
 }
+
+input {
+    background-color: #d0daf1;
+    border: 2px solid #485166;
+    border-radius: 3px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+input:hover {
+    background-color: #f4f4f6;
+    border: 2px solid #004cff;
+    border-radius: 3px;
+    transition: background-color 0.1s ease, border-color 0.1s ease;
+}
