@@ -1,17 +1,10 @@
 const http = require( 'http' ),
       fs   = require( 'fs' ),
-      // IMPORTANT: you must run `npm install` in the directory for this assignment
-      // to install the mime library if you're testing this on your local machine.
-      // On Render, make sure `npm install` is your build command.
       mime = require( 'mime' ),
       dir  = 'public/',
       port = 3000
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
-]
+const appdata = [];
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
@@ -26,7 +19,10 @@ const handleGet = function( request, response ) {
 
   if( request.url === '/' ) {
     sendFile( response, 'public/index.html' )
-  }else{
+  } else if (request.url === '/data'){
+    response.writehead(200, { 'Content-Type': 'application/json'});
+    respone.end(JSON.stringify(appdata));
+  } else {
     sendFile( response, filename )
   }
 }
@@ -39,13 +35,17 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
+    const newTask = JSON.parse(dataString);
+    
+    const due = new Date(newTask.dueDate);
+    const today = new Date();
+    const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+    newTask.daysRemaining = diffDays;
+    
+    appdata.push(newTask);
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-
-    // change this to incorporate data
-    response.end('test')
+    response.writeHead(200, "OK", {'Content-Type': 'application/json' });
+    response.end(JSON.stringify(appdata));
   })
 }
 
@@ -58,13 +58,13 @@ const sendFile = function( response, filename ) {
      if( err === null ) {
 
        // status code: https://httpstatuses.com
-       response.writeHeader( 200, { 'Content-Type': type })
+       response.writeHead( 200, { 'Content-Type': type })
        response.end( content )
 
      }else{
 
        // file not found, error code 404
-       response.writeHeader( 404 )
+       response.writeHead( 404 )
        response.end( '404 Error: File Not Found' )
 
      }

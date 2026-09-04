@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "a2-ryanginn",
+  "version": "1.0.0",
+  "description": "To do list for IQP Group Research",
+  "author": "Ryan Ginn",
   "scripts": {
     "start": "node server.js"
   },

@@ -1,18 +1,37 @@
 <!doctype html>
 <html lang='en'>
   <head>
-    <title>CS4241 Assignment 2</title>
+    <title>Research To-Do List</title>
     <meta charset='utf-8' />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <script src='js/main.js'></script>
     <link rel='stylesheet' href='css/main.css' />
-    
-    <!-- get rid of favicon error -->
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
   <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
+    <div class="container">
+      <h1>Group Research Tasks for Digital Age IQP</h1>
+      <form id="task-form">
+        <input type='text' id='taskName' placeholder='Task Name' required>
+        <input type='text' id='assignee' placeholder='Assignee' required>
+        <input type='date' id='dueDate' required>
+        <button id='submitBtn'>Add Task</button>
+      </form>
+      
+      <table id="task-table">
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Assignee</th>
+            <th>Due Date</th>
+            <th>Days Remaining</th>
+          </tr>
+        </thead>
+        <tbody id="results">
+        </tbody>
+      </table>
+    </div>
+    <p class="footer-text">Website Created by Ryan Ginn for CS 4241</p>
   </body>
 </html>

@@ -1,24 +1,43 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
-const submit = async function( event ) {
-  // stop form submission from trying to load
-  // a new .html page for displaying results...
-  // this was the original browser behavior and still
-  // remains to this day
-  event.preventDefault()
+const loadData = async function() {
+  const response = await fetch('/data');
+  const data = await response.json();
+  renderTable(data);
+}
+
+const submit = async function(event) {
+  event.preventDefault();
   
-  const input = document.querySelector( '#yourname' ),
-        json = { yourname: input.value },
-        body = JSON.stringify( json )
+  const taskName = document.querySelector('#taskName').value;
+  const assignee = document.querySelector('#assignee').value;
+  const dueDate = document.querySelector('#dueDate').value;
+  
+  const body = JSON.stringify({ taskName, assignee, dueDate });
 
-  const response = await fetch( '/submit', {
-    method:'POST',
-    body 
-  })
+  const response = await fetch('/submit', {
+    method: 'POST',
+    body
+  });
 
-  const text = await response.text()
+  const data = await response.json();
+  renderTable(data);
+}
 
-  console.log( 'text:', text )
+const renderTable = function(data) {
+  const tbody = document.querySelector('#results');
+  tbody.innerHTML = '';
+  
+  data.forEach(task => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${task.taskName}</td>
+      <td>${task.assignee}</td>
+      <td>${task.dueDate}</td>
+      <td>${task.daysRemaining}</td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
 window.onload = function() {
