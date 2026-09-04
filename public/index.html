@@ -1,18 +1,62 @@
 <!doctype html>
 <html lang='en'>
   <head>
-    <title>CS4241 Assignment 2</title>
+    <title>Task Deadline Tracker</title>
     <meta charset='utf-8' />
-    <script src='js/main.js'></script>
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+
+    <link rel='preconnect' href='https://fonts.googleapis.com'>
+    <link href='https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap' rel='stylesheet'>
+
     <link rel='stylesheet' href='css/main.css' />
-    
-    <!-- get rid of favicon error -->
+    <script src='js/main.js' defer></script>
+
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
   <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
+
+    <header id='page-header'>
+      <h1>Task Deadline Tracker</h1>
+      <p>Add a task and a priority. The server automatically works out a deadline for you.</p>
+    </header>
+
+    <main class='layout'>
+
+      <section class='card' id='form-section'>
+        <h2>Add a Task</h2>
+        <form id='task-form'>
+          <label for='task'>Task name</label>
+          <input type='text' id='task' name='task' placeholder='e.g. Study for quiz' required>
+
+          <label for='priority'>Priority</label>
+          <select id='priority' name='priority'>
+            <option value='high'>High (deadline: +1 day)</option>
+            <option value='medium' selected>Medium (deadline: +3 days)</option>
+            <option value='low'>Low (deadline: +7 days)</option>
+          </select>
+
+          <button type='submit' class='primary-button'>Add Task</button>
+        </form>
+      </section>
+
+      <section class='card' id='results-section'>
+        <h2>Current Tasks</h2>
+        <table id='task-table'>
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Priority</th>
+              <th>Created</th>
+              <th>Deadline</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id='task-table-body'>
+          </tbody>
+        </table>
+      </section>
+
+    </main>
+
   </body>
 </html>
