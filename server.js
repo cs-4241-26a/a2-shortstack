@@ -38,6 +38,14 @@ const handlePost = function(request, response) {
 
     request.on('end', function() {
         let dataJson = JSON.parse(dataString)
+
+        // Calculates the "vibes" of the melody (the sum of all the note numbers) on a scale of sleepy (0) to flamin' (64)
+        let vibes = 0
+        dataJson.melody.forEach((note) => {
+            vibes += parseInt(note)
+        })
+        dataJson.vibes = vibes
+
         console.log(dataJson)
         dataSet.push(dataJson)
 
