@@ -3,16 +3,38 @@
   <head>
     <title>CS4241 Assignment 2</title>
     <meta charset='utf-8' />
-    <script src='js/main.js'></script>
+    <script src='js/main.js' defer></script>
     <link rel='stylesheet' href='css/main.css' />
     
     <!-- get rid of favicon error -->
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Londrina+Shadow&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
+    <h1>A Sticky Place</h1>
+    <div class="container" id="notesContainer">
+      <!-- Sticky notes will appear here -->
+    </div>
+    <button id='addNote' class="addbtn">Add Note</button>
+    <div id='noteModal' class='modal'>
+      <div class='modal-content'>
+        <form id='noteForm'>
+          <input id='noteTitle' type='text' placeholder='Input Title' required>
+          <textarea id="noteContent" placeholder='Note Text' required></textarea>
+          <select id='noteUrgency' name='noteUrgency'>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+
+          <div class="modal-actions">
+            <button type='button' id='cancelNote' class="addbtn">Cancel</button>
+            <button type="submit" id='saveNote' class='addbtn'>Save Note</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
 </html>

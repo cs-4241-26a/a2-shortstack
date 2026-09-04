@@ -7,68 +7,111 @@ const http = require( 'http' ),
       dir  = 'public/',
       port = 3000
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
-]
+let notesData = []; // array to store notes
 
-const server = http.createServer( function( request,response ) {
-  if( request.method === 'GET' ) {
-    handleGet( request, response )    
-  }else if( request.method === 'POST' ){
-    handlePost( request, response ) 
+const server = http.createServer(function(request, response) {
+  if (request.method === 'GET') {
+    handleGet(request, response);
+  } else if (request.method === 'POST') {
+    handlePost(request, response);
+  } else if (request.method === 'DELETE') {
+    handleDelete(request, response);
   }
-})
+});
 
-const handleGet = function( request, response ) {
-  const filename = dir + request.url.slice( 1 ) 
+const handleGet = function(request, response) {
+  const filename = dir + request.url.slice(1);
 
-  if( request.url === '/' ) {
-    sendFile( response, 'public/index.html' )
-  }else{
-    sendFile( response, filename )
+  if (request.url === '/') {
+    sendFile(response, 'public/index.html');
+  } else if (request.url === '/notes') {
+    // Send the current notes data to the client
+    response.writeHead(200, "OK", { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify(notesData));
+  } else {
+    sendFile(response, filename);
   }
 }
 
-const handlePost = function( request, response ) {
-  let dataString = ''
+const handlePost = function(request, response) {
+  let dataString = '';
+  request.on('data', function(data) { dataString += data; });
 
-  request.on( 'data', function( data ) {
-      dataString += data 
-  })
+  request.on('end', function() {
+    if (request.url === '/submit') {
+      const newNote = JSON.parse(dataString);
 
-  request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
+      let days = 7; // Default to low
+      if (newNote.urgency === 'high') {
+        days = 1;
+      } else if (newNote.urgency === 'medium') {
+        days = 3;
+      }
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+      let date = new Date();
+      date.setDate(date.getDate() + days);
+      newNote.deadline = date.toLocaleDateString();
 
-    // change this to incorporate data
-    response.end('test')
-  })
+      notesData.push(newNote);
+
+      response.writeHead(200, "OK", { 'Content-Type': 'application/json' });
+      response.end(JSON.stringify(notesData));
+
+    } else if (request.url === '/update') {
+      const updatedNote = JSON.parse(dataString);
+
+      let days = 7; // Default to low
+      if (updatedNote.urgency === 'high') {
+        days = 1;
+      } else if (updatedNote.urgency === 'medium') {
+        days = 3;
+      }
+
+      let date = new Date();
+      date.setDate(date.getDate() + days);
+      updatedNote.deadline = date.toLocaleDateString();
+
+      // Update the specific note in server memory
+      notesData[updatedNote.index] = {
+        title: updatedNote.title,
+        content: updatedNote.content,
+        urgency: updatedNote.urgency,
+        deadline: updatedNote.deadline
+      };
+
+      response.writeHead(200, "OK", { 'Content-Type': 'application/json' });
+      response.end(JSON.stringify(notesData));
+    }
+  });
 }
 
-const sendFile = function( response, filename ) {
-   const type = mime.getType( filename ) 
+const handleDelete = function(request, response) {
+  let dataString = '';
+  request.on('data', function(data) { dataString += data; });
 
-   fs.readFile( filename, function( err, content ) {
+  request.on('end', function() {
+    if (request.url === '/delete') {
+      const data = JSON.parse(dataString);
+      notesData.splice(data.index, 1); // remove specified note
 
-     // if the error = null, then we've loaded the file successfully
-     if( err === null ) {
-
-       // status code: https://httpstatuses.com
-       response.writeHeader( 200, { 'Content-Type': type })
-       response.end( content )
-
-     }else{
-
-       // file not found, error code 404
-       response.writeHeader( 404 )
-       response.end( '404 Error: File Not Found' )
-
-     }
-   })
+      // Send the updated array back
+      response.writeHead(200, "OK", { 'Content-Type': 'application/json' });
+      response.end(JSON.stringify(notesData));
+    }
+  });
 }
 
-server.listen( process.env.PORT || port )
+const sendFile = function(response, filename) {
+  const type = mime.getType(filename);
+  fs.readFile(filename, function(err, content) {
+    if (err === null) {
+      response.writeHead(200, { 'Content-Type': type });
+      response.end(content);
+    } else {
+      response.writeHead(404);
+      response.end('404 Error: File Not Found');
+    }
+  });
+}
+
+server.listen(process.env.PORT || port);

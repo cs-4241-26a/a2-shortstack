@@ -1,8 +1,8 @@
 {
-  "name": "",
+  "name": "a Sticky Place",
   "version": "",
-  "description": "",
-  "author": "",
+  "description": "Sticky notes",
+  "author": "Abhi Chillara",
   "scripts": {
     "start": "node server.js"
   },
