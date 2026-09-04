@@ -1,100 +1,64 @@
-Assignment 2 - Short Stack: Basic Two-tier Web Application using HTML/CSS/JS and Node.js  
-===
+# Grade Calculator
 
-Due: September 4th, by 1:59 PM.
+Myer Cheng — CS4241 Assignment 2
 
-This assignment will introduce you to creating a prototype two-tiered web application. 
-Your application will include the use of HTML, CSS, JavaScript, and Node.js functionality, with active communication between the client and the server.
+A single-page app for entering one class name and numerical grade at a time. The Node.js server stores all records in
+memory and calculates a letter grade for each record. The page shows the entire dataset in a table.
 
-Baseline Requirements
----
+The app uses plain HTML, CSS, JavaScript, and Node.js with Express 5 for routing, JSON request parsing, and static-file
+serving. The external stylesheet uses flexbox to lay out and wrap the form, element/ID/class selectors, and the web-safe
+Arial font.
 
-There are a range of application areas and possibilities that meet these baseline requirements. 
-Try to make your application do something useful! A todo list, storing / retrieving high scores for a very simple game... have a little fun with it.
+## How to use
 
-Your application is required to implement the following functionalities:
+1. Enter a class name and a numerical grade from 0 to 100. Decimal grades are allowed.
+2. Click **Add class**, or press Enter in the form. The table updates without reloading the page.
+3. Click **Edit** beside a class, change its name or grade, and click **Save**. **Cancel** leaves the saved record
+   unchanged.
+4. Click **Delete** beside a class to remove it.
 
-- a `Server` which not only serves files, but also maintains a tabular dataset with 3 or more fields related to your application
-- a `Results` functionality which shows the entire dataset residing in the server's memory
-- a `Form/Entry` functionality which allows a user to add or delete data items residing in the server's memory
-- a `Server Logic` which, upon receiving new or modified "incoming" data, includes and uses a function that adds at least one additional derived field to this incoming data before integrating it with the existing dataset
-- the `Derived field` for a new row of data must be computed based on fields already existing in the row. 
-For example, a `todo` dataset with `task`, `priority`, and `creation_date` may generate a new field `deadline` by looking at `creation_date` and `priority`
+| Numerical grade | Letter grade |
+|-----------------|--------------|
+| 90–100          | A            |
+| 80 to below 90  | B            |
+| 70 to below 80  | C            |
+| Below 70        | NR           |
 
-Your application is required to demonstrate the use of the following concepts:
+These are the calculator's chosen thresholds, based on WPI's grading policy.
 
-HTML:
-- One or more [HTML Forms](https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms), with any combination of form tags appropriate for the user input portion of the application
-- A results page displaying all data currently available on the server. You will most likely use a `<table>` tag for this, but `<ul>` or `<ol>` could also work and might be simpler to work with. Alternatively, you can create a single-page app (see Technical Acheivements) but this is not a requirement.
-- All pages should [validate](https://validator.w3.org)
-- If your app contains multiple pages, they should all be accessible from the homepage (index.html)
+The average above the table excludes NR records and counts every remaining record equally, including duplicate class
+names. The browser calculates it from the server response on loading and after adding, editing, or deleting a class.
+Only the displayed result is rounded to two decimal places. With no eligible records, it shows `—`. Failed requests
+retain the last displayed average.
 
-CSS:
-- CSS styling of the primary visual elements in the application
-- Various CSS Selector functionality must be demonstrated:
-    - Element selectors
-    - ID selectors
-    - Class selectors
-- CSS positioning and styling of the primary visual elements in the application:
-    - Use of either a CSS grid or flexbox for layout
-    - Rules defining fonts for all text used; be deliberate! Be sure to use a web safe font or a font from a web service like [Google Fonts](http://fonts.google.com/)
+Records survive page refreshes but are cleared when the server restarts. The dataset is shared by all visitors to the
+running server. Each page fetches data when it loads and after its own changes; it does not poll for other visitors'
+changes.
 
-- CSS defined in a maintainable, readable form, in external stylesheets 
+Note: The data is reset whenever Render.com decides to reset it, since of course I am using the free tier.
 
-JavaScript:
-- At minimum, a small amount of front-end JavaScript to get / fetch data from the server; a sample is provided in this repository.
+## Technical achievements
 
-Node.js:
-- An HTTP Server that delivers all necessary files and data for the application, and also creates the required `Derived Fields` in your data. 
-A starting point is provided in this repository.
+- **Single-page application:** The form and results table are on the same page. Fetch requests add, update, and delete
+  records. Each successful change returns the full server dataset, including calculated letter grades, and the client
+  rebuilds the table from that response.
+- **Modify existing data:** Each row has an Edit button that fills the form with the saved values. Saving sends a PUT
+  request for that record's ID. The server validates the updated data and recalculates its letter grade before saving
+  it. Reusing the form requires tracking whether the user is adding or editing and clearing that state after saving or
+  cancelling.
 
-Deliverables
----
+The client does not calculate or assume a saved letter grade. Waiting for the server response keeps the displayed grades
+consistent with the server's calculation. Failed saves leave the form and last displayed records intact and show an
+error message.
 
-Do the following to complete this assignment and achieve a base grade of 85%:
+## Design/Evaluation Achievements
 
-1. Fork the starting project code. This repo contains some starter code that may be used or discarded as needed.
-2. Implement your project with the above requirements.
-3. Test your project to make sure that when someone goes to your main page, it displays correctly.
-4. Deploy your project to Render, and fill in the appropriate fields in your package.json file.
-5. Ensure that your project has the proper naming scheme `a2-yourFirstAndLastName` so we can find it.
-6. Modify the README to the specifications below, and delete all of the instructions originally found in this README.
-7. Create and submit a Pull Request to the original repo. Label the pull request as follows: a2-gitusername-firstname-lastname
-
-Achievements
----
-
-Below are suggested technical and design achievements. You can use these to help boost your grade up to an A and customize the assignment to your personal interests. These are recommended achievements, but feel free to create/implement your own... just make sure you thoroughly describe what you did in your README and why it was challenging. ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THEM. Remember, the highest grade you can get on any individual assignment is a 100%.
-
-*Technical*
-- (5 points) Create a single-page app that both provides a form for users to submit data and always shows the current state of the server-side data. To put it another way, when the user submits data, the server should respond sending back the updated data (including the derived field calculated on the server) and the client should then update its data display.
-
-- (5 points) In addition to a form enabling adding and deleting data on the server, also add the ability to modify existing data.
-
-*Design/UX*
-- (5 points per person, with a max of 10 points) Test your user interface with other students in the class. Define a specific task for them to complete (ideally something short that takes <10 minutes), and then use the [think-aloud protocol](https://en.wikipedia.org/wiki/Think_aloud_protocol) to obtain feedback on your design (talk-aloud is also fine). Important considerations when designing your study:
-
-1. Make sure you start the study by clearly stating the task that you expect your user to accomplish.
-2. You shouldn't provide any verbal instructions on how to use your interface / accomplish the task you give them. Make sure that your interface is clear enough that users can figure it out without any instruction, or provide text instructions from within the interface itself. 
-3. If users get stuck to the point where they give up, you can then provde instruction so that the study can continue, but make sure to discuss this in your README. You won't lose any points for this... all feedback is good feedback!
-
-You'll need to use some type of collaborative software that will enable you both to see the test subject's screen and listen to their voice as they describe their thoughts, or conduct the studies in person. After completing each study, briefly (one to two sentences for each question) address the following in your README:
-
-1. Provide the last name of each student you conduct the evaluation with.
-2. What problems did the user have with your design?
-3. What comments did they make that surprised you?
-4. What would you change about the interface based on their feedback?
-
-*You do not need to actually make changes based on their feedback*. This achievement is designed to help gain experience testing user interfaces. If you run two user studies, you should answer two sets of questions. 
-
-Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
----
-
-## Your Web Application Title
-Include a very brief summary of your project here. Be sure to include the CSS positioning technique you used, and any required instructions to use your application.
-
-## Technical Achievements
-- **Tech Achievement 1**: Using a combination of...
-
-### Design/Evaluation Achievements
-- **Design Achievement 1**: 
+- Tested my user interface with one person in my class:
+  - Last name: Peterson
+  - Task: Input your grades for this term by class
+  - Problems with design: Lacking color/visual coherence
+  - Surprising comments: They mentioned that the interface should be bigger, since it is confined to the top half of the
+    page.
+    - This was surprising to me since I personally thought it looked clean, and if it were used to calculate grades for
+    - a whole semester or even a whole academic year, the space would be used efficiently.
+  - Changes: Implement a color palette/theme, potentially add a scaling/zoom feature?
