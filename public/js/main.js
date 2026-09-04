@@ -38,11 +38,11 @@ window.onload = async function() {
     modifyButton.onclick = modifyShow
 
     //get table
-  table = document.querySelector('#showresults')
-  const response = await fetch( '/results', {
-    method:'GET'
-  })
-  const arr = await response.json()
+    table = document.querySelector('#showresults')
+    const response = await fetch('/results', {
+        method: 'GET'
+    })
+    const arr = await response.json()
     //display example data
     displayTable(arr)
 
@@ -101,7 +101,7 @@ const displayTable = function (arr) {
             <td>${show.show}</td>
             <td>${show.watched}</td>
             <td>${show.total}</td>
-            <td>${show.percent}</td>
+            <td>${show.percent}%</td>
 
         `
         //create dropdown for modify selector

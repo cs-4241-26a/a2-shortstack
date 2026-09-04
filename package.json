@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "NicholasHoughton",
+  "version": "1.0",
+  "description": "TVShowProgressTracker",
+  "author": "NicholasHoughton",
   "scripts": {
     "start": "node server.js"
   },

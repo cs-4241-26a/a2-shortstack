@@ -45,7 +45,7 @@ const handlePost = function( request, response ) {
 
   request.on( 'end', function() {
     // ... do something with the data here!!!
-    //for adding a new show
+    // adding a new show
     if (request.url === '/submit'){
       const newItem = JSON.parse (dataString)
       //calculate the percent watched of the show

@@ -1,13 +1,39 @@
 body {
-  background:black;
+  background:steelblue;
   color:white;
-}
+  font-family: "Mulish", sans-serif;
 
-label {
-  display:block;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 table, th, td {
-  border: 2px solid white;
+  border: 4px solid white;
   border-collapse: collapse;
+  padding: 4px;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.form-group {
+  gap: 10px;
+}
+
+.form-buttons {
+  margin-top: 10px;
+}
+
+#showtable {
+  margin-top: 10px;
+}
+
+hr {
+  width:100%;
+  margin-top:10px;
 }
