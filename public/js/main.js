@@ -1,7 +1,8 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
 let currentUser = null
-
+let editingUid = null
+let editingEntry = null
 
 // The server starts with no user logged in, so /data returns all of the saved entries.
 const loadData = async function() {
@@ -167,10 +168,10 @@ const updateTable = function(entries) {
     const row = document.createElement('tr')
     const cell = document.createElement('td')
 
-    cell.colSpan = 4
+    cell.colSpan = 5
     cell.textContent = 'No attendance records found.'
-    row.appendChild(cell)
 
+    row.appendChild(cell)
     tableBody.appendChild(row)
 
     return
@@ -181,11 +182,14 @@ const updateTable = function(entries) {
 
     const userCell = document.createElement('td')
     const dateCell = document.createElement('td')
+    const dayCell = document.createElement('td')
     const timeCell = document.createElement('td')
     const actionCell = document.createElement('td')
+    const editCell = document.createElement('td')
 
     userCell.textContent = entry.user
     dateCell.textContent = entry.date
+    dayCell.textContent = entry.day
     timeCell.textContent = entry.time
 
     if (entry.clockIn) {
@@ -194,10 +198,27 @@ const updateTable = function(entries) {
       actionCell.textContent = 'Clock Out'
     }
 
+    //Only show Edit buttons when a user is logged in
+    if (currentUser !== null) {
+      const editButton = document.createElement('button')
+
+      editButton.type = 'button'
+      editButton.className = 'editButton'
+      editButton.textContent = 'Edit'
+
+      editButton.addEventListener('click', function() {
+        startEdit(entry)
+      })
+
+      editCell.appendChild(editButton)
+    }
+
     row.appendChild(userCell)
     row.appendChild(dateCell)
+    row.appendChild(dayCell)
     row.appendChild(timeCell)
     row.appendChild(actionCell)
+    row.appendChild(editCell)
 
     tableBody.appendChild(row)
   })
@@ -419,6 +440,109 @@ const sortEntries = function(entries) {
   })
 }
 
+const startEdit = function(entry) {
+
+  editingUid = entry.uid
+  editingEntry = entry
+
+  const dateInput = document.querySelector('#dateInput')
+  const timeInput = document.querySelector('#timeInput')
+
+  dateInput.value = entry.date
+  timeInput.value = entry.time
+
+  //hide clock in/out buttons
+  document.querySelector('#clockInSubmit').style.display = 'none'
+  document.querySelector('#clockOutSubmit').style.display = 'none'
+
+  //Show the edit buttons.
+  document.querySelector('#confirmEditSubmit').style.display = 'inline-block'
+
+  document.querySelector('#cancelEditSubmit').style.display = 'inline-block'
+
+  document.querySelector('#timeStatus').textContent = 'Editing ' + entry.date + ' ' + entry.time + ' (' + (entry.clockIn ? 'Clock In' : 'Clock Out') + ')'
+}
+
+const confirmEdit = async function() {
+
+  if (editingUid === null) {return}
+
+  const dateInput = document.querySelector('#dateInput')
+  const timeInput = document.querySelector('#timeInput')
+
+  const date = dateInput.value.trim()
+  const time = timeInput.value.trim()
+
+  if (date === '' || time === '') {
+    document.querySelector('#timeStatus').textContent =
+      'Please enter both a date and time.'
+
+    return
+  }
+
+  const entry = editingEntry
+
+  try {
+    const response = await fetch('/edit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        uid: editingUid,
+        date: date,
+        time: time,
+        clockIn: entry.clockIn
+      })
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      document.querySelector('#timeStatus').textContent =
+        data.error || 'Unable to edit entry.'
+
+      return
+    }
+
+    document.querySelector('#timeStatus').textContent = 'Entry updated successfully.'
+
+    editingUid = null
+    editingEntry = null
+
+    resetEditForm()
+
+    updateTable(data.entries)
+    updateSummary(data.entries)
+
+  } catch (error) {
+    console.error('Edit error:', error)
+
+    document.querySelector('#timeStatus').textContent = 'Unable to connect to the server.'
+  }
+}
+
+const cancelEdit = function() {
+
+  editingUid = null
+  editingEntry = null
+
+  resetEditForm()
+
+  document.querySelector('#timeStatus').textContent = ''
+}
+
+const resetEditForm = function() {
+
+  document.querySelector('#dateInput').value = ''
+  document.querySelector('#timeInput').value = ''
+
+  document.querySelector('#clockInSubmit').style.display = 'inline-block'
+  document.querySelector('#clockOutSubmit').style.display = 'inline-block'
+  document.querySelector('#confirmEditSubmit').style.display = 'none'
+  document.querySelector('#cancelEditSubmit').style.display = 'none'
+}
+
 
 //Set up all event handlers once the page has loaded.
 window.onload = function() {
@@ -426,14 +550,21 @@ window.onload = function() {
   const logoutButton = document.querySelector('#logoutSubmit')
   const clockInButton = document.querySelector('#clockInSubmit')
   const clockOutButton = document.querySelector('#clockOutSubmit')
+  const confirmEditButton = document.querySelector('#confirmEditSubmit')
+  const cancelEditButton = document.querySelector('#cancelEditSubmit')
+
   loginForm.addEventListener('submit', login)
   logoutButton.addEventListener('click', logout)
+
   clockInButton.addEventListener('click', function(event) {
     submitTime(event, true)
   })
   clockOutButton.addEventListener('click', function(event) {
     submitTime(event, false)
   })
+  
+  confirmEditButton.addEventListener('click', confirmEdit)
+  cancelEditButton.addEventListener('click', cancelEdit)
 
   loadData()
 }
