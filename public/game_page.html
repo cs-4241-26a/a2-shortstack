@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Page</title>
+    <script src='../js/game.js'></script>
+    <link rel='stylesheet' href='../css/game.css/' />
+    <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
+</head>
+<body>
+    <div class="background">
+        <img src="../../assets/grid.svg" id='gridImage' draggable="false" alt="">
+    </div>
+    <canvas id="gameBoard" style="z-index:99;"></canvas>
+    <div class="attack_menu" style='z-index: 99; position: absolute;'>
+        <div class="firing_menu">
+            <form id="firing_menu" action="/attack">
+                <fieldset>
+                    <legend>Select Explosive Strength</legend>
+                    <label><input type="radio" name="explosive_strength" value="1" checked="checked">1</label>
+                    <label><input type="radio" name="explosive_strength" value="2">2</label>
+                    <label><input type="radio" name="explosive_strength" value="3">3</label>
+                    <label><input type="radio" name="explosive_strength" value="4">4</label>
+                    <label><input type="radio" name="explosive_strength" value="5">5</label>
+                </fieldset>
+                <fieldset>
+                    <legend id="bearing_angle_display">Bearing Angle: 0</legend>
+                    <input type="range" id="rotation" name="rotation" min="0" max="360" value="0" step="0.01">
+                    <button class="bearing_angle_button" id="bearing_button_left"><</button><button class="bearing_angle_button" id="bearing_button_right">></button>
+                </fieldset>
+                <p id="remaining_munitions">Remaining Ammo: null</p>
+                <button type="submit" id="fire_button">FIRE</button>
+                <ul id="shots_display"></ul>
+            </form>
+            <button type="button" id="minimize_firing_menu_button"><</button>
+        </div>
+        <div class="calculating_menu">
+
+            <form action="/calculate" class="calculating_form" id="calculating_form">
+                <fieldset>
+                    <legend>Turrent Angle Calculator</legend>
+                    <label>Enter Distance: <input type="text" placeholder="" value="" id="distance_input"></label>
+                </fieldset>
+                <button type="submit" id="calculate_button">Calculate</button>
+                <p id="calculated_angle_output">Calculated Angle Trajectory: N/A</p>
+            </form>
+            <button type="button" id="minimize_calculator_menu_button"><</button>
+        </div>
+    </div>
+</body>
+</html>
