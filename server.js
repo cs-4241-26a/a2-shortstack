@@ -8,9 +8,12 @@ const http = require( 'http' ),
       port = 3000
 
 const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+  { 'entry': 'shower',            'deadline': Number(new Date("2026-9-5T22:00:00")), 'priority':3 },
+  { 'entry': 'meal prep',         'deadline': Number(new Date("2026-9-5T21:30:00")), 'priority':3 },
+  { 'entry': 'webware homweork',  'deadline': Number(new Date("2026-9-3T21:30:00")), 'priority':1 },
+  { 'entry': 'geology homework',  'deadline': Number(new Date("2026-9-5T21:30:00")), 'priority':2 },
+  { 'entry': 'geology exam',      'deadline': Number(new Date("2026-9-3T11:00:00")), 'priority':1 },
+  { 'entry': 'physics homework',  'deadline': Number(new Date("2026-9-5T21:30:00")), 'priority':2 },
 ]
 
 const server = http.createServer( function( request,response ) {
@@ -26,7 +29,7 @@ const handleGet = function( request, response ) {
 
   if( request.url === '/' ) {
     sendFile( response, 'public/index.html' )
-  }else{
+  } else {
     sendFile( response, filename )
   }
 }
