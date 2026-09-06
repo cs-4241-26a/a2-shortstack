@@ -7,7 +7,7 @@ const http = require( 'http' ),
       dir  = 'public/',
       port = 3000
 
-const appdata = [
+let appdata = [
   { 'entry': 'shower',            'deadline': Number(new Date("2026-09-05T22:00:00")), 'priority':3 },
   { 'entry': 'meal prep',         'deadline': Number(new Date("2026-09-05T21:30:00")), 'priority':3 },
   { 'entry': 'webware homweork',  'deadline': Number(new Date("2026-09-03T21:30:00")), 'priority':1 },
@@ -46,11 +46,14 @@ const handlePost = function( request, response ) {
   request.on( 'end', function() {
     console.log( JSON.parse( dataString ) )
     // ... do something with the data here!!!
+    appdata.push(JSON.parse(dataString))
+
+    appdata = orderData( appdata )
 
     response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
 
     // change this to incorporate data
-    response.end('test')
+    response.end(JSON.stringify(appdata))
   })
 }
 
@@ -81,4 +84,33 @@ const sendData = function( response ) {
   response.end(JSON.stringify(appdata))
 }
 
+// reorders appdata, returns new 
+const orderData = function( data_ = appdata) {
+  // make copy of appdata 
+  let data = JSON.parse(JSON.stringify(data_)) 
+
+  // using bubblesort going by the date, 
+  // and then encorporating the priority
+  // to schedule an amount of days prior
+  for(let i = 0; i < data.length; i++) {
+    for(let j = 0; j < data.length - i - 1; j++) {
+      if(
+        new Date(data[j].deadline - data[j].priority * 3600000) > 
+        new Date(data[j + 1].deadline - data[j+1].priority * 3600000)
+      ) {
+        let temp = data[j]
+        data[j] = data[j+1]
+        data[j+1] = temp 
+      } 
+    }
+  } 
+
+  for(let i = 0; i < data.length; i++) {
+    data[i].order = i; 
+  }
+
+  return data; 
+}
+
+appdata = orderData( appdata )
 server.listen( process.env.PORT || port )
