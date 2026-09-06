@@ -22,12 +22,49 @@ const submit = async function( event ) {
 }
 
 const update = async function() {
-  data = "" 
-
+  const response = await fetch('/data')
   
+  // parse data returned 
+  const data = JSON.parse(await response.text())
+  
+  // get table object for addition
+  const table = document.getElementById('table') 
+  let tableChildren = []
+  
+  data.forEach(dataElm => {
+    // make row 
+    const row       = document.createElement("tr")
+    const entry     = document.createElement("td")
+    const deadline  = document.createElement("td")
+    const priority  = document.createElement("td")
+    
+    entry.appendChild(document.createTextNode(dataElm.entry))
+    deadline.appendChild(document.createTextNode(dataElm.deadline))
+    priority.appendChild(document.createTextNode(dataElm.priority))
+    
+    row.appendChild(entry)
+    row.appendChild(deadline)
+    row.appendChild(priority)
+    
+    // table.appendChild(row)
+    tableChildren.push(row)
+  });
+  
+  // this overwrites table headers, fix this 
+  table.replaceChildren(...tableChildren)
 } 
 
 window.onload = function() {
-  const button = document.querySelector('button')
-  button.onclick = submit
+  const time = new Date();
+  time.setMinutes(time.getMinutes() - time.getTimezoneOffset())
+  document.getElementById("deadline").value = time.toISOString().slice(0, 16)
+
+
+  const submit_ = document.getElementById('submit')
+  submit_.onclick = submit
+
+  const update_ = document.getElementById('refresh')
+  update_.onclick = update
+  
+  update() 
 }

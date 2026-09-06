@@ -10,22 +10,22 @@
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
   <body>
-    <button id='refresh'>refresh</button>
-    <table>
+    <p>
+      add new entry here: 
+    </p>
+    <form>
+      <input type='text' id='entryname' value='entry name'>
+      <input type='datetime-local' id='deadline'> 
+      <input type="text" id='priority' name='priority' min="1" max="3" step="1" value="2">
+      <button id='submit'>submit</button>
+    </form>
+    <table id='table'>
       <tr>
         <th>Entry:</th>
         <th>Deadline:</th>
         <th>Priority:</th>
       </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
     </table>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button id='submit'>submit</button>
-    </form>
+    <button id='refresh'>refresh</button>
   </body>
 </html>

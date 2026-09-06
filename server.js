@@ -8,12 +8,12 @@ const http = require( 'http' ),
       port = 3000
 
 const appdata = [
-  { 'entry': 'shower',            'deadline': Number(new Date("2026-9-5T22:00:00")), 'priority':3 },
-  { 'entry': 'meal prep',         'deadline': Number(new Date("2026-9-5T21:30:00")), 'priority':3 },
-  { 'entry': 'webware homweork',  'deadline': Number(new Date("2026-9-3T21:30:00")), 'priority':1 },
-  { 'entry': 'geology homework',  'deadline': Number(new Date("2026-9-5T21:30:00")), 'priority':2 },
-  { 'entry': 'geology exam',      'deadline': Number(new Date("2026-9-3T11:00:00")), 'priority':1 },
-  { 'entry': 'physics homework',  'deadline': Number(new Date("2026-9-5T21:30:00")), 'priority':2 },
+  { 'entry': 'shower',            'deadline': Number(new Date("2026-09-05T22:00:00")), 'priority':3 },
+  { 'entry': 'meal prep',         'deadline': Number(new Date("2026-09-05T21:30:00")), 'priority':3 },
+  { 'entry': 'webware homweork',  'deadline': Number(new Date("2026-09-03T21:30:00")), 'priority':1 },
+  { 'entry': 'geology homework',  'deadline': Number(new Date("2026-09-05T21:30:00")), 'priority':2 },
+  { 'entry': 'geology exam',      'deadline': Number(new Date("2026-09-03T11:00:00")), 'priority':1 },
+  { 'entry': 'physics homework',  'deadline': Number(new Date("2026-09-05T21:30:00")), 'priority':2 },
 ]
 
 const server = http.createServer( function( request,response ) {
@@ -29,6 +29,8 @@ const handleGet = function( request, response ) {
 
   if( request.url === '/' ) {
     sendFile( response, 'public/index.html' )
+  } else if ( request.url === '/data') {
+    sendData( response )
   } else {
     sendFile( response, filename )
   }
@@ -72,6 +74,11 @@ const sendFile = function( response, filename ) {
 
      }
    })
+}
+
+const sendData = function( response ) {
+  response.writeHead( 200, "OK", {'Content-Type': 'application/json' })
+  response.end(JSON.stringify(appdata))
 }
 
 server.listen( process.env.PORT || port )
