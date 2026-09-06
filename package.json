@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "a2-sahanaGokulakrishnan",
+  "version": "1.0.0",
+  "description": "A simple job application tracker",
+  "author": "Sahana Gokulakrishnan",
   "scripts": {
     "start": "node server.js"
   },

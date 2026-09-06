@@ -10,9 +10,70 @@
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
   <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
+    <h1>Job Application Tracker</h1>
+    
+
+    <section class="form-section">
+      <h2>Add a new application</h2>
+      <p>Track & manage your job applications easily!</p>
+
+    <form id="application-form">
+      <label for="company">Company Name: </label>
+      <input type="text" id="company" name="company" />
+      <br>
+      
+
+      <label for="role">Role: </label>
+      <input type="text" id="role" name="role" />
+      <br>
+
+      <label for="date-applied">Date Applied: </label>
+      <input type="date" id="date-applied" name="date-applied" />
+      <br>
+      
+
+      <label for="resume">Resume:</label>
+      <input type="text" id="resume" name="resume" />
+      <br>
+
+      <label for="status">Current Status:</label>
+      <select id="status">
+        <option value="applied">Applied</option>
+        <option value="interview">Interviewing</option>
+        <option value="rejected">Rejected</option>
+        <option value="withdraw">Withdrawn</option>
+        <option value="offer">Offer</option>
+      </select>
+      <br>
+
+      <button type="submit">Add Application</button>
+
     </form>
+    </section>
+
+    <br>
+    
+    <section id="results" class="results-section">
+      <h2>Your Applications</h2>
+      
+      <p id="no-result">No results to show</p>
+
+      <table id="result-table">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Role</th>
+            <th>Date Applied</th>
+            <th>Resume</th>
+            <th>Status</th>
+            <th>Application Age</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="result-body">
+        </tbody>
+      </table>
+    </section>
   </body>
 </html>
