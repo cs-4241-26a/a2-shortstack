@@ -10,9 +10,24 @@
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
   <body>
+    <span>
+      add new entry here: 
+    </span>
     <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
+      <input type='text' id='entryname' value='entry name'>
+      <input type='datetime-local' id='deadline'> 
+      <input type="number" id='priority' name='priority' min="1" max="5" step="1" value="2">
+      <button id='submit'>submit</button>
     </form>
+    <br>
+    <table id='table'>
+      <tr>
+        <th>Entry:</th>
+        <th>Deadline:</th>
+        <th>Priority:</th>
+        <th></th>
+      </tr>
+    </table>
+    <button id='refresh'>refresh</button>
   </body>
 </html>
