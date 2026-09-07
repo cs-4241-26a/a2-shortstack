@@ -48,6 +48,12 @@ const update = async function() {
     const delBtn    = document.createElement("button")
     const orderAttr = document.createAttribute("order")
 
+    // this is stupid but im doing it for the css requirements
+    entry.classList.add("td")
+    deadline.classList.add("td")
+    priority.classList.add("td")
+    order.classList.add("td")
+
     entry.appendChild(document.createTextNode(dataElm.entry))
     deadline.appendChild(document.createTextNode(fancifyTime(dataElm.deadline)))
     priority.appendChild(document.createTextNode(dataElm.priority))
