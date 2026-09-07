@@ -12,7 +12,7 @@
 
   <body>
     <h1>welcome to the Animal Identification Tool</h1>
-    <p>the intended use of this tool is to identify an animal the user has observed.</p>
+    <p>the intended use of this tool is to identify an animal the user has observed. this works for all animals.</p>
     <p>below the form are the results.</p>
     <form>
       <label for="q0">give the animal a placeholder name.</label>
@@ -33,11 +33,22 @@
         <option value="n">no, it doesn't quack</option>
         <option value="n">no, it quacks like something else</option>
         </select><br><br>
-      <button type="submit">submit</button>
+      <button type="submit" class="submit">submit</button>
     </form>
 
-    <ul id="results">
-      
-    </ul>
+    <table>
+      <thead> 
+        <tr>
+          <td>Name</td>
+          <td>Looks ducklike</td>
+          <td>Swims ducklike</td>
+          <td>Quacks ducklike</td>
+          <td>Identity</td>
+        </tr>
+      </thead>
+      <tbody id="results">
+
+      </tbody>
+    </table>
   </body>
 </html>

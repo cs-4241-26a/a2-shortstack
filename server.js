@@ -44,16 +44,25 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    let parsed = JSON.parse( dataString )
-    parsed.q4 = isDuck(parsed) // replace with helper function call 
-    console.log(parsed)
+    if(request.url == "/submit") {
+      let parsed = JSON.parse( dataString )
+      parsed.q4 = isDuck(parsed) 
+      console.log(parsed)
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+      response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
 
-    appdata.push( parsed )
-    console.log("appdate: " + JSON.stringify(appdata))
-    // change this to incorporate data
-    response.end(JSON.stringify( appdata ))
+      appdata.push( parsed )
+      console.log("appdate: " + JSON.stringify(appdata))
+      response.end(JSON.stringify( appdata ))
+    } else if(request.url == "/delete") { 
+      const parsed = JSON.parse(dataString)
+      const i = parseInt(parsed.index)
+
+      response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+
+      appdata.splice(i, 1)
+      response.end(JSON.stringify( appdata ))
+    }
   })
 }
 

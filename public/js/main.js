@@ -26,7 +26,6 @@ const submit = async function( event ) {
     body 
   })
 
-  console.log(body)
   const text = await response.text()
   update(text)
   console.log( 'text:', text )
@@ -34,21 +33,44 @@ const submit = async function( event ) {
 
 // function that updates the list! 
 function update(text) {
-  console.log("text (in update) " + text)
   const parsed = JSON.parse(text)
   const results = document.getElementById("results")
 
   let list_entries = []
+  let i = 0; // index for use with delete 
   parsed.forEach(element => {
     const entry = document.createElement("template")
-    entry.innerHTML = `<li>The animal, ${element.q0}, is a ${element.q4}.</li>`
+    entry.innerHTML = 
+    `<tr> 
+    <td>${element.q0}</td> 
+    <td>${element.q1}</td>
+    <td>${element.q2}</td>
+    <td>${element.q3}</td>
+    <td>${element.q4}.</td>
+    <td><button onclick="del(${i})">delete</button></td>
+    </tr>`
     list_entries.push(entry.content.firstChild)
+    i++
   });
   results.replaceChildren(...list_entries)
 }
 
+const del = async function(i) {
+  console.log("welcome to the deletion zone")
+  json = {"index" : i}
+  body = JSON.stringify(json)
+    const response = await fetch( `/delete`, {
+    method:'POST',
+    body
+  })
+
+  console.log("we remain in the deletion zone")
+  const text = await response.text()
+  update(text)
+}
+
 
 window.onload = function() {
-  const button = document.querySelector('button')
-  button.onclick = submit
+  const sub_button = document.querySelector('.submit')
+  sub_button.onclick = submit
 }
