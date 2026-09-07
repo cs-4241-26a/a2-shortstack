@@ -14,8 +14,8 @@ const submit = async function( event ) {
   const json = { "entry":entryname, "deadline":deadline, "priority":priority};
   const body = JSON.stringify( json );
   
-  console.log(json)
-  console.log(body)
+  // console.log(json)
+  // console.log(body)
 
   const response = await fetch( '/submit', {
     method:'POST',
@@ -24,7 +24,8 @@ const submit = async function( event ) {
 
   const text = await response.text()
 
-  console.log( 'response:\n', text )
+  // console.log( 'response:\n', text )
+  update()
 }
 
 const update = async function() {
@@ -45,13 +46,17 @@ const update = async function() {
     const priority  = document.createElement("td")
     const order     = document.createElement("td")
     const delBtn    = document.createElement("button")
+    const orderAttr = document.createAttribute("order")
 
     entry.appendChild(document.createTextNode(dataElm.entry))
     deadline.appendChild(document.createTextNode(fancifyTime(dataElm.deadline)))
     priority.appendChild(document.createTextNode(dataElm.priority))
     order.appendChild(document.createTextNode(dataElm.order))
     delBtn.appendChild(document.createTextNode("delete"))
-    
+    orderAttr.value = dataElm.order
+    delBtn.setAttributeNode(orderAttr) 
+    delBtn.onclick = delData
+
     row.appendChild(entry)
     row.appendChild(deadline)
     row.appendChild(priority)
@@ -67,6 +72,19 @@ const update = async function() {
   template.innerHTML = '<tr><th>Entry:</th><th>Deadline:</th><th>Priority:</th><th>Order:</th><th></th></tr>'
   table.replaceChildren(template.content.firstChild, ...tableChildren)
 } 
+
+const delData = async function(event) {
+  // gets the number attached to the attribute
+  // console.log(event.target.getAttribute("order"))
+  const json = {index:`${event.target.getAttribute("order")}`}
+  const body = JSON.stringify(json)
+
+  const response = await fetch('/delete', {method:'POST', body})
+  const text = await response.text()
+
+  // console.log( 'response:\n', text )
+  update()
+}
 
 const fancifyTime = function(time) {
   let t = new Date(time);

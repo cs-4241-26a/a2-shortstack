@@ -45,14 +45,14 @@ const handlePost = function( request, response ) {
 
   request.on( 'end', function() {
     console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
-    appdata.push(JSON.parse(dataString))
-
+    if (request.url === '/submit') {
+      appdata.push(JSON.parse(dataString))
+    } else if (request.url === '/delete') {
+      let index = parseInt(JSON.parse(dataString).index)
+      appdata.splice(index, 1) 
+    }
     appdata = orderData( appdata )
-
     response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-
-    // change this to incorporate data
     response.end(JSON.stringify(appdata))
   })
 }
