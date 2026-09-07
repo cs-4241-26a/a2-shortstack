@@ -8,9 +8,7 @@ const http = require( 'http' ),
       port = 3000
 
 const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+
 ]
 
 const server = http.createServer( function( request,response ) {
@@ -31,6 +29,13 @@ const handleGet = function( request, response ) {
   }
 }
 
+const isDuck = function(parsed) {
+  if(parsed.q1 == "y" && parsed.q2 == "y" && parsed.q3 == "y") 
+    return "duck";
+  else
+    return "nonduck";
+}
+
 const handlePost = function( request, response ) {
   let dataString = ''
 
@@ -39,13 +44,16 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
+    let parsed = JSON.parse( dataString )
+    parsed.q4 = isDuck(parsed) // replace with helper function call 
+    console.log(parsed)
 
     response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
 
+    appdata.push( parsed )
+    console.log("appdate: " + JSON.stringify(appdata))
     // change this to incorporate data
-    response.end('test')
+    response.end(JSON.stringify( appdata ))
   })
 }
 
