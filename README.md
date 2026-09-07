@@ -90,11 +90,11 @@ You'll need to use some type of collaborative software that will enable you both
 Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
 ---
 
-## Your Web Application Title
-Include a very brief summary of your project here. Be sure to include the CSS positioning technique you used, and any required instructions to use your application.
+## Animal Identification Tool 
+simple survey that can, with three simple questions, categorize 100% of animals, with 100% accuracy! data is added to a database on form complete, displayed, and can be deleted from the database. 
 
 ## Technical Achievements
-- **Tech Achievement 1**: Using a combination of...
+- app displays seamlessly on a single page without refreshing. when data is changed (either submitted or deleted), the server prompts the frontend to replace the contents of the table with the most recent version of the data. 
 
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: 
+- None attempted

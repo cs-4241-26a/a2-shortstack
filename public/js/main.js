@@ -46,8 +46,8 @@ function update(text) {
     <td>${element.q1}</td>
     <td>${element.q2}</td>
     <td>${element.q3}</td>
-    <td>${element.q4}.</td>
-    <td><button onclick="del(${i})">delete</button></td>
+    <td class="verdict">${element.q4}.</td>
+    <td><button onclick="del(${i})" class="del">delete</button></td>
     </tr>`
     list_entries.push(entry.content.firstChild)
     i++
@@ -71,6 +71,6 @@ const del = async function(i) {
 
 
 window.onload = function() {
-  const sub_button = document.querySelector('.submit')
+  const sub_button = document.querySelector('#submit')
   sub_button.onclick = submit
 }
