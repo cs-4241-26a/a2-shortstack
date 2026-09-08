@@ -1,4 +1,94 @@
+html {
+    font-size: 20px;
+}
+
 body {
-  background:black;
+  background:#111111;
   color:white;
+}
+
+body, 
+button, 
+input {
+    font-family: "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+strong {
+    font-family: "Bodoni Moda", serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+}
+
+header {
+    background: #222222;
+    text-align: center;
+}
+
+.disclaimers > p {
+    font-size: 0.7rem;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+span {
+    display: flex;
+    flex-direction: row;
+    /*
+    flex-direction: row;
+    justify-content: flex-end;
+    */
+}
+
+.deletebutton {
+    /*justify-self: flex-start;*/
+    margin-right: auto;
+}
+
+article {
+    max-width: 35rem;
+    padding: 1rem 1rem;
+    margin: 1rem 1rem;
+
+    background: #181818;
+    border-style: solid;
+    border-color: #20aef0;
+    border-width: 2px;
+}
+
+form, 
+form > button, 
+#num1inp, 
+#num2inp {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+#num1inp, 
+#num2inp {
+    max-width: 10rem;
+    margin: 1rem 1rem;
+}
+
+form {
+    max-width: 40rem;
+    margin: auto;
+    padding: 1rem;
+    border-style: solid;
+    border-color: #000;
+    border-width: 8px;
+    border-radius: 2rem;
+}
+
+hr {
+    border-top: 8px solid #20aef0;
+    border-radius: 5px;
+    margin: 2rem;
+}
+
+#query {
+    background-color: #c5edff;
 }

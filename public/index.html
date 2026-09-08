@@ -1,18 +1,59 @@
 <!doctype html>
 <html lang='en'>
-  <head>
-    <title>CS4241 Assignment 2</title>
-    <meta charset='utf-8' />
-    <script src='js/main.js'></script>
-    <link rel='stylesheet' href='css/main.css' />
-    
-    <!-- get rid of favicon error -->
-    <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
-  </head>
-  <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
-  </body>
+    <head>
+        <title>CS4241 Assignment 2</title>
+        <meta charset='utf-8' />
+        <script src='js/main.js'></script>
+        <link rel='stylesheet' href='css/main.css' />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+        
+        <!-- get rid of favicon error -->
+        <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
+    </head>
+
+    <body>
+        <header>
+            <h1>
+                FRANK'S <strong>ILLUSTRIOUS</strong> CALCULATOR
+            </h1>
+            <p>
+                Have YOU ever needed more calculation in your life? 
+                Does the thought of calculating set your heart aflutter? 
+                Do you lay awake in your bed at night, terrified at how calculation-less you are?
+            </p>
+            <p>
+                Fret no longer! Below, you can find an ever-growing list of <strong>ILLUSTRIOUS CALCULATIONS</strong> 
+                performed by the most precise and renowned calculator of modern times!
+            </p>
+            <div class="disclaimers">
+                <p>
+                    Disclaimer: Illustrious calculator can only multiply two positive numbers. 
+                </p>
+                <p>
+                    Disclaimer: Illustrious calculator is accurate to the closest whole number.
+                </p>
+                <p>
+                    Disclaimer: Illustrious calculator may experience self-confidence issues on occasion, especially around negative numbers. 
+                </p>
+            </div>
+        </header>
+
+        <ol id='history'>
+        </ol>
+
+        <hr>
+
+        <form>
+            <div class="inputrow">
+                Multiply
+                <input type='text' id='num1inp' placeholder='1st number'>
+                by
+                <input type='text' id='num2inp' placeholder='2nd number'>
+            </div>
+            <button id="query"><strong>QUERY THE ILLUSTRIOUS CALCULATOR</strong></button>
+        </form>
+    </body>
 </html>
