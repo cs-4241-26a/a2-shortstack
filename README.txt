@@ -1,6 +1,8 @@
 Frank Santen
 <RENDER LINK>
 
+I asked Professor Roberts for an extension on this project, and spent the 3 day weekend working on it. 
+
 ### Illustrious Calculator ###
 For this project, we were instructed to make a webpage that interacts with data from the server. 
 With these requirements, I decided to make a silly calculator that can only multiply two positive 
@@ -10,6 +12,14 @@ calculator feelings, as well as insecurity surrounding its inability to deal wit
 The calculator is often off by +/- 1, so the user is allowed to edit the calculator's result to 
 better match reality (which makes the calculator anxious about its performance). The user can also 
 delete history, which the calculator has no strong opinions on. 
+
+### KNOWN RENDER ISSUES ###
+For some reason, render hates how I've done my website. There's about a 1/2 chance for any individual 
+action to work, and i can't trace why. So, open the console. If you get red errors, refresh the page. 
+If the site says "Not Found", try again and it might just work. If there's no styling, refresh for that too. 
+If you press a button and nothing happens, just try pressing it a few more times and it will probably 
+work. It's completely stable on localhost, I don't know where this randomly sprinkled instability is 
+coming from other than Render. 
 
 
 ### Technical Achievements ###
