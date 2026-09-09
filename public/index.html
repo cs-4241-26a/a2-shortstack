@@ -1,18 +1,246 @@
 <!doctype html>
-<html lang='en'>
-  <head>
-    <title>CS4241 Assignment 2</title>
-    <meta charset='utf-8' />
-    <script src='js/main.js'></script>
-    <link rel='stylesheet' href='css/main.css' />
-    
-    <!-- get rid of favicon error -->
-    <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
-  </head>
-  <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Movie Watchlist</title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="css/main.css"
+  >
+
+  <link
+    rel="icon"
+    href="data:;base64,iVBORw0KGgo="
+  >
+
+  <script
+    src="js/main.js"
+    defer
+  ></script>
+
+</head>
+
+<body>
+
+<header>
+
+  <h1>🎬 Movie Watchlist</h1>
+
+  <p>
+    Save movies, rate them, and decide if they're worth watching.
+  </p>
+  <details>
+    <summary>
+      About
+    </summary>
+
+    <p>
+      This is a simple web application that allows you to create a watchlist of movies. You can add movies, specify their genre, rate them, and get a recommendation based on the rating.
+    </p>
+  </details>
+
+</header>
+
+
+<main>
+
+  <section
+    class="card"
+    id="form-section"
+  >
+
+    <h2>Add a Movie</h2>
+
+
+    <form id="movie-form">
+
+      <input
+        type="hidden"
+        id="movie-id"
+      >
+
+
+      <div class="form-grid">
+
+        <div class="field">
+
+          <label for="movie">
+            Movie
+          </label>
+
+          <input
+            id="movie"
+            name="movie"
+            type="text"
+            placeholder="Movie title"
+            required
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="genre">
+            Genre
+          </label>
+
+          <select
+            id="genre"
+            name="genre"
+            required
+          >
+
+            <option value="">
+              Choose a genre
+            </option>
+
+            <option>Action</option>
+            <option>Adventure</option>
+            <option>Animation</option>
+            <option>Comedy</option>
+            <option>Drama</option>
+            <option>Fantasy</option>
+            <option>Horror</option>
+            <option>Romance</option>
+            <option>Sci-Fi</option>
+            <option>Thriller</option>
+            <option>Other</option>
+
+          </select>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="rating">
+            Rating (1–10)
+          </label>
+
+          <input
+            id="rating"
+            name="rating"
+            type="number"
+            min="1"
+            max="10"
+            step="1"
+            placeholder="8"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="button-row">
+
+        <button
+          id="submit-button"
+          type="submit"
+        >
+          Add Movie
+        </button>
+
+
+        <button
+          id="cancel-button"
+          class="secondary hidden"
+          type="button"
+        >
+          Cancel Edit
+        </button>
+
+      </div>
+
+
+      <p
+        id="message"
+        aria-live="polite"
+      ></p>
+
     </form>
-  </body>
+
+  </section>
+
+
+  <section
+    class="card"
+    id="results-section"
+  >
+
+    <div class="results-heading">
+
+      <h2>My Watchlist</h2>
+
+      <span id="movie-count">
+        0 movies
+      </span>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Movie</th>
+            <th>Genre</th>
+            <th>Rating</th>
+            <th>Recommendation</th>
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody id="movie-results">
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+      Enjoy movies responsibly! &copy; 2024 Movie Watchlist
+</footer>
+
+</body>
+
 </html>

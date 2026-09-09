@@ -1,15 +1,12 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "a2-jenniferyuan",
+  "version": "1.0.0",
+  "description": "Movie Watchlist for CS4241 Assignment 2",
+  "author": "Jennifer Yuan",
   "scripts": {
     "start": "node server.js"
   },
-  "dependencies": {
-    "mime": "^2.4.4"
-  },
   "engines": {
-     "node":"24.x"
+    "node": "24.x"
   }
 }

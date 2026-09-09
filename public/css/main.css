@@ -1,4 +1,256 @@
+* {
+  box-sizing: border-box;
+}
+
+
 body {
-  background:black;
-  color:white;
+  margin: 0;
+  font-family: "Black Ops One", sans-serif;
+  background: #d0f4f7;
+  color: #030fb6;
+  font-size: 19px;
+
+}
+
+
+header {
+  text-align: center;
+  padding: 2rem 1rem 1.5rem;
+}
+
+header h1 {
+  margin: 0;
+  font-family: "Cinzel", serif;
+  font-size: 3.5rem;
+}
+
+
+header p {
+  margin: 0.5rem 0 0;
+  color: #1662d3;
+
+}
+
+
+main {
+  width: min(1200px, 95%);
+  margin: 0 auto 3rem;
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 4rem;
+}
+
+
+.card {
+  background: rgb(244, 253, 253);
+  border-radius: 14px;
+  padding: 2.5rem;
+  min-height: 550px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+#form-section {
+  flex: 1;
+  border-top: 5px solid #9f1df7;;
+}
+
+#results-section {
+  flex: 2;
+  border-top: 5px solid #eb70c6;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.form-grid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1 1 220px;
+}
+
+label {
+  font-weight: 600;
+}
+
+input,
+select,
+button {
+  font: inherit;
+}
+
+
+input,
+select {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  background: white;
+}
+
+
+input:focus,
+select:focus {
+  outline: 2px solid #d39b2a;
+  border-color: transparent;
+}
+
+
+.button-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+
+button {
+  border: 0;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  background: #222;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+
+.secondary {
+  background: #cbf8f4;
+}
+
+.hidden {
+  display: none;
+}
+
+
+#message {
+  min-height: 1.5rem;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+
+.results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+
+#movie-count {
+  background: #f1e3bd;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+}
+
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.85rem 0.6rem;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #faf7f0;
+}
+
+
+.recommendation {
+  display: inline-block;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+
+.must-watch {
+  background: #dff3df;
+}
+
+
+.worth-watching {
+  background:#fff0c7;
+}
+
+
+.skip {
+  background:#f7d8d8;
+}
+
+
+.actions {
+  white-space: nowrap;
+
+}
+
+
+.small-button {
+  padding: 0.4rem 0.65rem;
+  margin-right: 0.4rem;
+  font-size: 0.9rem;
+}
+
+
+.edit-button {
+background:#5585da;
+}
+
+
+.delete-button {
+background:#e74d4d;
+
+}
+
+footer {
+  text-align: center;
+  font-family: "JetBrains Mono", serif;
+  padding: 2rem 1rem 1.5rem;
+}
+
+
+.empty-state {
+  text-align: center;
+  color: #777;
+  padding: 2rem;
+}
+
+@media (max-width: 650px) {
+  header h1 {
+    font-size: 2.5rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  th,
+  td {
+    padding: 0.65rem 0.45rem;
+  }
 }

@@ -1,74 +1,354 @@
-const http = require( 'http' ),
-      fs   = require( 'fs' ),
-      // IMPORTANT: you must run `npm install` in the directory for this assignment
-      // to install the mime library if you're testing this on your local machine.
-      // On Render, make sure `npm install` is your build command.
-      mime = require( 'mime' ),
-      dir  = 'public/',
-      port = 3000
+const http = require('http')
+const fs = require('fs')
+const path = require('path')
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+const dir = 'public/'
+const port = 3000
+
+
+let appdata = [
+  {
+    id: 1,
+    movie: 'Spider-Man: Brand New Day',
+    genre: 'Adventure',
+    rating: 10,
+    recommendation: 'Must Watch'
+  },
+  {
+    id: 2,
+    movie: 'The Odyssey',
+    genre: 'Action',
+    rating: 8,
+    recommendation: 'Must Watch'
+  },
+  {
+    id: 3,
+    movie: 'Toy Story 5',
+    genre: 'Animation',
+    rating: 6,
+    recommendation: 'Worth Watching'
+  }
 ]
 
-const server = http.createServer( function( request,response ) {
-  if( request.method === 'GET' ) {
-    handleGet( request, response )    
-  }else if( request.method === 'POST' ){
-    handlePost( request, response ) 
+let nextId = 4
+
+function getRecommendation(rating) {
+
+  const numberRating = Number(rating)
+
+  if (numberRating >= 8) {
+    return 'Must Watch'
   }
+
+  if (numberRating >= 6) {
+    return 'Worth Watching'
+  }
+
+  return 'Skip'
+}
+
+const server = http.createServer(function(request, response) {
+
+  if (request.method === 'GET') {
+
+    handleGet(request, response)
+
+  } else if (request.method === 'POST') {
+
+    handlePost(request, response)
+
+  } else {
+
+    sendJSON(response, 405, {
+      error: 'Method not allowed'
+    })
+
+  }
+
 })
 
-const handleGet = function( request, response ) {
-  const filename = dir + request.url.slice( 1 ) 
+function handleGet(request, response) {
 
-  if( request.url === '/' ) {
-    sendFile( response, 'public/index.html' )
-  }else{
-    sendFile( response, filename )
+  // Send entire dataset to browser.
+  if (request.url === '/api/movies') {
+
+    sendJSON(response, 200, appdata)
+    return
+
   }
+
+  // Homepage.
+  if (request.url === '/') {
+
+    sendFile(response, 'public/index.html')
+    return
+
+  }
+
+  const safePath =
+    path.normalize(request.url).replace(/^(\.\.[/\\])+/, '')
+
+  const filename =
+    path.join(dir, safePath)
+
+  sendFile(response, filename)
 }
 
-const handlePost = function( request, response ) {
+function handlePost(request, response) {
+
   let dataString = ''
 
-  request.on( 'data', function( data ) {
-      dataString += data 
+  request.on('data', function(data) {
+
+    dataString += data
+
   })
 
-  request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-    // ... do something with the data here!!!
+  request.on('end', function() {
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+    let incoming
 
-    // change this to incorporate data
-    response.end('test')
+    try {
+
+      incoming = JSON.parse(dataString || '{}')
+
+    } catch (error) {
+
+      sendJSON(response, 400, {
+        error: 'Invalid JSON'
+      })
+
+      return
+    }
+
+    if (request.url === '/api/add') {
+
+      addMovie(incoming, response)
+      return
+
+    }
+
+    if (request.url === '/api/delete') {
+
+      deleteMovie(incoming, response)
+      return
+
+    }
+
+    if (request.url === '/api/edit') {
+
+      editMovie(incoming, response)
+      return
+
+    }
+
+    sendJSON(response, 404, {
+      error: 'Route not found'
+    })
+
   })
 }
 
-const sendFile = function( response, filename ) {
-   const type = mime.getType( filename ) 
+function addMovie(incoming, response) {
 
-   fs.readFile( filename, function( err, content ) {
+  const movie =
+    String(incoming.movie || '').trim()
 
-     // if the error = null, then we've loaded the file successfully
-     if( err === null ) {
+  const genre =
+    String(incoming.genre || '').trim()
 
-       // status code: https://httpstatuses.com
-       response.writeHeader( 200, { 'Content-Type': type })
-       response.end( content )
+  const rating =
+    Number(incoming.rating)
 
-     }else{
+  if (
+    !movie ||
+    !genre ||
+    Number.isNaN(rating) ||
+    rating < 1 ||
+    rating > 10
+  ) {
 
-       // file not found, error code 404
-       response.writeHeader( 404 )
-       response.end( '404 Error: File Not Found' )
+    sendJSON(response, 400, {
+      error: 'Please enter a movie, genre, and rating from 1 to 10.'
+    })
 
-     }
-   })
+    return
+  }
+
+  const newMovie = {
+
+    id: nextId++,
+
+    movie: movie,
+
+    genre: genre,
+
+    rating: rating,
+
+    recommendation:
+      getRecommendation(rating)
+
+  }
+
+  appdata.push(newMovie)
+
+  sendJSON(response, 200, appdata)
 }
 
-server.listen( process.env.PORT || port )
+function deleteMovie(incoming, response) {
+
+  const id =
+    Number(incoming.id)
+
+  appdata =
+    appdata.filter(function(item) {
+
+      return item.id !== id
+
+    })
+
+  sendJSON(response, 200, appdata)
+}
+
+function editMovie(incoming, response) {
+
+  const id =
+    Number(incoming.id)
+
+  const movie =
+    String(incoming.movie || '').trim()
+
+  const genre =
+    String(incoming.genre || '').trim()
+
+  const rating =
+    Number(incoming.rating)
+
+  if (
+    !movie ||
+    !genre ||
+    Number.isNaN(rating) ||
+    rating < 1 ||
+    rating > 10
+  ) {
+
+    sendJSON(response, 400, {
+      error: 'Please enter a movie, genre, and rating from 1 to 10.'
+    })
+
+    return
+  }
+
+  const index =
+    appdata.findIndex(function(item) {
+
+      return item.id === id
+
+    })
+
+  if (index === -1) {
+
+    sendJSON(response, 404, {
+      error: 'Movie not found.'
+    })
+
+    return
+  }
+
+  appdata[index] = {
+
+    id: id,
+
+    movie: movie,
+
+    genre: genre,
+
+    rating: rating,
+
+   
+    recommendation:
+      getRecommendation(rating)
+
+  }
+
+  sendJSON(response, 200, appdata)
+}
+
+function sendJSON(response, statusCode, data) {
+
+  response.writeHead(
+    statusCode,
+    {
+      'Content-Type': 'application/json'
+    }
+  )
+
+  response.end(
+    JSON.stringify(data)
+  )
+}
+
+function sendFile(response, filename) {
+
+  const extension =
+    path.extname(filename).toLowerCase()
+
+  const contentTypes = {
+
+    '.html': 'text/html',
+    '.css': 'text/css',
+    '.js': 'text/javascript',
+    '.json': 'application/json'
+
+  }
+
+  const type =
+    contentTypes[extension] ||
+    'text/plain'
+
+  fs.readFile(
+    filename,
+    function(err, content) {
+
+      if (err === null) {
+
+        response.writeHead(
+          200,
+          {
+            'Content-Type': type
+          }
+        )
+
+        response.end(content)
+
+      } else {
+
+        response.writeHead(
+          404,
+          {
+            'Content-Type':
+              'text/plain'
+          }
+        )
+
+        response.end(
+          '404 Error: File Not Found'
+        )
+
+      }
+
+    }
+  )
+}
+
+server.listen(
+  process.env.PORT || port,
+  function() {
+
+    console.log(
+      'Movie Watchlist running on port ' +
+      (process.env.PORT || port)
+    )
+
+  }
+)
