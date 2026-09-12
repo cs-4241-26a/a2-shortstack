@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "Recipe Wiki",
+  "version": "1.0",
+  "description": "A site for recipes",
+  "author": "James Ostermiller",
   "scripts": {
     "start": "node server.js"
   },

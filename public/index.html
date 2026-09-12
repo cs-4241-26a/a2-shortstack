@@ -1,18 +1,58 @@
 <!doctype html>
 <html lang='en'>
-  <head>
-    <title>CS4241 Assignment 2</title>
-    <meta charset='utf-8' />
-    <script src='js/main.js'></script>
-    <link rel='stylesheet' href='css/main.css' />
-    
-    <!-- get rid of favicon error -->
-    <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
-  </head>
-  <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
-    </form>
-  </body>
+<head>
+  <title>Recipe Wiki</title>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
+  <script src='js/main.js'></script>
+  <link rel='stylesheet' href='css/main.css'>
+  
+  <!-- get rid of favicon error -->
+  <link rel='icon' href='data:;base64,iVBORw0KGgo='>
+</head>
+
+<body>
+  <header>
+    <h1>Recipe Wiki</h1>
+    <div>by James Ostermiller</div>
+  </header>
+  
+  <main>
+    <section id='create-recipe-form' class='border'>
+      <h2>New Recipe</h2>
+      <form id='create-recipe'>
+
+        <label for='recipename'>*Recipe name:</label>
+        <input type='text' id='recipename' placeholder='Chocolate Chip Cookies' required>
+
+        <label for='preptime'>Prep time:</label>
+        <unit-wrapper>
+          <input type='number' id='preptime' placeholder='30' min=0>
+          <input-unit>minutes</input-unit>
+        </unit-wrapper>
+
+        <label for='cooktime'>Cook time:</label>
+        <unit-wrapper>
+          <input type='number' id='cooktime' placeholder='15' min=0>
+          <input-unit>minutes</input-unit>
+        </unit-wrapper>
+        
+        <label for='ingredients'>*Ingredients:</label>
+        <textarea required id='ingredients' placeholder='1 cup sugar&#10;1 cup flour&#10;...'></textarea>
+
+        <label for='steps'>*Steps:</label>
+        <textarea required id='steps' placeholder='1. Combine dry ingredients in a small bowl...'></textarea>
+        
+        <input type='submit' value='Create'>
+      </form>
+    </section>
+
+    <section id='recipe-list' class='border'>
+      <h2>Submitted Recipes</h2>
+    </section>
+  </main>
+</body>
 </html>
