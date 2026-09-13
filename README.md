@@ -14,7 +14,7 @@ CSS layout is done with **Flexbox**
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: 
-- **Last name of student**: Pal (my dad, not me)
+- **Last name of student**: Pal (my mom and dad, not me)
 - **Problem**: They mention that there isn't any sound for when buttons are pressed and there is no confirm button for deleting tasks
 - **Surprising comments**: They say the website is too empty and want to have customizable options
 - **Future Possible Changes**: Add sounds for buttons when clicked, a confirm check-off for wanting a confirm button for deleting tasks or not, and possible ways to customize the browser to the user's liking
