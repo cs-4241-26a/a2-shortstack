@@ -7,21 +7,37 @@ const submit = async function( event ) {
   // remains to this day
   event.preventDefault()
   
-  const input = document.querySelector( '#yourname' ),
-        json = { yourname: input.value },
-        body = JSON.stringify( json )
+  const task = document.querySelector('#task'),
+        deadline     = document.querySelector('#deadline'),
+        creationDate = document.querySelector('#creation-date'),
+        category     = document.querySelector( '#category' )
 
-  const response = await fetch( '/submit', {
-    method:'POST',
-    body 
+  const recurring = document.querySelector('input[name="recurring"]:checked')
+
+  const json = {
+    task: task.value,
+    deadline: deadline.value,
+    creationDate: creationDate.value,
+    category: category.value,
+    isRecurring: recurring.value === 'yes'
+  }
+
+  const body = JSON.stringify( json )
+
+  const response = await fetch( '/data', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body
   })
 
-  const text = await response.text()
+  const data = await response.json()
 
-  console.log( 'text:', text )
+  console.log('updated dataset:', data)
+  
+  event.target.reset()
 }
 
 window.onload = function() {
-  const button = document.querySelector('button')
-  button.onclick = submit
+  const form = document.querySelector('form')
+  form.onsubmit = submit
 }
